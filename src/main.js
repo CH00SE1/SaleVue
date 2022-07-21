@@ -8,11 +8,17 @@ import router from './router'
 
 import ElementUI from 'element-ui'
 
+import axios from 'axios'
+
+import VueAxios from 'vue-axios'
+
 // 引入element-ui
 import 'element-ui/lib/theme-chalk/index.css'
 
 // 在vue中使用elementui
 Vue.use(ElementUI)
+
+Vue.use(VueAxios, axios)
 
 Vue.config.productionTip = false
 

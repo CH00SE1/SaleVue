@@ -4,13 +4,13 @@
     <div id="login">
       <el-card class="box-card">
         <div id="form">
-          <el-input v-model="username" placeholder="请输入内容"></el-input>
+          <el-input v-model="username" placeholder="请输入账号"></el-input>
           <el-input
             placeholder="请输入密码"
             v-model="password"
             show-password
           ></el-input>
-          <el-button type="primary">登录</el-button>
+          <el-button type="primary" v-on:click="login">登录</el-button>
         </div>
       </el-card>
     </div>
@@ -120,6 +120,25 @@ export default {
       var seconds = d.getSeconds()
       this.time = hour + ':' + minute + ':' + seconds
       this.date = year + '/' + mon + '/' + day
+    },
+    login: function () {
+      this.axios({
+        url: 'http://localhost:8520/sentinel_client_sale/user/loginVerify',
+        method: 'post',
+        data: {
+          username: this.username,
+          password: this.password
+        }
+      }).then((res) => {
+        console.log(res.data)
+        if (res.data.code === 200) {
+          this.$router.push('/index')
+        } else {
+          alert('登录失败')
+        }
+      }).catch((err) => {
+        console.log(err)
+      })
     }
   }
 }
