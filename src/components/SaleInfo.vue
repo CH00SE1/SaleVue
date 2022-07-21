@@ -1,22 +1,14 @@
 <template>
   <div id="app">
-    <table type="selection" align="center" border="3">
-      <tr>
-        <td>姓名</td>
-        <td>总金额</td>
-        <td>销售提成</td>
-        <td>分类</td>
-      </tr>
+    <el-card>
       <!-- 请求参数请按照自己返回数据解析-->
       <div v-for="item in info.data.sales_info_details" :key="item">
-        <tr>
-          <td>{{ item.name }}</td>
-          <td>{{ item.sum_money }}</td>
-          <td>{{ item.sum_fl_money }}</td>
-          <td>{{ item.fl }}</td>
-        </tr>
+        {{ item.name }}
+        {{ item.sum_money }}
+        {{ item.sum_fl_money }}
+        {{ item.fl }}
       </div>
-    </table>
+    </el-card>
   </div>
 </template>
 

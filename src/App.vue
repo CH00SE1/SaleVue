@@ -1,6 +1,6 @@
 <template>
+   <!-- 页面启动部分 -->
   <div id="app">
-    <h1>sale</h1>
     <router-view/>
   </div>
 </template>

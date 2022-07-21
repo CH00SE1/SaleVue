@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import SaleInfo from '@/components/SaleInfo'
+// import SaleInfo from '@/components/SaleInfo'
+import Login from '../views/login.vue'
 
 Vue.use(Router)
 
@@ -8,9 +9,9 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
-      name: 'SaleInfo',
-      component: SaleInfo
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 })
