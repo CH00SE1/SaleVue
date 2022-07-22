@@ -1,7 +1,7 @@
 <template>
   <el-container style="height: 800px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['1', '3']" router="true">
+      <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-submenu index="1">
           <template slot="title"><i class="el-icon-message"></i>销售查询</template>
           <el-menu-item-group>
@@ -65,12 +65,12 @@
 </style>
 
 <script>
-import {listDaySale} from '../api/index'
+import {listYesterdaySale} from '../api/index'
 
 export default {
   data () {
     return {
-      saleList: null,
+      saleList: [],
       title: null
     }
   },
@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     getList () {
-      listDaySale().then((_result) => {
+      listYesterdaySale().then((_result) => {
         this.saleList = _result.data.data.sales_info_details
         this.title = _result.data.data.title
         console.log(_result.data.data.sales_info_details)
