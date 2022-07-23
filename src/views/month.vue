@@ -17,7 +17,7 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-      <span>当月销售明细</span>
+      <span>{{ title }}</span>
         <!-- <el-dropdown>
           <i class="el-icon-setting" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">

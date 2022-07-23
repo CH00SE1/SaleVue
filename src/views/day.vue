@@ -17,7 +17,7 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-      <span>当天销售明细</span>
+      <span>{{ title }}</span>
       </el-header>
       <el-main>
         <template>
