@@ -1,6 +1,8 @@
 <template>
   <el-container style="height: 800px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+      <el-input v-model="queryParams.title" placeholder="请输入标题"></el-input>
+      <el-button @click="handleQuery()">搜索</el-button>
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-submenu index="1">
           <template slot="title"><i class="el-icon-message"></i>销售查询</template>
@@ -17,22 +19,20 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-      <span>上月销售明细</span>
+      <span>{{ queryParams.title }}信息展示</span>
       </el-header>
       <el-main>
         <template>
-            <el-table :data="saleList" border style="width: 100%" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
-            <el-table-column prop="name" label="姓名" width="140">
-            </el-table-column>
-            <el-table-column prop="sum_money" label="总销售" width="120">
-            </el-table-column>
-            <el-table-column prop="sum_fl_money" label="毛利"> </el-table-column>
-            <el-table-column prop="fl.黄金单品" label="黄金单品"> </el-table-column>
-            <el-table-column prop="fl.A" label="A类"> </el-table-column>
-            <el-table-column prop="fl.B" label="B类"> </el-table-column>
-            <el-table-column prop="fl.C" label="C类"> </el-table-column>
-            <el-table-column prop="fl.D" label="D类"> </el-table-column>
-            <el-table-column prop="fl.E" label="E类"> </el-table-column>
+            <el-table :data="hsInfoList" border style="width: 100%" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
+            <el-table-column prop="id" label="序号" width="140"></el-table-column>
+            <el-table-column prop="createdAt" label="创建时间" width="120"></el-table-column>
+            <el-table-column prop="title" label="标题"> </el-table-column>
+            <el-table-column prop="url" label="在线播放地址"> </el-table-column>
+            <el-table-column prop="m3u8Url" label="视频下载地址"> </el-table-column>
+            <el-table-column prop="classId" label="分类ID"> </el-table-column>
+            <el-table-column prop="platform" label="平台"> </el-table-column>
+            <el-table-column prop="page" label="页码"> </el-table-column>
+            <el-table-column prop="location" label="位置"> </el-table-column>
         </el-table>
         </template>
       </el-main>
@@ -56,27 +56,35 @@
 </style>
 
 <script>
-import {listLastMonthSale} from '../api/index'
+import {listHsInfo} from '../api/index'
 
 export default {
   data () {
     return {
-      saleList: [],
-      title: null
+      hsInfoList: [],
+      // 查询参数
+      queryParams: {
+        title: '秘书'
+      }
     }
+  },
+  watch () {
   },
   created () {
     this.getList()
   },
   methods: {
     getList () {
-      listLastMonthSale().then((_result) => {
-        this.saleList = _result.data.data.sales_info_details
-        this.title = _result.data.data.title
+      listHsInfo(this.queryParams).then((_result) => {
+        this.hsInfoList = _result.data.data.rows
+        console.log(_result.data.data.rows)
       }).catch((_err) => {
         alert('后台数据获取异常')
       })
     }
+  },
+  handleQuery () {
+    this.getList()
   }
 }
 </script>

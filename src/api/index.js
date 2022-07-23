@@ -4,7 +4,7 @@ import request from '../utils/request'
 export function listDaySale () {
   return request({
     methed: 'get',
-    url: '/day/32'
+    url: '/sales/shop/day/32'
   })
 }
 
@@ -12,7 +12,7 @@ export function listDaySale () {
 export function listYesterdaySale () {
   return request({
     methed: 'get',
-    url: '/yesterday/32'
+    url: '/sales/shop/yesterday/32'
   })
 }
 
@@ -20,7 +20,7 @@ export function listYesterdaySale () {
 export function listMonthSale () {
   return request({
     methed: 'get',
-    url: '/month/32'
+    url: '/sales/shop/month/32'
   })
 }
 
@@ -28,7 +28,7 @@ export function listMonthSale () {
 export function listLastMonthSale () {
   return request({
     methed: 'get',
-    url: '/lastmonth/32'
+    url: '/sales/shop/lastmonth/32'
   })
 }
 
@@ -36,6 +36,15 @@ export function listLastMonthSale () {
 export function listYearSale () {
   return request({
     methed: 'get',
-    url: '/year/32'
+    url: '/sales/shop/year/32'
+  })
+}
+
+// 查询hsInfo数据列表
+export function listHsInfo (query) {
+  return request({
+    methed: 'get',
+    url: '/hsInfo/list',
+    params: query
   })
 }

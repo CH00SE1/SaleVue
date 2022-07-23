@@ -8,6 +8,7 @@ import yesterday from '../views/yesterday.vue'
 import month from '../views/month.vue'
 import lastmonth from '../views/lastmonth.vue'
 import year from '../views/year.vue'
+import hsInfo from '../views/hsInfo.vue'
 
 Vue.use(Router)
 
@@ -42,6 +43,10 @@ export default new Router({
       path: '/year',
       name: 'year',
       component: year
+    }, {
+      path: '/hsInfo',
+      name: 'hsInfo',
+      component: hsInfo
     }
   ]
 })

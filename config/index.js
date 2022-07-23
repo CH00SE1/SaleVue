@@ -13,6 +13,8 @@ module.exports = {
     proxyTable: {},
 
     // Various Dev Server settings
+    // 1.package.json中scripts的dev中最后加入--host 本机IP；
+    // 2.config下的index.js中的host属性“localhost”改为本机IP
     host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
