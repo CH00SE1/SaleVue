@@ -83,7 +83,11 @@ export default {
         this.saleList = _result.data.data.sales_info_details
         this.title = _result.data.data.title
       }).catch((_err) => {
-        alert('后台数据获取异常')
+        this.$message({
+          showClose: true,
+          message: '后端接口连接异常',
+          type: 'error'
+        })
       })
     }
   }

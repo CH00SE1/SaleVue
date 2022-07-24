@@ -1,20 +1,8 @@
 <template>
   <el-container style="height: 800px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-input v-model="queryParams.title" placeholder="请输入标题"></el-input>
-      <el-button @click="handleQuery()">搜索</el-button>
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
-        <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>销售查询</template>
-          <el-menu-item-group>
-            <template slot="title">时间类型</template>
-            <el-menu-item index="/day">当天</el-menu-item>
-            <el-menu-item index="/yesterday">昨天</el-menu-item>
-            <el-menu-item index="/month">当月</el-menu-item>
-            <el-menu-item index="/lastmonth">上月</el-menu-item>
-            <el-menu-item index="/year">当年</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
+        <el-button type="text" @click="open">点击打开查询标题</el-button>
       </el-menu>
     </el-aside>
     <el-container>
@@ -64,14 +52,12 @@ export default {
       hsInfoList: [],
       // 查询参数
       queryParams: {
-        title: '秘书'
+        title: null
       }
     }
   },
-  watch () {
-  },
   created () {
-    this.getList()
+    this.open()
   },
   methods: {
     getList () {
@@ -79,12 +65,31 @@ export default {
         this.hsInfoList = _result.data.data.rows
         console.log(_result.data.data.rows)
       }).catch((_err) => {
-        alert('后台数据获取异常')
+        this.$message({
+          showClose: true,
+          message: '后端接口连接异常',
+          type: 'error'
+        })
+      })
+    },
+    open () {
+      this.$prompt('请输入标题', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(({ value }) => {
+        this.$message({
+          type: 'success',
+          message: '你的标题是: ' + value
+        })
+        this.queryParams.title = value
+        this.getList()
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
       })
     }
-  },
-  handleQuery () {
-    this.getList()
   }
 }
 </script>
