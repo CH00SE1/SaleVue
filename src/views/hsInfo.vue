@@ -22,6 +22,17 @@
             <el-table-column prop="page" label="页码"> </el-table-column>
             <el-table-column prop="location" label="位置"> </el-table-column>
         </el-table>
+        <div class="pagination">
+        <el-pagination
+         @size-change="handleSizeChange"
+         @current-change="handleCurrentChange"
+         :current-page="cur_page"
+         :page-sizes="[5, 10, 15, 20, 30, 50, 100]"
+         :page-size="pageNum"
+         layout="total,sizes,  prev, pager, next, jumper"
+         :total="total">
+     </el-pagination>
+  </div>
         </template>
       </el-main>
     </el-container>
@@ -52,7 +63,10 @@ export default {
       hsInfoList: [],
       // 查询参数
       queryParams: {
-        title: null
+        title: null,
+        pageNum: 1,
+        pageSize: 10,
+        total: null
       }
     }
   },
@@ -63,7 +77,7 @@ export default {
     getList () {
       listHsInfo(this.queryParams).then((_result) => {
         this.hsInfoList = _result.data.data.rows
-        console.log(_result.data.data.rows)
+        this.total = _result.data.data.total
       }).catch((_err) => {
         this.$message({
           showClose: true,
@@ -89,6 +103,15 @@ export default {
           message: '取消输入'
         })
       })
+    },
+    handleSizeChange (val) {
+      // val变化后的每页的条数
+      this.queryParams.pageSize = val // 更新每页的条数
+      this.getList() // 重新获取列表数据
+    },
+    handleCurrentChange (val) {
+      this.queryParams.pageNum = val
+      this.getList() // 重新获取列表数据
     }
   }
 }
