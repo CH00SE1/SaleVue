@@ -21,15 +21,27 @@
             <el-table-column prop="platform" label="平台"> </el-table-column>
             <el-table-column prop="page" label="页码"> </el-table-column>
             <el-table-column prop="location" label="位置"> </el-table-column>
+              <el-table-column
+                fixed="right"
+                label="操作"
+                width="120">
+                <template slot-scope="scope">
+                <el-button
+                @click.native.prevent="downloadRow(scope.$index)"
+                type="text"
+                size="small">
+                下载
+                </el-button>
+                </template>
+             </el-table-column>
         </el-table>
         <div class="pagination">
         <el-pagination
          @size-change="handleSizeChange"
          @current-change="handleCurrentChange"
-         :current-page="cur_page"
          :page-sizes="[5, 10, 15, 20, 30, 50, 100]"
-         :page-size="pageNum"
-         layout="total,sizes,  prev, pager, next, jumper"
+         :page-size="pageSize"
+         layout="total, sizes, prev, pager, next, jumper"
          :total="total">
      </el-pagination>
   </div>
@@ -55,7 +67,7 @@
 </style>
 
 <script>
-import {listHsInfo} from '../api/index'
+import { listHsInfo, DownloadVideo } from '../api/index'
 
 export default {
   data () {
@@ -112,6 +124,21 @@ export default {
     handleCurrentChange (val) {
       this.queryParams.pageNum = val
       this.getList() // 重新获取列表数据
+    },
+    downloadRow (index) {
+      DownloadVideo(this.hsInfoList[index]).then((_result) => {
+        this.$message({
+          showClose: true,
+          message: this.hsInfoList[index].title + ' 下载中',
+          type: 'success'
+        })
+      }).catch((_err) => {
+        this.$message({
+          showClose: true,
+          message: '下载接口连接异常',
+          type: 'error'
+        })
+      })
     }
   }
 }

@@ -1,4 +1,4 @@
-import request from '../utils/request'
+import request, { postRequest } from '../utils/request'
 
 // 查询当天销售列表
 export function listDaySale () {
@@ -46,5 +46,16 @@ export function listHsInfo (query) {
     methed: 'get',
     url: '/hsInfo/list',
     params: query
+  })
+}
+
+export function DownloadVideo (data) {
+  return postRequest({
+    method: 'post',
+    url: '/download',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: [data]
   })
 }
