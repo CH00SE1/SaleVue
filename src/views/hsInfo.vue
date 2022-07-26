@@ -39,12 +39,12 @@
         <el-pagination
          @size-change="handleSizeChange"
          @current-change="handleCurrentChange"
-         :page-sizes="[5, 10, 15, 20, 30, 50, 100]"
-         :page-size="pageSize"
+         :page-sizes="[3, 5, 10, 15, 20, 30, 50, 100]"
+         :page-size="queryParams.pageSize"
          layout="total, sizes, prev, pager, next, jumper"
          :total="total">
-     </el-pagination>
-  </div>
+        </el-pagination>
+        </div>
         </template>
       </el-main>
     </el-container>
@@ -73,12 +73,12 @@ export default {
   data () {
     return {
       hsInfoList: [],
+      total: null,
       // 查询参数
       queryParams: {
         title: null,
         pageNum: 1,
-        pageSize: 10,
-        total: null
+        pageSize: 5
       }
     }
   },
@@ -117,25 +117,26 @@ export default {
       })
     },
     handleSizeChange (val) {
-      // val变化后的每页的条数
-      this.queryParams.pageSize = val // 更新每页的条数
-      this.getList() // 重新获取列表数据
+      // 更新每页条数
+      this.queryParams.pageSize = val
+      this.getList()
     },
     handleCurrentChange (val) {
+      // 更新当前页码
       this.queryParams.pageNum = val
-      this.getList() // 重新获取列表数据
+      this.getList()
     },
     downloadRow (index) {
       DownloadVideo(this.hsInfoList[index]).then((_result) => {
         this.$message({
           showClose: true,
-          message: this.hsInfoList[index].title + ' 下载中',
+          message: this.hsInfoList[index].title + '---->下载中',
           type: 'success'
         })
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: '下载接口连接异常',
+          message: this.hsInfoList[index].title + '---->下载连接异常',
           type: 'error'
         })
       })
