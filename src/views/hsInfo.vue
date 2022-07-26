@@ -2,7 +2,7 @@
   <el-container style="height: 800px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
-        <el-button type="text" @click="open">点击打开查询标题</el-button>
+        <el-button type="text" @click="openTitle">查询标题</el-button>
       </el-menu>
     </el-aside>
     <el-container>
@@ -83,7 +83,7 @@ export default {
     }
   },
   created () {
-    this.open()
+    this.openTitle()
   },
   methods: {
     getList () {
@@ -98,7 +98,7 @@ export default {
         })
       })
     },
-    open () {
+    openTitle () {
       this.$prompt('请输入标题', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消'
@@ -130,13 +130,13 @@ export default {
       DownloadVideo(this.hsInfoList[index]).then((_result) => {
         this.$message({
           showClose: true,
-          message: this.hsInfoList[index].title + '---->下载中',
+          message: _result.data,
           type: 'success'
         })
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: this.hsInfoList[index].title + '---->下载连接异常',
+          message: this.hsInfoList[index].title + ' ==> 下载地址连接异常',
           type: 'error'
         })
       })
