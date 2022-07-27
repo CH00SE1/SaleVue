@@ -49,10 +49,31 @@ export function listHsInfo (query) {
   })
 }
 
+// m3u8视频下载
 export function DownloadVideo (data) {
   return postRequest({
     method: 'post',
     url: '/hsInfo/download',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
+  })
+}
+
+// 获取mac列表
+export function macList () {
+  return request({
+    method: 'get',
+    url: '/npMacReq/list'
+  })
+}
+
+// 审核网卡
+export function auditMac (data) {
+  return postRequest({
+    method: 'post',
+    url: '/npMacReq/auditMac',
     headers: {
       'Content-Type': 'application/json'
     },
