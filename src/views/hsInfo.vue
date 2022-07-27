@@ -7,7 +7,7 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-      <span>{{ queryParams.title }}信息展示</span>
+      <span>{{ queryParams.title }}</span>
       </el-header>
       <el-main>
         <template>
@@ -130,7 +130,7 @@ export default {
       DownloadVideo(this.hsInfoList[index]).then((_result) => {
         this.$message({
           showClose: true,
-          message: _result.data,
+          message: _result.data.msg,
           type: 'success'
         })
       }).catch((_err) => {

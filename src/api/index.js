@@ -52,10 +52,10 @@ export function listHsInfo (query) {
 export function DownloadVideo (data) {
   return postRequest({
     method: 'post',
-    url: '/download',
+    url: '/hsInfo/download',
     headers: {
       'Content-Type': 'application/json'
     },
-    data: [data]
+    data: data
   })
 }
