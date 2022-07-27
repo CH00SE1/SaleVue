@@ -35,6 +35,7 @@
         </template>
       </el-main>
     </el-container>
+    <div id="copyright">copyright © CH00SE1 {{time}}</div>
   </el-container>
 </template>
 
@@ -51,6 +52,12 @@
     padding-left: 0px;
     text-align: center;
 }
+#copyright{
+  color: rgb(15, 44, 70);
+  position: absolute;
+  top: 95%;
+  left: 45%;
+}
 </style>
 
 <script>
@@ -60,18 +67,24 @@ export default {
   data () {
     return {
       macs: [],
-      title: null
+      title: null,
+      time: null
     }
   },
   created () {
     this.getList()
+  },
+  mounted () {
+    this.$nextTick(() => {
+      setInterval(this.update_clock, 500)
+    })
   },
   methods: {
     getList () {
       macList().then((_result) => {
         this.macs = _result.data.data
         if (_result.data.code === 200) {
-          this.title = '网卡请求信息记录表'
+          this.title = '英克网卡请求信息表'
         } else {
           this.$message({
             showClose: true,
@@ -110,6 +123,22 @@ export default {
           type: 'error'
         })
       })
+    },
+    update_clock: function () {
+      var d = new Date()
+      var year = d.getFullYear()
+      var mon = this.gTime(d.getMonth())
+      var day = this.gTime(d.getDay())
+      var hour = this.gTime(d.getHours())
+      var minute = this.gTime(d.getMinutes())
+      var seconds = this.gTime(d.getSeconds())
+      this.time = year + '-' + mon + '-' + day + ' ' + hour + ':' + minute + ':' + seconds
+    },
+    gTime: function (num) {
+      if (num < 10) {
+        num = '0' + num
+      }
+      return num
     }
   }
 }
