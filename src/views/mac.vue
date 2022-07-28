@@ -32,6 +32,16 @@
                 </template>
              </el-table-column>
         </el-table>
+        <div class="pagination">
+        <el-pagination
+         @size-change="handleSizeChange"
+         @current-change="handleCurrentChange"
+         :page-sizes="[5, 10, 15, 20, 30, 50, 100]"
+         :page-size="queryParams.pageSize"
+         layout="total, sizes, prev, pager, next, jumper"
+         :total="total">
+        </el-pagination>
+        </div>
         </template>
       </el-main>
     </el-container>
@@ -53,10 +63,10 @@
     text-align: center;
 }
 #copyright{
-  color: rgb(15, 44, 70);
+  color: rgb(0, 0, 0);
   position: absolute;
-  top: 95%;
-  left: 45%;
+  top: 97%;
+  left: 43%;
 }
 </style>
 
@@ -68,7 +78,11 @@ export default {
     return {
       macs: [],
       title: null,
-      time: null
+      time: null,
+      queryParams: {
+        pageNum: 1,
+        pageSize: 5
+      }
     }
   },
   created () {
@@ -81,7 +95,7 @@ export default {
   },
   methods: {
     getList () {
-      macList().then((_result) => {
+      macList(this.queryParams).then((_result) => {
         this.macs = _result.data.data
         if (_result.data.code === 200) {
           this.title = '英克网卡请求信息表'
@@ -127,8 +141,8 @@ export default {
     update_clock: function () {
       var d = new Date()
       var year = d.getFullYear()
-      var mon = this.gTime(d.getMonth())
-      var day = this.gTime(d.getDay())
+      var mon = this.gTime(d.getMonth() + 1)
+      var day = this.gTime(d.getDate())
       var hour = this.gTime(d.getHours())
       var minute = this.gTime(d.getMinutes())
       var seconds = this.gTime(d.getSeconds())
@@ -139,6 +153,16 @@ export default {
         num = '0' + num
       }
       return num
+    },
+    handleSizeChange (val) {
+      // 更新每页条数
+      this.queryParams.pageSize = val
+      this.getList()
+    },
+    handleCurrentChange (val) {
+      // 更新当前页码
+      this.queryParams.pageNum = val
+      this.getList()
     }
   }
 }

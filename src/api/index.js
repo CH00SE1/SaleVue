@@ -62,10 +62,11 @@ export function DownloadVideo (data) {
 }
 
 // 获取mac列表
-export function macList () {
+export function macList (query) {
   return request({
     method: 'get',
-    url: '/npMacReq/list'
+    url: '/npMacReq/list',
+    params: query
   })
 }
 
