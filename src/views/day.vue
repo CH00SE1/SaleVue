@@ -13,6 +13,12 @@
             <el-menu-item index="/year">当年</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
+        <el-submenu index="2">
+          <template slot="title"><i class="el-icon-message"></i>英克</template>
+          <el-menu-item-group>
+             <el-menu-item index="/mac">入网请求审批</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
       </el-menu>
     </el-aside>
     <el-container>

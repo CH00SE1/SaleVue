@@ -10,6 +10,7 @@ import lastmonth from '../views/lastmonth.vue'
 import year from '../views/year.vue'
 import hsInfo from '../views/hsInfo.vue'
 import mac from '../views/mac.vue'
+import usemac from '../views/usemac.vue'
 
 Vue.use(Router)
 
@@ -52,6 +53,10 @@ export default new Router({
       path: '/mac',
       name: 'mac',
       component: mac
+    }, {
+      path: '/usemac',
+      name: 'usemac',
+      component: usemac
     }
   ]
 })

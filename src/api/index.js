@@ -81,3 +81,24 @@ export function auditMac (data) {
     data: data
   })
 }
+
+// 获取使用mac列表
+export function useMacList (query) {
+  return request({
+    method: 'get',
+    url: '/npMacReq/user_list',
+    params: query
+  })
+}
+
+// 删除网卡
+export function deleteMac (data) {
+  return postRequest({
+    method: 'post',
+    url: '/npMacReq/user_delete_mac',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
+  })
+}

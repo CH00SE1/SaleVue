@@ -1,5 +1,25 @@
 <template>
   <el-container style="height: 800px; border: 1px solid #eee">
+    <div id = "search-mac">
+      <el-input
+      placeholder="请输入网卡mac"
+      @keyup.enter.native="handleQuery"
+      v-model="queryParams.mac">
+      </el-input>
+    </div>
+    <div id = "search-name">
+      <el-input
+      placeholder="请输入最后使用人姓名"
+      @keyup.enter.native="handleQuery"
+      v-model="queryParams.lastemployeename">
+      </el-input>
+    </div>
+    <div id="search">
+      <el-button type="primary" icon="el-icon-search" v-on:click="handleQuery">查询</el-button>
+    </div>
+    <div id="reset">
+      <el-button icon="el-icon-refresh" v-on:click="resetQuery">重置</el-button>
+    </div>
    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-submenu index="1">
@@ -17,7 +37,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="macs" border style="width: 100%" :default-sort="{prop: 'credate', order: 'descending'}">
+            <el-table :data="macs" border style="width: 100%" :default-sort="{prop: 'seqid', order: 'descending'}">
             <el-table-column prop="seqid" label="序列">
             </el-table-column>
             <el-table-column prop="credate" label="申请时间">
@@ -29,16 +49,19 @@
             <el-table-column prop="reqip" label="请求人IP"> </el-table-column>
             <el-table-column prop="reqemployeeid" label="请求人工号"> </el-table-column>
             <el-table-column prop="reqemployeename" label="请求人姓名"> </el-table-column>
+            <el-table-column prop="lastdate" label="最后时间"> </el-table-column>
+            <el-table-column prop="lastemployeeid" label="最后使用工号"> </el-table-column>
+            <el-table-column prop="lastemployeename" label="最后使用姓名"> </el-table-column>
             <el-table-column
                 fixed="right"
                 label="操作"
                 width="120">
                 <template slot-scope="scope">
                 <el-button
-                @click.native.prevent="auditRow(scope.$index)"
+                @click.native.prevent="deleteRow(scope.$index)"
                 type="text"
                 size="small">
-                审核
+                删除
                 </el-button>
                 </template>
              </el-table-column>
@@ -80,10 +103,30 @@
   top: 97%;
   left: 43%;
 }
+#search-mac{
+  position: absolute;
+  top: 1%;
+  left: 30%;
+}
+#search-name{
+  position: absolute;
+  top: 1%;
+  left: 45%;
+}
+#search{
+  position: absolute;
+  top: 1%;
+  left: 60%;
+}
+#reset{
+position: absolute;
+  top: 1%;
+  left: 65%;
+}
 </style>
 
 <script>
-import { macList, auditMac } from '../api/index'
+import { useMacList, deleteMac } from '../api/index'
 
 export default {
   data () {
@@ -94,7 +137,9 @@ export default {
       total: null,
       queryParams: {
         pageNum: 1,
-        pageSize: 5
+        pageSize: 5,
+        lastemployeename: null,
+        mac: null
       }
     }
   },
@@ -108,10 +153,11 @@ export default {
   },
   methods: {
     getList () {
-      macList(this.queryParams).then((_result) => {
-        this.macs = _result.data.data
+      useMacList(this.queryParams).then((_result) => {
+        this.macs = _result.data.data.rows
+        this.total = _result.data.data.total
         if (_result.data.code === 200) {
-          this.title = '网卡请求表'
+          this.title = '网卡使用表'
         } else {
           this.$message({
             showClose: true,
@@ -122,13 +168,13 @@ export default {
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: '后端接口连接异常',
+          message: _err,
           type: 'error'
         })
       })
     },
-    auditRow (index) {
-      auditMac(this.macs[index]).then((_result) => {
+    deleteRow (index) {
+      deleteMac(this.macs[index]).then((_result) => {
         if (_result.data.code === 200) {
           this.$message({
             showClose: true,
@@ -175,6 +221,15 @@ export default {
     handleCurrentChange (val) {
       // 更新当前页码
       this.queryParams.pageNum = val
+      this.getList()
+    },
+    handleQuery () {
+      this.queryParams.pageNum = 1
+      this.getList()
+    },
+    resetQuery () {
+      this.queryParams.mac = null
+      this.queryParams.lastemployeename = null
       this.getList()
     }
   }
