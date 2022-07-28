@@ -17,7 +17,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="macs" border style="width: 100%" :default-sort="{prop: 'credate', order: 'descending'}">
+            <el-table :data="macs" border style="width: 100%">
             <el-table-column prop="seqid" label="序列">
             </el-table-column>
             <el-table-column prop="credate" label="申请时间">

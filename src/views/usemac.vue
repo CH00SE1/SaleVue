@@ -37,7 +37,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="macs" border style="width: 100%" :default-sort="{prop: 'seqid', order: 'descending'}">
+            <el-table :data="macs" border style="width: 100%">
             <el-table-column prop="seqid" label="序列">
             </el-table-column>
             <el-table-column prop="credate" label="申请时间">
@@ -168,13 +168,33 @@ export default {
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: _err,
+          message: '后端接口连接异常',
           type: 'error'
         })
       })
     },
     deleteRow (index) {
-      deleteMac(this.macs[index]).then((_result) => {
+      const usemac = this.macs[index].mac
+      const uselastemployeename = this.macs[index].lastemployeename
+      const usesq = this.macs[index].seqid
+      this.$confirm('是否确认信息为"' + usesq + ' - ' + usemac + ' - ' + uselastemployeename + '"的数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.deleteInfo(this.macs[index])
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '[ ' + usemac + '-' + uselastemployeename + '' + ' ]' + '取消删除操作',
+            type: 'success'
+          })
+        })
+    },
+    deleteInfo (v) {
+      deleteMac(v).then((_result) => {
         if (_result.data.code === 200) {
           this.$message({
             showClose: true,
