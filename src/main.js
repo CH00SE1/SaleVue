@@ -20,7 +20,7 @@ Vue.use(ElementUI)
 
 Vue.use(VueAxios, axios)
 
-Vue.config.productionTip = true
+Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({

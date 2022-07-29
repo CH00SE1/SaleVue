@@ -109,7 +109,8 @@ export default {
   methods: {
     getList () {
       macList(this.queryParams).then((_result) => {
-        this.macs = _result.data.data
+        this.macs = _result.data.data.rows
+        this.total = _result.data.data.total
         if (_result.data.code === 200) {
           this.title = '网卡请求表'
         } else {

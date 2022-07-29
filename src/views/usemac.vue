@@ -33,25 +33,29 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
+      <div id="mybreadcrunb">
+        <el-breadcrumb separator-class="el-icon-arrow-right">
+        <el-breadcrumb-item :to="{ path: '/mac' }">首页</el-breadcrumb-item>
+        <el-breadcrumb-item>使用管理</el-breadcrumb-item>
+        </el-breadcrumb>
+      </div>
       <span>{{ title }}</span>
       </el-header>
       <el-main>
         <template>
             <el-table :data="macs" border style="width: 100%">
-            <el-table-column prop="seqid" label="序列">
-            </el-table-column>
-            <el-table-column prop="credate" label="申请时间">
-            </el-table-column>
-            <el-table-column prop="mac" label="MAC地址"> </el-table-column>
-            <el-table-column prop="fromip" label="请求IP地址"> </el-table-column>
+            <el-table-column prop="seqid" label="序列"></el-table-column>
+            <el-table-column prop="credate" label="创建时间"></el-table-column>
+            <el-table-column prop="mac" label="MAC地址"></el-table-column>
             <el-table-column prop="memo" label="请求信息"> </el-table-column>
-            <el-table-column prop="reqdate" label="请求时间"> </el-table-column>
-            <el-table-column prop="reqip" label="请求人IP"> </el-table-column>
-            <el-table-column prop="reqemployeeid" label="请求人工号"> </el-table-column>
+            <el-table-column prop="reqdate" label="请求时间"></el-table-column>
+            <el-table-column prop="reqip" label="请求人IP"></el-table-column>
+            <el-table-column prop="reqemployeeid" label="请求人工号"></el-table-column>
             <el-table-column prop="reqemployeename" label="请求人姓名"> </el-table-column>
-            <el-table-column prop="lastdate" label="最后时间"> </el-table-column>
-            <el-table-column prop="lastemployeeid" label="最后使用工号"> </el-table-column>
-            <el-table-column prop="lastemployeename" label="最后使用姓名"> </el-table-column>
+            <el-table-column prop="lastip" label="最后登录IP"></el-table-column>
+            <el-table-column prop="lastdate" label="最后时间"></el-table-column>
+            <el-table-column prop="lastemployeeid" label="最后使用工号"></el-table-column>
+            <el-table-column prop="lastemployeename" label="最后使用姓名"></el-table-column>
             <el-table-column
                 fixed="right"
                 label="操作"
@@ -119,9 +123,14 @@
   left: 60%;
 }
 #reset{
-position: absolute;
+  position: absolute;
   top: 1%;
   left: 65%;
+}
+#mybreadcrunb{
+  position: absolute;
+  top: 10%;
+  left: 12%;
 }
 </style>
 
@@ -188,8 +197,8 @@ export default {
         .catch(() => {
           this.$message({
             showClose: true,
-            message: '[ ' + usemac + '-' + uselastemployeename + '' + ' ]' + '取消删除操作',
-            type: 'success'
+            message: '[ ' + usemac + '-' + uselastemployeename + '' + ' ]' + ' 取消 删除 操作',
+            type: 'warning'
           })
         })
     },
