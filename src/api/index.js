@@ -102,3 +102,14 @@ export function deleteMac (data) {
     data: data
   })
 }
+
+// 查询当天个人销售明细
+export function listNameDaySale (query) {
+  return postRequest({
+    method: 'post',
+    url: '/sales/dtl',
+    params: {
+      eName: query
+    }
+  })
+}

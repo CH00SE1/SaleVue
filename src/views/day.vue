@@ -27,7 +27,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="saleList" border style="width: 100%" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
+            <el-table :data="saleList" border style="width: 100%">
             <el-table-column prop="name" label="姓名" width="140">
             </el-table-column>
             <el-table-column prop="sum_money" label="总销售" width="120">
@@ -39,6 +39,38 @@
             <el-table-column prop="fl.C" label="C类"> </el-table-column>
             <el-table-column prop="fl.D" label="D类"> </el-table-column>
             <el-table-column prop="fl.E" label="E类"> </el-table-column>
+            <el-table-column
+                fixed="right"
+                label="操作"
+                width="120">
+                <template slot-scope="scope">
+                <el-button
+                @click.native.prevent="querydtlList(scope.$index)"
+                @click="dialogTableVisible = true"
+                type="text"
+                size="small">
+                查询明细
+                </el-button>
+                <el-dialog title="销售明细" :visible.sync="dialogTableVisible" :modal-append-to-body="false">
+                  <el-table :data="saledtlList" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+                    <el-table-column property="rsaid" label="流水总单ID" width="100"></el-table-column>
+                    <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column>
+                    <el-table-column property="credate" label="创建时间" width="160"></el-table-column>
+                    <el-table-column property="placepointid" label="门店id" width="100"></el-table-column>
+                    <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
+                    <el-table-column property="goodsname" label="药品名称" width="150"></el-table-column>
+                    <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
+                    <el-table-column property="factoryname" label="厂家" width="200"></el-table-column>
+                    <el-table-column property="goodsqty" label="销售数量" width="100"></el-table-column>
+                    <el-table-column property="batchid" label="批次ID" width="100"></el-table-column>
+                    <el-table-column property="goodstype" label="药品规格" width="100"></el-table-column>
+                    <el-table-column property="lotno" label="批号" width="100"></el-table-column>
+                    <el-table-column property="posno" label="柜组分类" width="100"></el-table-column>
+                    <el-table-column property="employeename" label="营业员姓名" width="100"></el-table-column>
+                  </el-table>
+                </el-dialog>
+                </template>
+             </el-table-column>
         </el-table>
         </template>
       </el-main>
@@ -62,13 +94,15 @@
 </style>
 
 <script>
-import {listDaySale} from '../api/index'
+import { listDaySale, listNameDaySale } from '../api/index'
 
 export default {
   data () {
     return {
       saleList: [],
-      title: null
+      saledtlList: [],
+      title: null,
+      dialogTableVisible: false
     }
   },
   created () {
@@ -79,6 +113,25 @@ export default {
       listDaySale().then((_result) => {
         this.saleList = _result.data.data.sales_info_details
         this.title = _result.data.data.title
+      }).catch((_err) => {
+        this.$message({
+          showClose: true,
+          message: '后端接口连接异常',
+          type: 'error'
+        })
+      })
+    },
+    querydtlList (index) {
+      listNameDaySale(this.saleList[index].name).then((_result) => {
+        if (_result.data.code === 200) {
+          this.saledtlList = _result.data.data
+        } else {
+          this.$message({
+            showClose: true,
+            message: _result.data.msg,
+            type: 'error'
+          })
+        }
       }).catch((_err) => {
         this.$message({
           showClose: true,
