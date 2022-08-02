@@ -17,7 +17,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="macs" border style="width: 100%">
+            <el-table :data="macs" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="seqid" label="序列">
             </el-table-column>
             <el-table-column prop="credate" label="申请时间">

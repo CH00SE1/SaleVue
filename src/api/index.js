@@ -108,8 +108,9 @@ export function listNameDaySale (query) {
   return postRequest({
     method: 'post',
     url: '/sales/dtl',
-    params: {
-      eName: query
-    }
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    params: query
   })
 }

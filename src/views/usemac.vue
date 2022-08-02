@@ -43,7 +43,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="macs" border style="width: 100%">
+            <el-table v-loading="loading" :data="macs" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="seqid" label="序列"></el-table-column>
             <el-table-column prop="credate" label="创建时间"></el-table-column>
             <el-table-column prop="mac" label="MAC地址"></el-table-column>
@@ -132,6 +132,9 @@
   top: 10%;
   left: 12%;
 }
+body {
+    margin: 0;
+}
 </style>
 
 <script>
@@ -144,6 +147,7 @@ export default {
       title: null,
       time: null,
       total: null,
+      loading: true,
       queryParams: {
         pageNum: 1,
         pageSize: 5,
@@ -165,6 +169,7 @@ export default {
       useMacList(this.queryParams).then((_result) => {
         this.macs = _result.data.data.rows
         this.total = _result.data.data.total
+        this.loading = false
         if (_result.data.code === 200) {
           this.title = '网卡使用表'
         } else {
@@ -245,20 +250,24 @@ export default {
     handleSizeChange (val) {
       // 更新每页条数
       this.queryParams.pageSize = val
+      this.loading = true
       this.getList()
     },
     handleCurrentChange (val) {
       // 更新当前页码
       this.queryParams.pageNum = val
+      this.loading = true
       this.getList()
     },
     handleQuery () {
       this.queryParams.pageNum = 1
+      this.loading = true
       this.getList()
     },
     resetQuery () {
       this.queryParams.mac = null
       this.queryParams.lastemployeename = null
+      this.loading = true
       this.getList()
     }
   }

@@ -11,7 +11,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="hsInfoList" border style="width: 100%" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
+            <el-table :data="hsInfoList" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
             <el-table-column prop="id" label="序号" width="140"></el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="120"></el-table-column>
             <el-table-column prop="title" label="标题"> </el-table-column>

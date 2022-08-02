@@ -27,7 +27,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="saleList" border style="width: 100%">
+            <el-table :data="saleList" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="name" label="姓名" width="140">
             </el-table-column>
             <el-table-column prop="sum_money" label="总销售" width="120">
@@ -51,23 +51,35 @@
                 size="small">
                 查询明细
                 </el-button>
-                <el-dialog title="销售明细" :visible.sync="dialogTableVisible" :modal-append-to-body="false">
-                  <el-table :data="saledtlList" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+                <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细" :visible.sync="dialogTableVisible" :modal-append-to-body="false">
+                  <el-table v-loading="loading" :data="saledtlList" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
                     <el-table-column property="rsaid" label="流水总单ID" width="100"></el-table-column>
                     <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column>
                     <el-table-column property="credate" label="创建时间" width="160"></el-table-column>
-                    <el-table-column property="placepointid" label="门店id" width="100"></el-table-column>
                     <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
-                    <el-table-column property="goodsname" label="药品名称" width="150"></el-table-column>
-                    <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
+                    <el-table-column property="goodstype" label="药品规格" width="100"></el-table-column>
                     <el-table-column property="factoryname" label="厂家" width="200"></el-table-column>
                     <el-table-column property="goodsqty" label="销售数量" width="100"></el-table-column>
+                    <el-table-column property="realmoney" label="实收金额" width="100"></el-table-column>
+                    <el-table-column property="placepointid" label="门店ID" width="100"></el-table-column>
+                    <el-table-column property="goodsname" label="药品名称" width="150"></el-table-column>
+                    <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
                     <el-table-column property="batchid" label="批次ID" width="100"></el-table-column>
-                    <el-table-column property="goodstype" label="药品规格" width="100"></el-table-column>
                     <el-table-column property="lotno" label="批号" width="100"></el-table-column>
                     <el-table-column property="posno" label="柜组分类" width="100"></el-table-column>
                     <el-table-column property="employeename" label="营业员姓名" width="100"></el-table-column>
                   </el-table>
+                  <div class="pagination">
+                  <el-pagination
+                  background
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :page-sizes="[3, 5, 10]"
+                  :page-size="queryParams.pageSize"
+                  layout="total, sizes, prev, pager, next, jumper"
+                  :total="total">
+                  </el-pagination>
+                  </div>
                 </el-dialog>
                 </template>
              </el-table-column>
@@ -91,6 +103,12 @@
     padding-left: 0px;
     text-align: center;
 }
+.customWidth{
+  width: 90%;
+}
+body {
+    margin: 0;
+}
 </style>
 
 <script>
@@ -102,7 +120,16 @@ export default {
       saleList: [],
       saledtlList: [],
       title: null,
-      dialogTableVisible: false
+      total: null,
+      // 记录index页码
+      index: null,
+      loading: true,
+      dialogTableVisible: false,
+      queryParams: {
+        pageNum: 1,
+        pageSize: 3,
+        eName: null
+      }
     }
   },
   created () {
@@ -122,9 +149,13 @@ export default {
       })
     },
     querydtlList (index) {
-      listNameDaySale(this.saleList[index].name).then((_result) => {
+      this.index = index
+      this.queryParams.eName = this.saleList[index].name
+      listNameDaySale(this.queryParams).then((_result) => {
         if (_result.data.code === 200) {
-          this.saledtlList = _result.data.data
+          this.saledtlList = _result.data.data.rows
+          this.total = _result.data.data.total
+          this.loading = false
         } else {
           this.$message({
             showClose: true,
@@ -139,6 +170,18 @@ export default {
           type: 'error'
         })
       })
+    },
+    handleSizeChange (val) {
+      // 更新每页条数
+      this.queryParams.pageSize = val
+      this.loading = true
+      this.querydtlList(this.index)
+    },
+    handleCurrentChange (val) {
+      // 更新当前页码
+      this.queryParams.pageNum = val
+      this.loading = true
+      this.querydtlList(this.index)
     }
   }
 }

@@ -30,7 +30,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="saleList" border style="width: 100%" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
+            <el-table :data="saleList" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
             <el-table-column prop="name" label="姓名" width="140">
             </el-table-column>
             <el-table-column prop="sum_money" label="总销售" width="120">
