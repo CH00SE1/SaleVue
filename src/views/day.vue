@@ -27,11 +27,45 @@
       </el-header>
       <el-main>
         <template>
-            <el-table :data="saleList" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-            <el-table-column prop="name" label="姓名" width="140">
+            <el-table :data="saleList" show-summary style="width: 100%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+            <el-table-column type="expand">
+              <template slot-scope="props">
+                <el-form label-position="left" inline class="demo-table-expand">
+                <el-form-item label="姓名">
+                <span>{{ props.row.name }}</span>
+                </el-form-item>
+                <el-form-item label="总销售">
+                <span>{{ props.row.sum_money }}</span>
+                </el-form-item>
+                <el-form-item label="总销售">
+                <span>{{ props.row.sum_money }}</span>
+                </el-form-item>
+                <el-form-item label="提成">
+                  <span>{{ props.row.sum_fl_money }}</span>
+                </el-form-item>
+                <el-form-item label="黄金单品">
+                  <span>{{ props.row.fl.黄金单品 }}</span>
+                </el-form-item>
+                <el-form-item label="A类">
+                  <span>{{ props.row.fl.A }}</span>
+                </el-form-item>
+                <el-form-item label="B类">
+                  <span>{{ props.row.fl.B }}</span>
+                </el-form-item>
+                <el-form-item label="C类">
+                  <span>{{ props.row.fl.C }}</span>
+                </el-form-item>
+                <el-form-item label="D类">
+                  <span>{{ props.row.fl.D }}</span>
+                </el-form-item>
+                <el-form-item label="E类">
+                  <span>{{ props.row.fl.E }}</span>
+                </el-form-item>
+              </el-form>
+            </template>
             </el-table-column>
-            <el-table-column prop="sum_money" label="总销售" width="120">
-            </el-table-column>
+            <el-table-column prop="name" label="姓名" width="140"></el-table-column>
+            <el-table-column prop="sum_money" label="总销售" width="120"></el-table-column>
             <el-table-column prop="sum_fl_money" label="毛利"> </el-table-column>
             <el-table-column prop="fl.黄金单品" label="黄金单品"> </el-table-column>
             <el-table-column prop="fl.A" label="A类"> </el-table-column>
@@ -108,6 +142,18 @@
 }
 body {
     margin: 0;
+}
+.demo-table-expand {
+    font-size: 0;
+}
+.demo-table-expand label {
+    width: 100px;
+    color: #99a9bf;
+}
+.demo-table-expand .el-form-item {
+    margin-right: 1px;
+    margin-bottom: 0;
+    width: 50%;
 }
 </style>
 
