@@ -16,53 +16,51 @@
         <el-submenu index="2">
           <template slot="title"><i class="el-icon-message"></i>英克</template>
           <el-menu-item-group>
-             <el-menu-item index="/mac">入网请求审批</el-menu-item>
+            <el-menu-item index="/mac">入网请求审批</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-      <span>{{ title }}</span>
+        <span>{{ title }}</span>
       </el-header>
       <el-main>
         <template>
-            <el-table :data="saleList" show-summary style="width: 100%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+          <el-table :data="saleList" show-summary style="width: 100%" :row-style="{ height: '0' }"
+            :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
-                <el-form-item label="姓名">
-                <span>{{ props.row.name }}</span>
-                </el-form-item>
-                <el-form-item label="总销售">
-                <span>{{ props.row.sum_money }}</span>
-                </el-form-item>
-                <el-form-item label="总销售">
-                <span>{{ props.row.sum_money }}</span>
-                </el-form-item>
-                <el-form-item label="提成">
-                  <span>{{ props.row.sum_fl_money }}</span>
-                </el-form-item>
-                <el-form-item label="黄金单品">
-                  <span>{{ props.row.fl.黄金单品 }}</span>
-                </el-form-item>
-                <el-form-item label="A类">
-                  <span>{{ props.row.fl.A }}</span>
-                </el-form-item>
-                <el-form-item label="B类">
-                  <span>{{ props.row.fl.B }}</span>
-                </el-form-item>
-                <el-form-item label="C类">
-                  <span>{{ props.row.fl.C }}</span>
-                </el-form-item>
-                <el-form-item label="D类">
-                  <span>{{ props.row.fl.D }}</span>
-                </el-form-item>
-                <el-form-item label="E类">
-                  <span>{{ props.row.fl.E }}</span>
-                </el-form-item>
-              </el-form>
-            </template>
+                  <el-form-item label="姓名">
+                    <span>{{ props.row.name }}</span>
+                  </el-form-item>
+                  <el-form-item label="总销售">
+                    <span>{{ props.row.sum_money }}</span>
+                  </el-form-item>
+                  <el-form-item label="提成">
+                    <span>{{ props.row.sum_fl_money }}</span>
+                  </el-form-item>
+                  <el-form-item label="黄金单品">
+                    <span>{{ props.row.fl.黄金单品 }}</span>
+                  </el-form-item>
+                  <el-form-item label="A类">
+                    <span>{{ props.row.fl.A }}</span>
+                  </el-form-item>
+                  <el-form-item label="B类">
+                    <span>{{ props.row.fl.B }}</span>
+                  </el-form-item>
+                  <el-form-item label="C类">
+                    <span>{{ props.row.fl.C }}</span>
+                  </el-form-item>
+                  <el-form-item label="D类">
+                    <span>{{ props.row.fl.D }}</span>
+                  </el-form-item>
+                  <el-form-item label="E类">
+                    <span>{{ props.row.fl.E }}</span>
+                  </el-form-item>
+                </el-form>
+              </template>
             </el-table-column>
             <el-table-column prop="name" label="姓名" width="140"></el-table-column>
             <el-table-column prop="sum_money" label="总销售" width="120"></el-table-column>
@@ -73,20 +71,19 @@
             <el-table-column prop="fl.C" label="C类"> </el-table-column>
             <el-table-column prop="fl.D" label="D类"> </el-table-column>
             <el-table-column prop="fl.E" label="E类"> </el-table-column>
-            <el-table-column
-                fixed="right"
-                label="操作"
-                width="120">
-                <template slot-scope="scope">
-                <el-button
-                @click.native.prevent="querydtlList(scope.$index)"
-                @click="dialogTableVisible = true"
-                type="text"
-                size="small">
-                查询明细
+            <el-table-column fixed="right" label="操作" width="120">
+              <template slot-scope="scope">
+                <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
+                  type="text" size="small">
+                  查询明细
                 </el-button>
-                <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细" :visible.sync="dialogTableVisible" :modal-append-to-body="false">
-                  <el-table v-loading="loading" :data="saledtlList" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+                <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细"
+                  :visible.sync="dialogTableVisible" :modal-append-to-body="false">
+                  <el-table height="400" v-loading="loading" :data="saledtlList" highlight-current-row
+                    style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
+                    :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+                    <el-table-column type="index" width="50">
+                    </el-table-column>
                     <el-table-column property="rsaid" label="流水总单ID" width="100"></el-table-column>
                     <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column>
                     <el-table-column property="credate" label="创建时间" width="160"></el-table-column>
@@ -104,20 +101,15 @@
                     <el-table-column property="employeename" label="营业员姓名" width="100"></el-table-column>
                   </el-table>
                   <div class="pagination">
-                  <el-pagination
-                  background
-                  @size-change="handleSizeChange"
-                  @current-change="handleCurrentChange"
-                  :page-sizes="[3, 5, 10]"
-                  :page-size="queryParams.pageSize"
-                  layout="total, sizes, prev, pager, next, jumper"
-                  :total="total">
-                  </el-pagination>
+                    <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                      :page-sizes="[3, 5, 10, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
+                      layout="total, sizes, prev, pager, next, jumper" :total="total">
+                    </el-pagination>
                   </div>
                 </el-dialog>
-                </template>
-             </el-table-column>
-        </el-table>
+              </template>
+            </el-table-column>
+          </el-table>
         </template>
       </el-main>
     </el-container>
@@ -138,7 +130,7 @@
     text-align: center;
 }
 .customWidth{
-  width: 90%;
+  width: 93%;
 }
 body {
     margin: 0;
@@ -173,7 +165,7 @@ export default {
       dialogTableVisible: false,
       queryParams: {
         pageNum: 1,
-        pageSize: 3,
+        pageSize: 5,
         eName: null
       }
     }
