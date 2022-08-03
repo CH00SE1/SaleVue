@@ -2,7 +2,6 @@
   <el-container style="height: 800px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
-        <!-- <el-button type="text" @click="openTitle">查询标题</el-button> -->
         <el-button type="text" @click="dialogFormVisible = true">打开查询条件</el-button>
         <el-dialog title="查询信息" :visible.sync="dialogFormVisible">
           <el-form :model="queryParams">
@@ -26,7 +25,7 @@
       </el-header>
       <el-main>
         <template>
-          <el-table :data="hsInfoList" style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
+          <el-table height="685px" :data="hsInfoList" style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
             :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="id" label="序号ID" width="140"></el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="120"></el-table-column>
@@ -103,7 +102,8 @@ export default {
         this.$notify.info({
           title: '请求消息',
           message: this.queryParams,
-          offset: 25
+          position: 'bottom-left',
+          offset: 20
         })
       }).catch((_err) => {
         this.$message({
@@ -132,16 +132,17 @@ export default {
       DownloadVideo(this.hsInfoList[index]).then((_result) => {
         if (_result.data.code === 200) {
           this.$notify({
-            title: '下载成功',
+            title: '下载操作成功',
             message: _result.data.msg,
-            type: 'success'
+            type: 'success',
+            position: 'bottom-left'
           })
         }
       }).catch((_err) => {
         this.$notify.error({
           title: '下载失败',
-          message: this.hsInfoList[index].title + ' ==> 下载地址连接异常',
-          type: 'success'
+          message: this.hsInfoList[index].title + ' ==> 下载发生异常',
+          position: 'bottom-left'
         })
       })
     }
