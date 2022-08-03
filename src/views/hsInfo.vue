@@ -22,14 +22,13 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-        <span>{{ queryParams.title }} * {{ queryParams.platform }}</span>
+        <span>{{ queryParams.title }}{{ queryParams.platform }}</span>
       </el-header>
       <el-main>
         <template>
           <el-table :data="hsInfoList" style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
-            :header-cell-style="{ background: '#eef1f6', color: '#606266' }"
-            :default-sort="{ prop: 'sum_fl_money', order: 'descending' }">
-            <el-table-column prop="id" label="序号" width="140"></el-table-column>
+            :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+            <el-table-column prop="id" label="序号ID" width="140"></el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="120"></el-table-column>
             <el-table-column prop="title" label="标题"> </el-table-column>
             <el-table-column prop="url" label="在线播放地址"> </el-table-column>
@@ -101,11 +100,10 @@ export default {
       listHsInfo(this.queryParams).then((_result) => {
         this.hsInfoList = _result.data.data.rows
         this.total = _result.data.data.total
-        this.$notify({
+        this.$notify.info({
           title: '请求消息',
           message: this.queryParams,
-          offset: 100,
-          type: 'success'
+          offset: 25
         })
       }).catch((_err) => {
         this.$message({
@@ -116,6 +114,7 @@ export default {
       })
     },
     openTitle () {
+      this.queryParams.pageNum = 1
       this.getList()
       this.dialogFormVisible = false
     },
@@ -131,16 +130,18 @@ export default {
     },
     downloadRow (index) {
       DownloadVideo(this.hsInfoList[index]).then((_result) => {
-        this.$message({
-          showClose: true,
-          message: _result.data.msg,
-          type: 'success'
-        })
+        if (_result.data.code === 200) {
+          this.$notify({
+            title: '下载成功',
+            message: _result.data.msg,
+            type: 'success'
+          })
+        }
       }).catch((_err) => {
-        this.$message({
-          showClose: true,
+        this.$notify.error({
+          title: '下载失败',
           message: this.hsInfoList[index].title + ' ==> 下载地址连接异常',
-          type: 'error'
+          type: 'success'
         })
       })
     }
