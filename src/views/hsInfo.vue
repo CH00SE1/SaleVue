@@ -99,12 +99,6 @@ export default {
       listHsInfo(this.queryParams).then((_result) => {
         this.hsInfoList = _result.data.data.rows
         this.total = _result.data.data.total
-        this.$notify.info({
-          title: '请求消息',
-          message: this.queryParams,
-          position: 'bottom-left',
-          offset: 20
-        })
       }).catch((_err) => {
         this.$message({
           showClose: true,
@@ -135,6 +129,13 @@ export default {
             title: '下载操作成功',
             message: _result.data.msg,
             type: 'success',
+            position: 'bottom-left'
+          })
+        }
+        if (_result.data.code === 500) {
+          this.$notify.error({
+            title: '文件在下载中,一分钟后重试',
+            message: _result.data.msg,
             position: 'bottom-left'
           })
         }
