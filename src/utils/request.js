@@ -1,7 +1,10 @@
 import axios from 'axios'
 
-// 销售查询地址
+// 本机地址
 let base = 'http://192.168.10.87:8520/sentinel_client_sale'
+
+// 服务器地址
+// let base = 'http://192.168.191.210:8520/sentinel_client_sale'
 
 const request = axios.create({
   // baseURL 必须使用

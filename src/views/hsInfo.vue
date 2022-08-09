@@ -25,7 +25,7 @@
       </el-header>
       <el-main>
         <template>
-          <el-table height="685px" :data="hsInfoList" style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
+          <el-table height="685px" v-loading="loading" :data="hsInfoList" style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
             :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="id" label="序号ID" width="140"></el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="120"></el-table-column>
@@ -99,6 +99,7 @@ export default {
       listHsInfo(this.queryParams).then((_result) => {
         this.hsInfoList = _result.data.data.rows
         this.total = _result.data.data.total
+        this.loading = false
       }).catch((_err) => {
         this.$message({
           showClose: true,
@@ -109,16 +110,19 @@ export default {
     },
     openTitle () {
       // 搜素条件
+      this.loading = true
       this.handleCurrentChange(1)
       this.dialogFormVisible = false
     },
     handleSizeChange (val) {
       // 更新每页条数
+      this.loading = true
       this.queryParams.pageSize = val
       this.getList()
     },
     handleCurrentChange (val) {
       // 更新当前页码
+      this.loading = true
       this.queryParams.pageNum = val
       this.getList()
     },
