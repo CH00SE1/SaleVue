@@ -114,3 +114,12 @@ export function listNameDaySale (query) {
     params: query
   })
 }
+
+// 导出excel数据
+export function exportListExcel (dateTime, shopId) {
+  return postRequest({
+    method: 'post',
+    url: '/sales/excel/' + dateTime + '/' + shopId,
+    responseType: 'blob'
+  })
+}
