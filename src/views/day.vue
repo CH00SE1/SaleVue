@@ -27,7 +27,7 @@
       </el-header>
       <el-main>
         <template>
-          <el-table :data="saleList" show-summary style="width: 100%" :row-style="{ height: '0' }"
+          <el-table :data="saleList" v-loading="loading" show-summary style="width: 100%" :row-style="{ height: '0' }"
             :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column type="expand">
               <template slot-scope="props">
@@ -75,11 +75,15 @@
               <template slot-scope="scope">
                 <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
                   type="text" size="small">
-                  查询明细
+                  明细
+                </el-button>
+                <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '销售数据')"
+                  @click="dialogTableVisible = false" type="text" size="small">
+                  导出
                 </el-button>
                 <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细"
                   :visible.sync="dialogTableVisible" :modal-append-to-body="false">
-                  <el-table height="400" v-loading="loading" :data="saledtlList" highlight-current-row
+                  <el-table height="700px" v-loading="loading" :data="saledtlList" highlight-current-row
                     style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
                     :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
                     <el-table-column type="index" width="50">
@@ -98,7 +102,13 @@
                     <el-table-column property="batchid" label="批次ID" width="100"></el-table-column>
                     <el-table-column property="lotno" label="批号" width="100"></el-table-column>
                     <el-table-column property="posno" label="柜组分类" width="100"></el-table-column>
-                    <el-table-column property="employeename" label="营业员姓名" width="100"></el-table-column>
+                    <el-table-column property="employeename" label="营业员" width="100"></el-table-column>
+                    <el-table-column fixed="right" label="操作" width="120">
+                      <el-button @click.native.prevent="exportExcel('.el-dialog__body .el-table__fixed-right', '个人销售明细')"
+                        @click="dialogTableVisible = true" type="text" size="small">
+                        导出
+                      </el-button>
+                    </el-table-column>
                   </el-table>
                   <div class="pagination">
                     <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -151,6 +161,8 @@ body {
 
 <script>
 import { listDaySale, listNameDaySale } from '../api/index'
+import FileSaver from 'file-saver'
+import * as XLSX from 'xlsx'
 
 export default {
   data () {
@@ -162,10 +174,12 @@ export default {
       // 记录index页码
       index: null,
       loading: true,
+      dateTime: 'day',
+      shopId: '32',
       dialogTableVisible: false,
       queryParams: {
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 50,
         eName: null
       }
     }
@@ -174,10 +188,25 @@ export default {
     this.getList()
   },
   methods: {
+    // 导出excel表格
+    exportExcel (val, fliename) {
+      /* generate workbook object from table */
+      // 因为element-ui的表格的fixed属性导致多出一个table，会下载重复内容，这里删除掉
+      let table = document.querySelector(val).cloneNode(true)
+      var wb = XLSX.utils.table_to_book(table, { raw: true })
+      /* get binary string as output */
+      // 因为element-ui的表格的fixed属性导致多出一个table，会下载重复内容，这里删除掉
+      var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fliename + '.xlsx')
+      } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
+      return wbout
+    },
     getList () {
       listDaySale().then((_result) => {
         this.saleList = _result.data.data.sales_info_details
         this.title = _result.data.data.title
+        this.loading = false
       }).catch((_err) => {
         this.$message({
           showClose: true,
@@ -187,6 +216,7 @@ export default {
       })
     },
     querydtlList (index) {
+      this.loading = true
       this.index = index
       this.queryParams.eName = this.saleList[index].name
       listNameDaySale(this.queryParams).then((_result) => {

@@ -108,8 +108,8 @@ export default {
       })
     },
     openTitle () {
-      this.queryParams.pageNum = 1
-      this.getList()
+      // 搜素条件
+      this.handleCurrentChange(1)
       this.dialogFormVisible = false
     },
     handleSizeChange (val) {

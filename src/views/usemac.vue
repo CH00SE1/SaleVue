@@ -43,7 +43,7 @@
       </el-header>
       <el-main>
         <template>
-            <el-table v-loading="loading" :data="macs" border style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+            <el-table v-loading="loading" :data="macs" style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="seqid" label="序列"></el-table-column>
             <el-table-column prop="credate" label="创建时间"></el-table-column>
             <el-table-column prop="mac" label="MAC地址"></el-table-column>
