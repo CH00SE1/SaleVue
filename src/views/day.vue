@@ -27,7 +27,7 @@
       </el-header>
       <template>
         <div id="photo">
-          <div id="main" style="width: 800px; height: 400px"></div>
+          <div id="main" style="width: 600px; height: 400px"></div>
         </div>
       </template>
       <el-main>
@@ -174,7 +174,8 @@ import * as echarts from 'echarts'
 export default {
   data () {
     return {
-      // charts: '',
+      // 图表实列化
+      myChart: '',
       // y轴销售金额
       saleYmlList: [],
       // y轴提成金额
@@ -229,9 +230,6 @@ export default {
           this.saleYmlmoneyList[i] = this.saleList[i].sum_fl_money
           this.saleXnameList[i] = this.saleList[i].name
         }
-        console.log(this.saleYmlList)
-        console.log(this.saleXnameList)
-        console.log(this.saleYmlmoneyList)
         this.drawLine('main')
         this.title = _result.data.data.title
         this.loading = false
@@ -281,12 +279,10 @@ export default {
     },
     drawLine (id) {
       // 初始化图标信息
-      var myChart
-      // eslint-disable-next-line eqeqeq
-      if (myChart != null && myChart != '' && myChart != undefined) {
-        myChart.dispose()
+      if (this.myChart !== null && this.myChart !== '' && this.myChart !== undefined) {
+        this.myChart.dispose()
       }
-      myChart = echarts.init(document.getElementById(id))
+      this.myChart = echarts.init(document.getElementById(id))
       const option = ({
         tooltip: {
           trigger: 'axis'
@@ -331,7 +327,7 @@ export default {
           }
         ]
       })
-      myChart.setOption(option)
+      this.myChart.setOption(option)
     }
   }
 }
