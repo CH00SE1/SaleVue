@@ -25,6 +25,11 @@
       <el-header style="text-align: center; font-size: 30px">
         <span>{{ title }}</span>
       </el-header>
+      <template>
+        <div id="photo">
+          <div id="main" style="width: 800px; height: 400px"></div>
+        </div>
+      </template>
       <el-main>
         <template>
           <el-table :data="saleList" v-loading="loading" show-summary style="width: 100%" :row-style="{ height: '0' }"
@@ -104,7 +109,8 @@
                     <el-table-column property="posno" label="柜组分类" width="100"></el-table-column>
                     <el-table-column property="employeename" label="营业员" width="100"></el-table-column>
                     <el-table-column fixed="right" label="操作" width="120">
-                      <el-button @click.native.prevent="exportExcel('.el-dialog__body .el-table__fixed-right', '个人销售明细')"
+                      <el-button
+                        @click.native.prevent="exportExcel('.el-dialog__body .el-table__fixed-right', '个人销售明细')"
                         @click="dialogTableVisible = true" type="text" size="small">
                         导出
                       </el-button>
@@ -163,10 +169,18 @@ body {
 import { listDaySale, listNameDaySale } from '../api/index'
 import FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
+import * as echarts from 'echarts'
 
 export default {
   data () {
     return {
+      // charts: '',
+      // y轴销售金额
+      saleYmlList: [],
+      // y轴提成金额
+      saleYmlmoneyList: [],
+      // x轴数据名字
+      saleXnameList: [],
       saleList: [],
       saledtlList: [],
       title: null,
@@ -183,6 +197,11 @@ export default {
         eName: null
       }
     }
+  },
+  mounted () {
+    this.$nextTick(() => {
+      this.drawLine('main')
+    })
   },
   created () {
     this.getList()
@@ -205,6 +224,15 @@ export default {
     getList () {
       listDaySale().then((_result) => {
         this.saleList = _result.data.data.sales_info_details
+        for (var i = 0; i < this.saleList.length; i++) {
+          this.saleYmlList[i] = this.saleList[i].sum_money
+          this.saleYmlmoneyList[i] = this.saleList[i].sum_fl_money
+          this.saleXnameList[i] = this.saleList[i].name
+        }
+        console.log(this.saleYmlList)
+        console.log(this.saleXnameList)
+        console.log(this.saleYmlmoneyList)
+        this.drawLine('main')
         this.title = _result.data.data.title
         this.loading = false
       }).catch((_err) => {
@@ -250,6 +278,60 @@ export default {
       this.queryParams.pageNum = val
       this.loading = true
       this.querydtlList(this.index)
+    },
+    drawLine (id) {
+      // 初始化图标信息
+      var myChart
+      // eslint-disable-next-line eqeqeq
+      if (myChart != null && myChart != '' && myChart != undefined) {
+        myChart.dispose()
+      }
+      myChart = echarts.init(document.getElementById(id))
+      const option = ({
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['销售金额折线图', '提成金额折线图']
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: this.saleXnameList
+        },
+        yAxis: {
+          // type: 'value'
+          // type: 'category',
+          // boundaryGap: false,
+          // data: this.saleYnameList
+        },
+        series: [
+          {
+            name: '提成金额折线图',
+            type: 'line',
+            stack: '总量',
+            data: this.saleYmlmoneyList
+          },
+          {
+            name: '销售金额折线图',
+            type: 'line',
+            stack: '总量',
+            data: this.saleYmlList
+          }
+        ]
+      })
+      myChart.setOption(option)
     }
   }
 }
