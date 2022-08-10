@@ -307,22 +307,17 @@ export default {
           data: this.saleXnameList
         },
         yAxis: {
-          // type: 'value'
-          // type: 'category',
-          // boundaryGap: false,
-          // data: this.saleYnameList
+          type: 'value'
         },
         series: [
           {
             name: '提成金额折线图',
             type: 'line',
-            stack: '总量',
             data: this.saleYmlmoneyList
           },
           {
             name: '销售金额折线图',
             type: 'line',
-            stack: '总量',
             data: this.saleYmlList
           }
         ]
