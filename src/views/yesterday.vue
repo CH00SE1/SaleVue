@@ -18,19 +18,10 @@
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
       <span>{{ title }}</span>
-        <!-- <el-dropdown>
-          <i class="el-icon-setting" style="margin-right: 15px"></i>
-          <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>查看</el-dropdown-item>
-            <el-dropdown-item>新增</el-dropdown-item>
-            <el-dropdown-item>删除</el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-        <span>刘少雄</span> -->
       </el-header>
       <el-main>
         <template>
-            <el-table :data="saleList" show-summary style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
+            <el-table :data="saleList" v-loading="loading" show-summary style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
             <el-table-column prop="name" label="姓名" width="140">
             </el-table-column>
             <el-table-column prop="sum_money" label="总销售" width="120">
@@ -82,6 +73,7 @@ export default {
       listYesterdaySale().then((_result) => {
         this.saleList = _result.data.data.sales_info_details
         this.title = _result.data.data.title
+        this.loading = false
       }).catch((_err) => {
         this.$message({
           showClose: true,
