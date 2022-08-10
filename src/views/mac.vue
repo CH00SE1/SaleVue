@@ -92,6 +92,7 @@ export default {
       title: null,
       time: null,
       total: null,
+      loading: true,
       queryParams: {
         pageNum: 1,
         pageSize: 5

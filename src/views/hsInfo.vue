@@ -82,6 +82,7 @@ export default {
       dialogTableVisible: false,
       dialogFormVisible: false,
       formLabelWidth: '120px',
+      loading: true,
       // 查询参数
       queryParams: {
         title: null,

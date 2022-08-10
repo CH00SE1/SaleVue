@@ -19,6 +19,11 @@
       <el-header style="text-align: center; font-size: 30px">
       <span>{{ title }}</span>
       </el-header>
+      <template>
+        <div id="photo">
+          <div id="main" style="width: 600px; height: 400px"></div>
+        </div>
+      </template>
       <el-main>
         <template>
             <el-table :data="saleList" v-loading="loading" show-summary style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }" :default-sort="{prop: 'sum_fl_money', order: 'descending'}">
@@ -57,10 +62,20 @@
 
 <script>
 import {listLastMonthSale} from '../api/index'
+import * as echarts from 'echarts'
 
 export default {
   data () {
     return {
+      // 图表实列化
+      myChart: '',
+      // y轴销售金额
+      saleYmlList: [],
+      // y轴提成金额
+      saleYmlmoneyList: [],
+      // x轴数据名字
+      saleXnameList: [],
+      loading: true,
       saleList: [],
       title: null
     }
@@ -72,6 +87,12 @@ export default {
     getList () {
       listLastMonthSale().then((_result) => {
         this.saleList = _result.data.data.sales_info_details
+        for (var i = 0; i < this.saleList.length; i++) {
+          this.saleYmlList[i] = this.saleList[i].sum_money
+          this.saleYmlmoneyList[i] = this.saleList[i].sum_fl_money
+          this.saleXnameList[i] = this.saleList[i].name
+        }
+        this.drawLine('main')
         this.title = _result.data.data.title
         this.loading = false
       }).catch((_err) => {
@@ -81,6 +102,58 @@ export default {
           type: 'error'
         })
       })
+    },
+    drawLine (id) {
+      // 初始化图标信息
+      if (this.myChart !== null && this.myChart !== '' && this.myChart !== undefined) {
+        this.myChart.dispose()
+      }
+      this.myChart = echarts.init(document.getElementById(id))
+      const option = ({
+        tooltip: {
+          trigger: 'axis'
+        },
+        legend: {
+          data: ['销售金额折线图', '提成金额柱状图']
+        },
+        grid: {
+          left: '5%',
+          right: '4%',
+          bottom: '1%',
+          containLabel: true
+        },
+        toolbox: {
+          feature: {
+            saveAsImage: {}
+          }
+        },
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          axisLabel: {
+            interval: 0,
+            rotate: 40
+          },
+          data: this.saleXnameList
+        },
+        yAxis: {
+          type: 'value',
+          scale: true
+        },
+        series: [
+          {
+            name: '提成金额柱状图',
+            type: 'bar',
+            data: this.saleYmlmoneyList
+          },
+          {
+            name: '销售金额折线图',
+            type: 'line',
+            data: this.saleYmlList
+          }
+        ]
+      })
+      this.myChart.setOption(option)
     }
   }
 }
