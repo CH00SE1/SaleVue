@@ -306,6 +306,10 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
+          axisLabel: {
+            interval: 0,
+            rotate: 40
+          },
           data: this.saleXnameList
         },
         yAxis: {
