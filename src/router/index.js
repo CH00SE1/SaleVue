@@ -11,6 +11,7 @@ import year from '../views/year.vue'
 import hsInfo from '../views/hsInfo.vue'
 import mac from '../views/mac.vue'
 import usemac from '../views/usemac.vue'
+import sale from '../views/sale.vue'
 
 Vue.use(Router)
 
@@ -57,6 +58,10 @@ export default new Router({
       path: '/usemac',
       name: 'usemac',
       component: usemac
+    }, {
+      path: '/sale',
+      name: 'sale',
+      component: sale
     }
   ]
 })

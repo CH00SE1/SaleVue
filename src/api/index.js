@@ -123,3 +123,15 @@ export function exportListExcel (dateTime, shopId) {
     responseType: 'blob'
   })
 }
+
+// 查询分类毛利
+export function queryFlNameDay (dateTime, shopId) {
+  return postRequest({
+    method: 'post',
+    url: '/sales/fl_money',
+    params: {
+      dateTime: dateTime,
+      shopId: shopId
+    }
+  })
+}

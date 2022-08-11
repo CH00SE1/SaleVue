@@ -203,7 +203,7 @@ export default {
     this.$nextTick(() => {
       this.drawLine('main')
       // 定时1分钟刷新页面
-      setInterval(this.getList, 1 * 60 * 1000)
+      // setInterval(this.getList, 1 * 60 * 1000)
     })
   },
   created () {
