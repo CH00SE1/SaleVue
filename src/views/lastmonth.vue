@@ -114,7 +114,7 @@ export default {
           trigger: 'axis'
         },
         legend: {
-          data: ['销售金额折线图', '提成金额柱状图']
+          data: ['销售金额折线图', '提成金额折线图']
         },
         grid: {
           left: '5%',
@@ -142,8 +142,8 @@ export default {
         },
         series: [
           {
-            name: '提成金额柱状图',
-            type: 'bar',
+            name: '提成金额折线图',
+            type: 'line',
             data: this.saleYmlmoneyList
           },
           {
