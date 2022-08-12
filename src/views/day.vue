@@ -289,14 +289,13 @@ export default {
         tooltip: {
           trigger: 'axis'
         },
-        legend: {
-          data: ['销售金额折线图', '提成金额折线图']
-        },
+        legend: {},
         grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
+          left: 10,
+          containLabel: true,
+          bottom: 10,
+          top: 10,
+          right: 30
         },
         toolbox: {
           feature: {
@@ -312,19 +311,43 @@ export default {
           },
           data: this.saleXnameList
         },
-        yAxis: {
-          type: 'value',
-          scale: true
-        },
+        yAxis: [
+          {
+            type: 'value',
+            name: '提成',
+            position: 'left',
+            axisLabel: {
+              formatter: '{value} 元'
+            }
+          },
+          {
+            type: 'value',
+            name: '销售',
+            position: 'right',
+            axisLabel: {
+              formatter: '{value} 元'
+            }
+          }
+        ],
         series: [
           {
-            name: '提成金额折线图',
+            name: '提成图',
             type: 'line',
+            yAxisIndex: 0,
+            areaStyle: {
+              color: '#00CED1',
+              opacity: 0.5
+            },
             data: this.saleYmlmoneyList
           },
           {
-            name: '销售金额折线图',
+            name: '销售图',
             type: 'line',
+            yAxisIndex: 1,
+            areaStyle: {
+              color: '#76EEC6',
+              opacity: 0.5
+            },
             data: this.saleYmlList
           }
         ]

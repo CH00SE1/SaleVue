@@ -32,7 +32,7 @@
       <el-main>
         <template>
           <div id="photo">
-            <div id="main" style="width: 1600px; height: 700px"></div>
+            <div id="main" style="width: 1200px; height: 700px"></div>
           </div>
         </template>
       </el-main>
@@ -124,19 +124,18 @@ export default {
       if (this.myChart !== null && this.myChart !== '' && this.myChart !== undefined) {
         this.myChart.dispose()
       }
-      this.myChart = echarts.init(document.getElementById(id))
+      this.myChart = echarts.init(document.getElementById(id), 'dark')
       const option = ({
         tooltip: {
           trigger: 'axis'
         },
-        legend: {
-          data: [this.queryParams.shopId + '-' + this.queryParams.title + '销售数量折线图', this.queryParams.shopId + '-' + this.queryParams.title + '销售金额折线图']
-        },
+        legend: {},
         grid: {
-          left: '3%',
-          right: '4%',
-          bottom: '3%',
-          containLabel: true
+          left: 10,
+          containLabel: true,
+          bottom: 10,
+          top: 10,
+          right: 30
         },
         toolbox: {
           feature: {
@@ -146,29 +145,38 @@ export default {
         xAxis: {
           type: 'category',
           boundaryGap: false,
-          // axisLabel: {
-          //   interval: 0,
-          //   rotate: 40
-          // },
           data: this.saleXFlList
         },
-        yAxis: {
-          type: 'value',
-          scale: true,
-          nameTextStyle: {
-            fontSize: '20',
-            fontWeight: 700
+        yAxis: [
+          {
+            type: 'value',
+            name: '数值',
+            position: 'left',
+            axisLabel: {
+              formatter: '{value} 个'
+            }
+          },
+          {
+            type: 'value',
+            name: '金额',
+            position: 'right',
+            axisLabel: {
+              formatter: '{value} 元'
+            }
           }
-        },
+        ],
         series: [
           {
-            name: this.queryParams.shopId + '-' + this.queryParams.title + '销售数量折线图',
+            name: this.queryParams.shopId + '-' + this.queryParams.title + '销售数量',
             type: 'line',
+            yAxisIndex: 0,
             data: this.saleYSqtylist
           },
           {
-            name: this.queryParams.shopId + '-' + this.queryParams.title + '销售金额折线图',
+            name: this.queryParams.shopId + '-' + this.queryParams.title + '销售金额',
             type: 'line',
+            // smooth: true,
+            yAxisIndex: 1,
             data: this.saleYMoneylist
           }
         ]
