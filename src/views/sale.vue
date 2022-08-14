@@ -31,8 +31,16 @@
       </el-header>
       <el-main>
         <template>
-          <div id="photo">
-            <div id="main" style="width: 1200px; height: 700px"></div>
+          <!-- echarts -->
+          <div class="el-row-report">
+            <el-row>
+              <el-col class="el-col-report">
+                <div id="main"></div>
+              </el-col>
+              <el-col class="el-col-report">
+                <div id="main_pie"></div>
+              </el-col>
+            </el-row>
           </div>
         </template>
       </el-main>
@@ -90,6 +98,7 @@ export default {
   },
   created () {
     this.getList()
+    this.getPieList()
   },
   methods: {
     getList () {
@@ -110,7 +119,7 @@ export default {
           this.saleYSqtylist.push(dataNumber)
           this.saleYMoneylist.push(dataMoney)
         }
-        this.drawLine('main')
+        this.drawpie('main_pie')
       }).catch((_err) => {
         this.$message({
           showClose: true,
@@ -119,12 +128,22 @@ export default {
         })
       })
     },
+    getPieList () {
+      return function inieEcharts () {
+        let newPromise = new Promise((resolve) => {
+          resolve()
+        })
+        newPromise.then(() => {
+          this.drawpie('main_pie')
+        })
+      }
+    },
     drawLine (id) {
       // 初始化图标信息
       if (this.myChart !== null && this.myChart !== '' && this.myChart !== undefined) {
         this.myChart.dispose()
       }
-      this.myChart = echarts.init(document.getElementById(id), 'dark')
+      this.myChart = echarts.init(document.getElementById(id), 'dark', {width: 600, height: 400})
       const option = ({
         tooltip: {
           trigger: 'axis'
@@ -183,6 +202,42 @@ export default {
       })
       this.myChart.setOption(option)
     },
+    drawpie (id) {
+      // 初始化图标信息
+      if (this.myChart !== null && this.myChart !== '' && this.myChart !== undefined) {
+        this.myChart.dispose()
+      }
+      this.myChart = echarts.init(document.getElementById(id), null, {width: 600, height: 400})
+      const option = ({
+        series: [{
+          type: 'pie',
+          data: [
+            {
+              value: 100,
+              name: 'A'
+            },
+            {
+              value: 200,
+              name: 'B'
+            },
+            {
+              value: 300,
+              name: 'C'
+            },
+            {
+              value: 400,
+              name: 'D'
+            },
+            {
+              value: 500,
+              name: 'E'
+            }
+          ],
+          roseType: 'area'
+        }]
+      })
+      this.myChart.setOption(option)
+    },
     openTitle () {
       this.dialogFormVisible = false
       this.getList()
@@ -199,5 +254,24 @@ export default {
 }
 .el-aside {
   color: #333;
+}
+#main {
+  width: 100%;
+  height: 100%;
+}
+#main_pie {
+  width: 100%;
+  height: 100%;
+}
+.el-row-report {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+.el-col-report {
+  height: 300px;
+  margin-top: 10px;
+  margin-right: 20px;
+  flex: 1;
 }
 </style>

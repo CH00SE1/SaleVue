@@ -96,6 +96,7 @@
                     <el-table-column property="rsaid" label="流水总单ID" width="100"></el-table-column>
                     <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column>
                     <el-table-column property="credate" label="创建时间" width="160"></el-table-column>
+                    <el-table-column property="insidername" label="会员姓名" width="160"></el-table-column>
                     <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
                     <el-table-column property="goodstype" label="药品规格" width="100"></el-table-column>
                     <el-table-column property="factoryname" label="厂家" width="200"></el-table-column>
@@ -104,6 +105,8 @@
                     <el-table-column property="placepointid" label="门店ID" width="100"></el-table-column>
                     <el-table-column property="goodsname" label="药品名称" width="150"></el-table-column>
                     <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
+                    <el-table-column property="hospitalname" label="流向医院" width="200"></el-table-column>
+                    <el-table-column property="recipehospital" label="处方医院" width="200"></el-table-column>
                     <el-table-column property="batchid" label="批次ID" width="100"></el-table-column>
                     <el-table-column property="lotno" label="批号" width="100"></el-table-column>
                     <el-table-column property="posno" label="柜组分类" width="100"></el-table-column>
