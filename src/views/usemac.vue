@@ -1,17 +1,11 @@
 <template>
   <el-container style="height: 800px; border: 1px solid #eee">
-    <div id = "search-mac">
-      <el-input
-      placeholder="请输入网卡mac"
-      @keyup.enter.native="handleQuery"
-      v-model="queryParams.mac">
+    <div id="search-mac">
+      <el-input placeholder="请输入网卡mac" @keyup.enter.native="handleQuery" v-model="queryParams.mac">
       </el-input>
     </div>
-    <div id = "search-name">
-      <el-input
-      placeholder="请输入最后使用人姓名"
-      @keyup.enter.native="handleQuery"
-      v-model="queryParams.lastemployeename">
+    <div id="search-name">
+      <el-input placeholder="请输入最后使用人姓名" @keyup.enter.native="handleQuery" v-model="queryParams.lastemployeename">
       </el-input>
     </div>
     <div id="search">
@@ -20,7 +14,7 @@
     <div id="reset">
       <el-button icon="el-icon-refresh" v-on:click="resetQuery">重置</el-button>
     </div>
-   <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-submenu index="1">
           <template slot="title"><i class="el-icon-message"></i>网卡操作</template>
@@ -33,58 +27,48 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-      <div id="mybreadcrunb">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/mac' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item>使用管理</el-breadcrumb-item>
-        </el-breadcrumb>
-      </div>
-      <span>{{ title }}</span>
+        <div id="mybreadcrunb">
+          <el-breadcrumb separator-class="el-icon-arrow-right">
+            <el-breadcrumb-item :to="{ path: '/mac' }">首页</el-breadcrumb-item>
+            <el-breadcrumb-item>使用管理</el-breadcrumb-item>
+          </el-breadcrumb>
+        </div>
+        <span>{{ title }}</span>
       </el-header>
       <el-main>
         <template>
-            <el-table v-loading="loading" :data="macs" style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-            <el-table-column prop="seqid" label="序列"></el-table-column>
-            <el-table-column prop="credate" label="创建时间"></el-table-column>
-            <el-table-column prop="mac" label="MAC地址"></el-table-column>
+          <el-table v-loading="loading" border :data="macs" style="width: 150%" :row-style="{ height: '0' }"
+            :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+            <el-table-column prop="seqid" label="序列" width="70"></el-table-column>
+            <el-table-column prop="credate" label="创建时间" width="170"></el-table-column>
+            <el-table-column prop="mac" label="MAC地址" width="170"></el-table-column>
             <el-table-column prop="memo" label="请求信息"> </el-table-column>
-            <el-table-column prop="reqdate" label="请求时间"></el-table-column>
-            <el-table-column prop="reqip" label="请求人IP"></el-table-column>
+            <el-table-column prop="reqdate" label="请求时间" width="170"></el-table-column>
+            <el-table-column prop="reqip" label="请求人IP" width="130"></el-table-column>
             <el-table-column prop="reqemployeeid" label="请求人工号"></el-table-column>
             <el-table-column prop="reqemployeename" label="请求人姓名"> </el-table-column>
-            <el-table-column prop="lastip" label="最后登录IP"></el-table-column>
-            <el-table-column prop="lastdate" label="最后时间"></el-table-column>
+            <el-table-column prop="lastip" label="最后登录IP" width="130"></el-table-column>
+            <el-table-column prop="lastdate" label="最后时间" width="170"></el-table-column>
             <el-table-column prop="lastemployeeid" label="最后使用工号"></el-table-column>
             <el-table-column prop="lastemployeename" label="最后使用姓名"></el-table-column>
-            <el-table-column
-                fixed="right"
-                label="操作"
-                width="120">
-                <template slot-scope="scope">
-                <el-button
-                @click.native.prevent="deleteRow(scope.$index)"
-                type="text"
-                size="small">
-                删除
+            <el-table-column fixed="right" label="操作" width="120">
+              <template slot-scope="scope">
+                <el-button @click.native.prevent="deleteRow(scope.$index)" type="text" size="small">
+                  删除
                 </el-button>
-                </template>
-             </el-table-column>
-        </el-table>
-        <div class="pagination">
-        <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :page-sizes="[5, 10, 20, 50]"
-        :page-size="queryParams.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-        </el-pagination>
-        </div>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagination">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+              :page-sizes="[5, 10, 15, 20, 50]" :page-size="queryParams.pageSize"
+              layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+          </div>
         </template>
       </el-main>
     </el-container>
-    <div id="copyright">copyright © CH00SE1 {{time}}</div>
+    <div id="copyright">copyright © 刘少雄 {{ time }}</div>
   </el-container>
 </template>
 
@@ -150,7 +134,7 @@ export default {
       loading: true,
       queryParams: {
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 10,
         lastemployeename: null,
         mac: null
       }

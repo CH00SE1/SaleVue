@@ -95,7 +95,7 @@
                     </el-table-column>
                     <el-table-column property="rsaid" label="流水总单ID" width="100"></el-table-column>
                     <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column>
-                    <el-table-column property="credate" label="创建时间" width="160"></el-table-column>
+                    <el-table-column property="credate" label="创建时间" width="170"></el-table-column>
                     <el-table-column property="insidername" label="会员姓名" width="160"></el-table-column>
                     <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
                     <el-table-column property="goodstype" label="药品规格" width="100"></el-table-column>

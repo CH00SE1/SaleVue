@@ -135,3 +135,15 @@ export function queryFlNameDay (dateTime, shopId) {
     }
   })
 }
+
+// 删除请求网卡
+export function deleteReqMac (data) {
+  return postRequest({
+    method: 'post',
+    url: '/npMacReq/req_mac_delete',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
+  })
+}

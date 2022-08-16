@@ -1,6 +1,6 @@
 <template>
   <el-container style="height: 800px; border: 1px solid #eee">
-   <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-submenu index="1">
           <template slot="title"><i class="el-icon-message"></i>网卡操作</template>
@@ -13,51 +13,44 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-      <span>{{ title }}</span>
+        <span>{{ title }}</span>
       </el-header>
       <el-main>
         <template>
-            <el-table v-loading="loading" :data="macs" style="width: 150%" :row-style="{height: '0'}" :cell-style="{padding: '3px'}" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-            <el-table-column prop="seqid" label="序列">
+          <el-table v-loading="loading" border :data="macs" style="width: 150%" :row-style="{ height: '0' }"
+            :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+            <el-table-column prop="seqid" label="序列" width="70">
             </el-table-column>
-            <el-table-column prop="credate" label="申请时间">
+            <el-table-column prop="credate" label="申请时间" width="170">
             </el-table-column>
-            <el-table-column prop="mac" label="MAC地址"> </el-table-column>
-            <el-table-column prop="fromip" label="请求IP地址"> </el-table-column>
+            <el-table-column prop="mac" label="MAC地址" width="170"> </el-table-column>
+            <el-table-column prop="fromip" label="请求IP地址" width="160"> </el-table-column>
             <el-table-column prop="memo" label="请求信息"> </el-table-column>
-            <el-table-column prop="reqdate" label="请求时间"> </el-table-column>
-            <el-table-column prop="reqip" label="请求人IP"> </el-table-column>
+            <el-table-column prop="reqdate" label="请求时间" width="170"> </el-table-column>
+            <el-table-column prop="reqip" label="请求人IP" width="160"> </el-table-column>
             <el-table-column prop="reqemployeeid" label="请求人工号"> </el-table-column>
             <el-table-column prop="reqemployeename" label="请求人姓名"> </el-table-column>
-            <el-table-column
-                fixed="right"
-                label="操作"
-                width="120">
-                <template slot-scope="scope">
-                <el-button
-                @click.native.prevent="auditRow(scope.$index)"
-                type="text"
-                size="small">
-                审核
+            <el-table-column fixed="right" label="操作" width="120">
+              <template slot-scope="scope">
+                <el-button @click.native.prevent="auditRow(scope.$index)" type="text" size="small">
+                  审核
                 </el-button>
-                </template>
-             </el-table-column>
-        </el-table>
-        <div class="pagination">
-        <el-pagination
-        background
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :page-sizes="[5, 10, 20, 50]"
-        :page-size="queryParams.pageSize"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total">
-        </el-pagination>
-        </div>
+                <el-button @click.native.prevent="deleteRow(scope.$index)" type="text" size="small">
+                  删除
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div class="pagination">
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+              :page-sizes="[5, 10, 20, 50]" :page-size="queryParams.pageSize"
+              layout="total, sizes, prev, pager, next, jumper" :total="total">
+            </el-pagination>
+          </div>
         </template>
       </el-main>
     </el-container>
-    <div id="copyright">copyright © CH00SE1 {{time}}</div>
+    <div id="copyright">copyright © 刘少雄 {{ time }}</div>
   </el-container>
 </template>
 
@@ -83,7 +76,7 @@
 </style>
 
 <script>
-import { macList, auditMac } from '../api/index'
+import { macList, auditMac, deleteReqMac } from '../api/index'
 
 export default {
   data () {
@@ -95,7 +88,7 @@ export default {
       loading: true,
       queryParams: {
         pageNum: 1,
-        pageSize: 5
+        pageSize: 10
       }
     }
   },
@@ -132,6 +125,50 @@ export default {
     },
     auditRow (index) {
       auditMac(this.macs[index]).then((_result) => {
+        if (_result.data.code === 200) {
+          this.$message({
+            showClose: true,
+            message: _result.data.msg,
+            type: 'success'
+          })
+          this.getList()
+        } else {
+          this.$message({
+            showClose: true,
+            message: _result.data.msg,
+            type: 'error'
+          })
+        }
+      }).catch((_err) => {
+        this.$message({
+          showClose: true,
+          message: '后端接口连接异常',
+          type: 'error'
+        })
+      })
+    },
+    deleteRow (index) {
+      const usemac = this.macs[index].mac
+      const reqemployeename = this.macs[index].reqemployeename
+      const usesq = this.macs[index].seqid
+      this.$confirm('是否确认信息为"' + usesq + ' - ' + usemac + ' - ' + reqemployeename + '"的数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      })
+        .then(() => {
+          this.deleteMacInfo(this.macs[index])
+        })
+        .catch(() => {
+          this.$message({
+            showClose: true,
+            message: '[ ' + usemac + '-' + reqemployeename + '' + ' ]' + ' 取消 删除 操作',
+            type: 'warning'
+          })
+        })
+    },
+    deleteMacInfo (v) {
+      deleteReqMac(v).then((_result) => {
         if (_result.data.code === 200) {
           this.$message({
             showClose: true,
