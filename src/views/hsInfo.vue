@@ -2,7 +2,7 @@
   <el-container style="height: 800px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
-        <el-button type="text" @click="dialogFormVisible = true">打开查询条件</el-button>
+        <el-button type="text" @click="dialogFormVisible = true">查询</el-button>
         <el-dialog title="查询信息" :visible.sync="dialogFormVisible">
           <el-form :model="queryParams">
             <el-form-item label="标题" :label-width="formLabelWidth">
@@ -11,6 +11,12 @@
             <el-form-item label="平台" :label-width="formLabelWidth">
               <el-input v-model="queryParams.platform" autocomplete="off"></el-input>
             </el-form-item>
+            <template>
+              <el-select v-model="queryParams.platform" placeholder="请选择">
+                <el-option v-for="item in options" :key="item" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </template>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -25,28 +31,33 @@
       </el-header>
       <el-main>
         <template>
-          <el-table height="685px" v-loading="loading" :data="hsInfoList" style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
+          <el-table height="685px" v-loading="loading" :data="hsInfoList" style="width: 150%"
+            :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
             :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-            <el-table-column prop="id" label="序号ID" width="140"></el-table-column>
-            <el-table-column prop="createdAt" label="创建时间" width="120"></el-table-column>
-            <el-table-column prop="title" label="标题"> </el-table-column>
-            <el-table-column prop="url" label="在线播放地址"> </el-table-column>
+            <el-table-column prop="id" label="序号ID" width="100"></el-table-column>
+            <el-table-column prop="createdAt" label="创建时间" width="160"></el-table-column>
+            <el-table-column prop="title" label="视频名称" width="600"> </el-table-column>
+            <!-- <el-table-column prop="url" label="在线播放地址"> </el-table-column>
             <el-table-column prop="m3u8Url" label="视频下载地址"> </el-table-column>
-            <el-table-column prop="classId" label="分类ID"> </el-table-column>
+            <el-table-column prop="classId" label="分类ID"> </el-table-column> -->
             <el-table-column prop="platform" label="平台"> </el-table-column>
             <el-table-column prop="page" label="页码"> </el-table-column>
             <el-table-column prop="location" label="位置"> </el-table-column>
-            <el-table-column fixed="right" label="操作" width="120">
+            <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="downloadRow(scope.$index)" type="text" size="small">
                   下载
+                </el-button>
+                <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '视频数据')"
+                  @click="dialogTableVisible = false" type="text" size="small">
+                  导出
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
           <div class="pagination">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :page-sizes="[3, 5, 10, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
+              :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
               layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
           </div>
@@ -72,11 +83,14 @@
 </style>
 
 <script>
-import { listHsInfo, DownloadVideo } from '../api/index'
+import { listHsInfo, DownloadVideo, queryPlatform } from '../api/index'
+import * as XLSX from 'xlsx'
+import FileSaver from 'file-saver'
 
 export default {
   data () {
     return {
+      options: [],
       hsInfoList: [],
       total: null,
       dialogTableVisible: false,
@@ -87,15 +101,37 @@ export default {
       queryParams: {
         title: null,
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 12,
         platform: null
       }
     }
   },
   created () {
     this.getList()
+    this.getplatfrom()
   },
   methods: {
+    // 导出excel表
+    exportExcel (val, fliename) {
+      let table = document.querySelector(val).cloneNode(true)
+      var wb = XLSX.utils.table_to_book(table, { raw: true })
+      var wbout = XLSX.write(wb, { bookType: 'xlsx', bookSST: true, type: 'array' })
+      try {
+        FileSaver.saveAs(new Blob([wbout], { type: 'application/octet-stream' }), fliename + '.xlsx')
+      } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
+      return wbout
+    },
+    getplatfrom () {
+      queryPlatform().then((_result) => {
+        this.options = _result.data
+      }).catch((_err) => {
+        this.$message({
+          showClose: true,
+          message: '后端接口连接异常',
+          type: 'error'
+        })
+      })
+    },
     getList () {
       listHsInfo(this.queryParams).then((_result) => {
         this.hsInfoList = _result.data.data.rows

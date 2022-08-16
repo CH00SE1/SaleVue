@@ -147,3 +147,11 @@ export function deleteReqMac (data) {
     data: data
   })
 }
+
+// 查询hsInfo平台分类
+export function queryPlatform () {
+  return request({
+    method: 'get',
+    url: '/hsInfo/platform'
+  })
+}
