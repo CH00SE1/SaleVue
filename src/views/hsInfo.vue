@@ -8,11 +8,8 @@
             <el-form-item label="标题" :label-width="formLabelWidth">
               <el-input v-model="queryParams.title" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="平台" :label-width="formLabelWidth">
-              <el-input v-model="queryParams.platform" autocomplete="off"></el-input>
-            </el-form-item>
             <template>
-              <el-select v-model="queryParams.platform" placeholder="请选择">
+              <el-select v-model="queryParams.platform" placeholder="选择平台">
                 <el-option v-for="item in options" :key="item" :label="item" :value="item">
                 </el-option>
               </el-select>
@@ -31,12 +28,12 @@
       </el-header>
       <el-main>
         <template>
-          <el-table height="685px" v-loading="loading" :data="hsInfoList" style="width: 150%"
+          <el-table highlight-current-row="true" :row-class-name="tableRowClassName" lazy="true" v-loading="loading" :data="hsInfoList" style="width: 150%"
             :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
             :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="id" label="序号ID" width="100"></el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="160"></el-table-column>
-            <el-table-column prop="title" label="视频名称" width="600"> </el-table-column>
+            <el-table-column prop="title" label="视频名称" width="700"> </el-table-column>
             <!-- <el-table-column prop="url" label="在线播放地址"> </el-table-column>
             <el-table-column prop="m3u8Url" label="视频下载地址"> </el-table-column>
             <el-table-column prop="classId" label="分类ID"> </el-table-column> -->
@@ -45,18 +42,18 @@
             <el-table-column prop="location" label="位置"> </el-table-column>
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <el-button @click.native.prevent="downloadRow(scope.$index)" type="text" size="small">
+                <el-button @click.native.prevent="downloadRow(scope.$index)" size="mini">
                   下载
                 </el-button>
                 <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '视频数据')"
-                  @click="dialogTableVisible = false" type="text" size="small">
+                  @click="dialogTableVisible = false" type="danger" size="mini">
                   导出
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
           <div class="pagination">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            <el-pagination background="true" @size-change="handleSizeChange" @current-change="handleCurrentChange"
               :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
               layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
@@ -73,12 +70,22 @@
   color: #333;
   line-height: 60px;
 }
+
 .el-aside {
   color: #333;
 }
+
 .el-table--border {
-    padding-left: 0px;
-    text-align: center;
+  padding-left: 0px;
+  text-align: center;
+}
+
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
 }
 </style>
 
@@ -127,7 +134,7 @@ export default {
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: '后端接口连接异常',
+          message: '分组获取平台数据后端接口连接异常',
           type: 'error'
         })
       })
@@ -187,6 +194,13 @@ export default {
           position: 'bottom-left'
         })
       })
+    },
+    tableRowClassName ({row, rowIndex}) {
+      if (rowIndex % 2 === 1) {
+        return 'warning-row'
+      } else {
+        return 'success-row'
+      }
     }
   }
 }

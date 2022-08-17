@@ -37,17 +37,18 @@
       </el-header>
       <el-main>
         <template>
-          <el-table v-loading="loading" border :data="macs" style="width: 150%" :row-style="{ height: '0' }"
-            :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+          <el-table highlight-current-row="true" lazy="true" v-loading="loading" border :data="macs" style="width: 150%"
+            :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
+            :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="seqid" label="序列" width="70"></el-table-column>
             <el-table-column prop="credate" label="创建时间" width="170"></el-table-column>
             <el-table-column prop="mac" label="MAC地址" width="170"></el-table-column>
-            <el-table-column prop="memo" label="请求信息"> </el-table-column>
+            <el-table-column prop="memo" label="请求信息" width="200"> </el-table-column>
             <el-table-column prop="reqdate" label="请求时间" width="170"></el-table-column>
-            <el-table-column prop="reqip" label="请求人IP" width="130"></el-table-column>
+            <el-table-column prop="reqip" label="请求人IP" width="140"></el-table-column>
             <el-table-column prop="reqemployeeid" label="请求人工号"></el-table-column>
             <el-table-column prop="reqemployeename" label="请求人姓名"> </el-table-column>
-            <el-table-column prop="lastip" label="最后登录IP" width="130"></el-table-column>
+            <el-table-column prop="lastip" label="最后登录IP" width="140"></el-table-column>
             <el-table-column prop="lastdate" label="最后时间" width="170"></el-table-column>
             <el-table-column prop="lastemployeeid" label="最后使用工号"></el-table-column>
             <el-table-column prop="lastemployeename" label="最后使用姓名"></el-table-column>

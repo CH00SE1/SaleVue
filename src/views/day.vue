@@ -32,7 +32,7 @@
       </template>
       <el-main>
         <template>
-          <el-table :data="saleList" v-loading="loading" show-summary style="width: 100%" :row-style="{ height: '0' }"
+          <el-table :row-class-name="tableRowClassName" :data="saleList" v-loading="loading" show-summary style="width: 100%" :row-style="{ height: '0' }"
             :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column type="expand">
               <template slot-scope="props">
@@ -76,19 +76,19 @@
             <el-table-column prop="fl.C" label="C类"> </el-table-column>
             <el-table-column prop="fl.D" label="D类"> </el-table-column>
             <el-table-column prop="fl.E" label="E类"> </el-table-column>
-            <el-table-column fixed="right" label="操作" width="120">
+            <el-table-column fixed="right" label="操作" width="180">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
-                  type="text" size="small">
+                  size="mini">
                   明细
                 </el-button>
                 <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '销售数据')"
-                  @click="dialogTableVisible = false" type="text" size="small">
+                  @click="dialogTableVisible = false" type="danger" size="mini">
                   导出
                 </el-button>
                 <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细"
                   :visible.sync="dialogTableVisible" :modal-append-to-body="false">
-                  <el-table height="700px" v-loading="loading" :data="saledtlList" highlight-current-row
+                  <el-table :row-class-name="tableRowClassName" height="700px" v-loading="loading" :data="saledtlList" highlight-current-row
                     style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
                     :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
                     <el-table-column type="index" width="50">
@@ -98,23 +98,23 @@
                     <el-table-column property="credate" label="创建时间" width="170"></el-table-column>
                     <el-table-column property="insidername" label="会员姓名" width="160"></el-table-column>
                     <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
-                    <el-table-column property="goodstype" label="药品规格" width="100"></el-table-column>
-                    <el-table-column property="factoryname" label="厂家" width="200"></el-table-column>
+                    <el-table-column property="goodstype" label="药品规格" width="180"></el-table-column>
+                    <el-table-column property="factoryname" label="厂家" width="230"></el-table-column>
                     <el-table-column property="goodsqty" label="销售数量" width="100"></el-table-column>
                     <el-table-column property="realmoney" label="实收金额" width="100"></el-table-column>
                     <el-table-column property="placepointid" label="门店ID" width="100"></el-table-column>
-                    <el-table-column property="goodsname" label="药品名称" width="150"></el-table-column>
+                    <el-table-column property="goodsname" label="药品名称" width="200"></el-table-column>
                     <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
                     <el-table-column property="hospitalname" label="流向医院" width="200"></el-table-column>
                     <el-table-column property="recipehospital" label="处方医院" width="200"></el-table-column>
-                    <el-table-column property="batchid" label="批次ID" width="100"></el-table-column>
-                    <el-table-column property="lotno" label="批号" width="100"></el-table-column>
+                    <el-table-column property="batchid" label="批次ID" width="120"></el-table-column>
+                    <el-table-column property="lotno" label="批号" width="120"></el-table-column>
                     <el-table-column property="posno" label="柜组分类" width="100"></el-table-column>
-                    <el-table-column property="employeename" label="营业员" width="100"></el-table-column>
+                    <el-table-column property="employeename" label="营业员" width="120"></el-table-column>
                     <el-table-column fixed="right" label="操作" width="120">
                       <el-button
                         @click.native.prevent="exportExcel('.el-dialog__body .el-table__fixed-right', '个人销售明细')"
-                        @click="dialogTableVisible = true" type="text" size="small">
+                        @click="dialogTableVisible = true" type="danger" size="mini">
                         导出
                       </el-button>
                     </el-table-column>
@@ -136,35 +136,52 @@
 </template>
 
 <style>
+
 .el-header {
   background-color: rgb(253, 252, 252);
   color: #333;
   line-height: 60px;
 }
+
 .el-aside {
-  color: #333;
+  width: 200px;
+  background-color: rgb(175, 215, 237);
 }
+
 .el-table--border {
-    padding-left: 0px;
-    text-align: center;
+  padding-left: 0px;
+  text-align: center;
 }
-.customWidth{
+
+.customWidth {
   width: 93%;
 }
+
 body {
-    margin: 0;
+  margin: 0;
 }
+
 .demo-table-expand {
-    font-size: 0;
+  font-size: 0;
 }
+
 .demo-table-expand label {
-    width: 100px;
-    color: #99a9bf;
+  width: 100px;
+  color: #99a9bf;
 }
+
 .demo-table-expand .el-form-item {
-    margin-right: 1px;
-    margin-bottom: 0;
-    width: 50%;
+  margin-right: 1px;
+  margin-bottom: 0;
+  width: 50%;
+}
+
+.el-table .warning-row {
+  background: rgb(175, 215, 237);
+}
+
+.el-table .success-row {
+  background: rgb(224, 160, 158);
 }
 </style>
 
@@ -356,6 +373,13 @@ export default {
         ]
       })
       this.myChart.setOption(option)
+    },
+    tableRowClassName ({row, rowIndex}) {
+      if (rowIndex % 2 === 1) {
+        return 'warning-row'
+      } else {
+        return 'success-row'
+      }
     }
   }
 }
