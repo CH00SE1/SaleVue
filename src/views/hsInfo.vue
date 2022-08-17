@@ -8,6 +8,9 @@
             <el-form-item label="标题" :label-width="formLabelWidth">
               <el-input v-model="queryParams.title" autocomplete="off"></el-input>
             </el-form-item>
+            <el-form-item label="分类ID" :label-width="formLabelWidth">
+              <el-input v-model="queryParams.classId" autocomplete="off"></el-input>
+            </el-form-item>
             <template>
               <el-select v-model="queryParams.platform" placeholder="选择平台">
                 <el-option v-for="item in options" :key="item" :label="item" :value="item">
@@ -28,15 +31,23 @@
       </el-header>
       <el-main>
         <template>
-          <el-table highlight-current-row="true" :row-class-name="tableRowClassName" lazy="true" v-loading="loading" :data="hsInfoList" style="width: 150%"
+          <el-table :row-class-name="tableRowClassName" v-loading="loading" :data="hsInfoList" style="width: 150%"
             :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
             :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column prop="id" label="序号ID" width="100"></el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="160"></el-table-column>
-            <el-table-column prop="title" label="视频名称" width="700"> </el-table-column>
+            <el-table-column prop="classId" label="分类ID"> </el-table-column>
+            <el-table-column prop="title" label="视频名称" width="400"> </el-table-column>
             <!-- <el-table-column prop="url" label="在线播放地址"> </el-table-column>
-            <el-table-column prop="m3u8Url" label="视频下载地址"> </el-table-column>
-            <el-table-column prop="classId" label="分类ID"> </el-table-column> -->
+            <el-table-column prop="m3u8Url" label="视频下载地址"> </el-table-column> -->
+            <el-table-column min-width="55" prop="photoUrl" label="照片" width="210">
+              <template slot-scope="scope">
+                <el-popover placement="top-start" title="" trigger="hover">
+                  <img :src="scope.row.photoUrl" />
+                  <img slot="reference" :src="scope.row.photoUrl" style="width:200px;height:250px" />
+                </el-popover>
+              </template>
+            </el-table-column>
             <el-table-column prop="platform" label="平台"> </el-table-column>
             <el-table-column prop="page" label="页码"> </el-table-column>
             <el-table-column prop="location" label="位置"> </el-table-column>
@@ -53,7 +64,7 @@
             </el-table-column>
           </el-table>
           <div class="pagination">
-            <el-pagination background="true" @size-change="handleSizeChange" @current-change="handleCurrentChange"
+            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
               :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
               layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
@@ -65,6 +76,7 @@
 </template>
 
 <style>
+
 .el-header {
   background-color: rgb(253, 252, 252);
   color: #333;
@@ -81,11 +93,11 @@
 }
 
 .el-table .warning-row {
-  background: oldlace;
+  background: rgb(195, 215, 243);
 }
 
 .el-table .success-row {
-  background: #f0f9eb;
+  background: rgb(248, 239, 214);
 }
 </style>
 
@@ -108,7 +120,8 @@ export default {
       queryParams: {
         title: null,
         pageNum: 1,
-        pageSize: 12,
+        pageSize: 5,
+        classId: null,
         platform: null
       }
     }
