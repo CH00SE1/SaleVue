@@ -27,14 +27,18 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-        <span>{{ queryParams.title }}{{ queryParams.platform }}</span>
+        <span>{{ queryParams.title }}^{{ queryParams.platform }}</span>
       </el-header>
       <el-main>
         <template>
           <el-table :row-class-name="tableRowClassName" v-loading="loading" :data="hsInfoList" style="width: 150%"
-            :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
-            :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-            <el-table-column prop="id" label="序号ID" width="100"></el-table-column>
+            :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }" ref="multipleTable" tooltip-effect="dark"
+            :header-cell-style="{ background: '#eef1f6', color: '#606266' }" @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55">
+            </el-table-column>
+            <el-table-column prop="id" label="序号ID" width="100">
+              <template slot-scope="scope">{{ scope.row.id }}</template>
+            </el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="160"></el-table-column>
             <el-table-column prop="classId" label="分类ID"> </el-table-column>
             <el-table-column prop="title" label="视频名称" width="400"> </el-table-column>
@@ -53,16 +57,20 @@
             <el-table-column prop="location" label="位置"> </el-table-column>
             <el-table-column fixed="right" label="操作">
               <template slot-scope="scope">
-                <el-button @click.native.prevent="downloadRow(scope.$index)" size="mini">
+                <el-button @click.native.prevent="downloadRow(scope.$index)" type="danger" size="mini">
                   下载
                 </el-button>
                 <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '视频数据')"
-                  @click="dialogTableVisible = false" type="danger" size="mini">
+                  @click="dialogTableVisible = false" size="mini">
                   导出
                 </el-button>
               </template>
             </el-table-column>
           </el-table>
+          <div style="margin-top: 20px">
+            <el-button @click="toggleSelection([hsInfoList[0], hsInfoList[1]])">选中第一、第二行</el-button>
+            <el-button @click="toggleSelection()">取消选择</el-button>
+          </div>
           <div class="pagination">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
               :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
@@ -93,12 +101,13 @@
 }
 
 .el-table .warning-row {
-  background: rgb(195, 215, 243);
+  background: oldlace;
 }
 
 .el-table .success-row {
-  background: rgb(248, 239, 214);
+  background: #f0f9eb;
 }
+
 </style>
 
 <script>
@@ -116,6 +125,7 @@ export default {
       dialogFormVisible: false,
       formLabelWidth: '120px',
       loading: true,
+      multipleSelection: [],
       // 查询参数
       queryParams: {
         title: null,
@@ -184,35 +194,69 @@ export default {
       this.getList()
     },
     downloadRow (index) {
-      DownloadVideo(this.hsInfoList[index]).then((_result) => {
-        if (_result.data.code === 200) {
-          this.$notify({
-            title: '下载操作成功',
-            message: _result.data.msg,
-            type: 'success',
-            position: 'bottom-left'
-          })
-        }
-        if (_result.data.code === 500) {
+      console.log('下载触发' + index)
+      if (this.multipleSelection.length !== 0) {
+        DownloadVideo(this.multipleSelection).then((_result) => {
+          if (_result.data.code === 200) {
+            this.$notify({
+              title: '下载操作成功',
+              message: _result.data.data,
+              type: 'success',
+              position: 'bottom-left'
+            })
+          }
+          if (_result.data.code === 500) {
+            this.$notify.error({
+              title: '文件在下载中,一分钟后重试',
+              message: _result.data.msg,
+              position: 'bottom-left'
+            })
+          }
+        }).catch((_err) => {
           this.$notify.error({
-            title: '文件在下载中,一分钟后重试',
-            message: _result.data.msg,
+            title: '下载失败',
+            message: this.hsInfoList[index].title + ' ==> 下载发生异常',
             position: 'bottom-left'
           })
-        }
-      }).catch((_err) => {
+        })
+      } else {
         this.$notify.error({
           title: '下载失败',
-          message: this.hsInfoList[index].title + ' ==> 下载发生异常',
+          message: '没有任何选中记录!!!',
           position: 'bottom-left'
         })
-      })
+      }
     },
     tableRowClassName ({row, rowIndex}) {
       if (rowIndex % 2 === 1) {
         return 'warning-row'
       } else {
         return 'success-row'
+      }
+    },
+    toggleSelection (rows) {
+      if (rows) {
+        rows.forEach(row => {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        })
+      } else {
+        this.$refs.multipleTable.clearSelection()
+      }
+    },
+    handleSelectionChange (val) {
+      this.multipleSelection = val
+      if (this.multipleSelection.length !== 0) {
+        this.$message({
+          showClose: true,
+          message: this.multipleSelection,
+          type: 'success'
+        })
+      } else {
+        this.$message({
+          showClose: true,
+          message: '取消所有选择',
+          type: 'success'
+        })
       }
     }
   }
