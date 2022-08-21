@@ -32,8 +32,9 @@
       </template>
       <el-main>
         <template>
-          <el-table :row-class-name="tableRowClassName" :data="saleList" v-loading="loading" show-summary style="width: 100%" :row-style="{ height: '0' }"
-            :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+          <el-table :row-class-name="tableRowClassName" :data="saleList" v-loading="loading" show-summary
+            style="width: 100%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
+            :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -69,7 +70,7 @@
             </el-table-column>
             <el-table-column prop="name" label="姓名" width="140"></el-table-column>
             <el-table-column prop="sum_money" label="总销售" width="120"></el-table-column>
-            <el-table-column prop="sum_fl_money" label="毛利"> </el-table-column>
+            <el-table-column prop="sum_fl_money" label="提成"> </el-table-column>
             <el-table-column prop="fl.黄金单品" label="黄金单品"> </el-table-column>
             <el-table-column prop="fl.A" label="A类"> </el-table-column>
             <el-table-column prop="fl.B" label="B类"> </el-table-column>
@@ -88,29 +89,46 @@
                 </el-button>
                 <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细"
                   :visible.sync="dialogTableVisible" :modal-append-to-body="false">
-                  <el-table :row-class-name="tableRowClassName" height="700px" v-loading="loading" :data="saledtlList" highlight-current-row
-                    style="width: 150%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
+                  <el-table :span-method="objectSpanMethod" height="700px" border
+                    v-loading="loading" :data="saledtlList" highlight-current-row style="width: 150%"
+                    :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
                     :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-                    <el-table-column type="index" width="50">
+                    <el-table-column fixed="left" property="rsaid" label="流水总单ID" width="100"></el-table-column>
+                    <!-- <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column> -->
+                    <el-table-column property="credate" label="创建时间" width="200">
+                      <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.credate }}</span>
+                      </template>
                     </el-table-column>
-                    <el-table-column property="rsaid" label="流水总单ID" width="100"></el-table-column>
-                    <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column>
-                    <el-table-column property="credate" label="创建时间" width="170"></el-table-column>
+                    <!-- <el-table-column type="index" width="50"></el-table-column> -->
                     <el-table-column property="insidername" label="会员姓名" width="160"></el-table-column>
+                    <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
                     <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
+                    <el-table-column property="goodsname" label="药品名称" width="200"></el-table-column>
                     <el-table-column property="goodstype" label="药品规格" width="180"></el-table-column>
                     <el-table-column property="factoryname" label="厂家" width="230"></el-table-column>
                     <el-table-column property="goodsqty" label="销售数量" width="100"></el-table-column>
                     <el-table-column property="realmoney" label="实收金额" width="100"></el-table-column>
-                    <el-table-column property="placepointid" label="门店ID" width="100"></el-table-column>
-                    <el-table-column property="goodsname" label="药品名称" width="200"></el-table-column>
-                    <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
-                    <el-table-column property="hospitalname" label="流向医院" width="200"></el-table-column>
-                    <el-table-column property="recipehospital" label="处方医院" width="200"></el-table-column>
+                    <!-- <el-table-column property="placepointid" label="门店ID" width="100"></el-table-column> -->
                     <el-table-column property="batchid" label="批次ID" width="120"></el-table-column>
                     <el-table-column property="lotno" label="批号" width="120"></el-table-column>
-                    <el-table-column property="posno" label="柜组分类" width="100"></el-table-column>
-                    <el-table-column property="employeename" label="营业员" width="120"></el-table-column>
+                    <el-table-column property="hospitalname" label="流向医院" width="200"></el-table-column>
+                    <el-table-column property="recipehospital" label="处方医院" width="200"></el-table-column>
+                    <!-- <el-table-column property="posno" label="柜组分类" width="100"></el-table-column> -->
+                    <el-table-column fixed="right" property="employeename" label="营业员" width="120">
+                      <template slot-scope="scope">
+                        <el-popover trigger="hover" placement="top">
+                          <p>毛利分类: {{ scope.row.fl }}</p>
+                          <p>药品ID: {{ scope.row.goodsid }}</p>
+                          <p>药品名称: {{ scope.row.goodsname }}</p>
+                          <p>实收金额: {{ scope.row.realmoney }}</p>
+                          <div slot="reference" class="name-wrapper">
+                            <el-tag size="medium">{{ scope.row.employeename }}</el-tag>
+                          </div>
+                        </el-popover>
+                      </template>
+                    </el-table-column>
                     <el-table-column fixed="right" label="操作" width="120">
                       <el-button
                         @click.native.prevent="exportExcel('.el-dialog__body .el-table__fixed-right', '个人销售明细')"
@@ -154,7 +172,7 @@
 }
 
 .customWidth {
-  width: 93%;
+  width: 98%;
 }
 
 body {
@@ -177,11 +195,11 @@ body {
 }
 
 .el-table .warning-row {
-  background: rgb(175, 215, 237);
+  background: oldlace;
 }
 
 .el-table .success-row {
-  background: rgb(224, 160, 158);
+  background: #f0f9eb;
 }
 </style>
 
@@ -272,6 +290,7 @@ export default {
           this.saledtlList = _result.data.data.rows
           this.total = _result.data.data.total
           this.loading = false
+          this.rowspan()
         } else {
           this.$message({
             showClose: true,
@@ -379,6 +398,43 @@ export default {
         return 'warning-row'
       } else {
         return 'success-row'
+      }
+    },
+    rowspan () {
+      // 每次调用清空数据
+      this.spanArr = []
+      this.position = 0
+      this.saledtlList.forEach((item, index) => {
+        if (index === 0) {
+          this.spanArr.push(1)
+          this.position = 0
+        } else {
+          if (this.saledtlList[index].rsaid === this.saledtlList[index - 1].rsaid) {
+            this.spanArr[this.position] += 1
+            this.spanArr.push(0)
+          } else {
+            this.spanArr.push(1)
+            this.position = index
+          }
+        }
+      })
+    },
+    objectSpanMethod ({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        const _row = this.spanArr[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
+      }
+      if (columnIndex === 1) {
+        const _row = this.spanArr[rowIndex]
+        const _col = _row > 0 ? 1 : 0
+        return {
+          rowspan: _row,
+          colspan: _col
+        }
       }
     }
   }
