@@ -89,10 +89,10 @@
                 </el-button>
                 <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细"
                   :visible.sync="dialogTableVisible" :modal-append-to-body="false">
-                  <el-table :span-method="objectSpanMethod" height="700px" border
-                    v-loading="loading" :data="saledtlList" highlight-current-row style="width: 150%"
-                    :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
-                    :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+                  <el-table :span-method="objectSpanMethod" height="700px" border v-loading="loading"
+                    :data="saledtlList.filter(data => !search || data.goodsname.toLowerCase().includes(search.toLowerCase()))"
+                    highlight-current-row style="width: 150%" :row-style="{ height: '0' }"
+                    :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
                     <el-table-column fixed="left" property="rsaid" label="流水总单ID" width="100"></el-table-column>
                     <!-- <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column> -->
                     <el-table-column property="credate" label="创建时间" width="200">
@@ -105,7 +105,11 @@
                     <el-table-column property="insidername" label="会员姓名" width="160"></el-table-column>
                     <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
                     <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
-                    <el-table-column property="goodsname" label="药品名称" width="200"></el-table-column>
+                    <el-table-column property="goodsname" label="药品名称" width="200">
+                      <template slot="header">
+                        <el-input v-model="search" size="mini" placeholder="输入药品名称搜索" />
+                      </template>
+                    </el-table-column>
                     <el-table-column property="goodstype" label="药品规格" width="180"></el-table-column>
                     <el-table-column property="factoryname" label="厂家" width="230"></el-table-column>
                     <el-table-column property="goodsqty" label="销售数量" width="100"></el-table-column>
@@ -116,7 +120,7 @@
                     <el-table-column property="hospitalname" label="流向医院" width="200"></el-table-column>
                     <el-table-column property="recipehospital" label="处方医院" width="200"></el-table-column>
                     <!-- <el-table-column property="posno" label="柜组分类" width="100"></el-table-column> -->
-                    <el-table-column fixed="right" property="employeename" label="营业员" width="120">
+                    <el-table-column fixed="right" property="employeename" label="营业员" width="90">
                       <template slot-scope="scope">
                         <el-popover trigger="hover" placement="top">
                           <p>毛利分类: {{ scope.row.fl }}</p>
@@ -129,7 +133,7 @@
                         </el-popover>
                       </template>
                     </el-table-column>
-                    <el-table-column fixed="right" label="操作" width="120">
+                    <el-table-column fixed="right" label="操作" width="90">
                       <el-button
                         @click.native.prevent="exportExcel('.el-dialog__body .el-table__fixed-right', '个人销售明细')"
                         @click="dialogTableVisible = true" type="danger" size="mini">
@@ -229,6 +233,7 @@ export default {
       loading: true,
       dateTime: 'day',
       shopId: '32',
+      search: '',
       dialogTableVisible: false,
       queryParams: {
         pageNum: 1,
