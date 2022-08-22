@@ -176,7 +176,7 @@
 }
 
 .customWidth {
-  width: 98%;
+  width: 80%;
 }
 
 body {

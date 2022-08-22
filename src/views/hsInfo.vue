@@ -55,7 +55,7 @@
             <el-table-column prop="platform" label="平台"> </el-table-column>
             <el-table-column prop="page" label="页码"> </el-table-column>
             <el-table-column prop="location" label="位置"> </el-table-column>
-            <el-table-column fixed="right" label="操作">
+            <el-table-column fixed="right" label="操作" width="200">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="downloadRow(scope.$index)" type="danger" size="mini">
                   下载
