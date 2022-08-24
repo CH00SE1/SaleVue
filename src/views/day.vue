@@ -103,7 +103,6 @@
                     </el-table-column>
                     <!-- <el-table-column type="index" width="50"></el-table-column> -->
                     <el-table-column property="insidername" label="会员姓名" width="160"></el-table-column>
-                    <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
                     <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
                     <el-table-column property="goodsname" label="药品名称" width="200">
                       <template slot="header">
@@ -114,6 +113,7 @@
                     <el-table-column property="factoryname" label="厂家" width="230"></el-table-column>
                     <el-table-column property="goodsqty" label="销售数量" width="100"></el-table-column>
                     <el-table-column property="realmoney" label="实收金额" width="100"></el-table-column>
+                    <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
                     <!-- <el-table-column property="placepointid" label="门店ID" width="100"></el-table-column> -->
                     <el-table-column property="batchid" label="批次ID" width="120"></el-table-column>
                     <el-table-column property="lotno" label="批号" width="120"></el-table-column>

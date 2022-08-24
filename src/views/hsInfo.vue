@@ -27,7 +27,7 @@
     </el-aside>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-        <span>{{ queryParams.title }}^{{ queryParams.platform }}</span>
+        <span>{{ queryParams.title }}{{ queryParams.platform }}</span>
       </el-header>
       <el-main>
         <template>
@@ -48,11 +48,11 @@
               <template slot-scope="scope">
                 <el-popover placement="top-start" title="" trigger="hover">
                   <img :src="scope.row.photoUrl" />
-                  <img slot="reference" :src="scope.row.photoUrl" style="width:200px;height:250px" />
+                  <img slot="reference" :src="scope.row.photoUrl" style="width:80px;height:80px" />
                 </el-popover>
               </template>
             </el-table-column>
-            <el-table-column prop="platform" label="平台"> </el-table-column>
+            <el-table-column prop="platform" label="平台" width="180"> </el-table-column>
             <el-table-column prop="page" label="页码"> </el-table-column>
             <el-table-column prop="location" label="位置"> </el-table-column>
             <el-table-column fixed="right" label="操作" width="200">
@@ -73,7 +73,7 @@
           </div>
           <div class="pagination">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
+              :page-sizes="[3, 5, 6, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
               layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
           </div>
@@ -130,7 +130,7 @@ export default {
       queryParams: {
         title: null,
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 6,
         classId: null,
         platform: null
       }
@@ -254,7 +254,7 @@ export default {
       } else {
         this.$message({
           showClose: true,
-          message: '取消所有选择',
+          message: '取消选择',
           type: 'success'
         })
       }
