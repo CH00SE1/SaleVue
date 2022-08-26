@@ -5,8 +5,11 @@
         <el-button type="text" @click="dialogFormVisible = true">查询</el-button>
         <el-dialog title="查询信息" :visible.sync="dialogFormVisible">
           <el-form :model="queryParams">
-            <el-form-item label="标题" :label-width="formLabelWidth">
+            <el-form-item label="标题名称" :label-width="formLabelWidth">
               <el-input v-model="queryParams.title" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="平台名称" :label-width="formLabelWidth">
+              <el-input v-model="queryParams.platform" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="分类ID" :label-width="formLabelWidth">
               <el-input v-model="queryParams.classId" autocomplete="off"></el-input>
@@ -41,14 +44,14 @@
             </el-table-column>
             <el-table-column prop="createdAt" label="创建时间" width="160"></el-table-column>
             <el-table-column prop="classId" label="分类ID"> </el-table-column>
-            <el-table-column prop="title" label="视频名称" width="400"> </el-table-column>
+            <el-table-column prop="title" label="标题" width="400"> </el-table-column>
             <!-- <el-table-column prop="url" label="在线播放地址"> </el-table-column>
             <el-table-column prop="m3u8Url" label="视频下载地址"> </el-table-column> -->
-            <el-table-column min-width="55" prop="photoUrl" label="照片" width="210">
+            <el-table-column min-width="55" prop="photoUrl" label="预览图" width="210">
               <template slot-scope="scope">
                 <el-popover placement="top-start" title="" trigger="hover">
                   <img :src="scope.row.photoUrl" />
-                  <img slot="reference" :src="scope.row.photoUrl" style="width:80px;height:80px" />
+                  <img slot="reference" :src="scope.row.photoUrl" style="width:110px;height:110px" />
                 </el-popover>
               </template>
             </el-table-column>
@@ -67,13 +70,13 @@
               </template>
             </el-table-column>
           </el-table>
-          <div style="margin-top: 20px">
-            <el-button @click="toggleSelection([hsInfoList[0], hsInfoList[1]])">选中第一、第二行</el-button>
-            <el-button @click="toggleSelection()">取消选择</el-button>
-          </div>
+          <!-- <div style="margin-top: 20px">
+            <el-button @click="toggleSelection([hsInfoList[0], hsInfoList[1]])">选第一第二行</el-button>
+            <el-button @click="toggleSelection()">取消全选</el-button>
+          </div> -->
           <div class="pagination">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :page-sizes="[3, 5, 6, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
+              :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
               layout="total, sizes, prev, pager, next, jumper" :total="total">
             </el-pagination>
           </div>
@@ -130,7 +133,7 @@ export default {
       queryParams: {
         title: null,
         pageNum: 1,
-        pageSize: 6,
+        pageSize: 5,
         classId: null,
         platform: null
       }
@@ -246,17 +249,9 @@ export default {
     handleSelectionChange (val) {
       this.multipleSelection = val
       if (this.multipleSelection.length !== 0) {
-        this.$message({
-          showClose: true,
-          message: this.multipleSelection,
-          type: 'success'
-        })
+        this.$message({showClose: true, message: this.multipleSelection, type: 'success'})
       } else {
-        this.$message({
-          showClose: true,
-          message: '取消选择',
-          type: 'success'
-        })
+        this.$message({message: '取消选择', center: true})
       }
     }
   }

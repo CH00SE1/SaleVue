@@ -93,7 +93,16 @@
                     :data="saledtlList.filter(data => !search || data.goodsname.toLowerCase().includes(search.toLowerCase()))"
                     highlight-current-row style="width: 150%" :row-style="{ height: '0' }"
                     :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-                    <el-table-column fixed="left" property="rsaid" label="流水总单ID" width="100"></el-table-column>
+                    <el-table-column fixed="left" property="rsaid" label="流水总单ID" width="100">
+                      <template slot-scope="scope">
+                        <el-popover trigger="click" placement="top">
+                          <p>流水总单ID:{{ scope.row.rsaid }}</p>
+                          <div slot="reference" class="name-wrapper">
+                            <el-tag type="success" effect="dark">{{ scope.row.rsaid }}</el-tag>
+                          </div>
+                        </el-popover>
+                      </template>
+                    </el-table-column>
                     <!-- <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column> -->
                     <el-table-column property="credate" label="创建时间" width="200">
                       <template slot-scope="scope">
