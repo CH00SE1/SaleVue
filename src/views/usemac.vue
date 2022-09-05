@@ -52,9 +52,9 @@
             <el-table-column prop="lastdate" label="最后时间" width="170"></el-table-column>
             <el-table-column prop="lastemployeeid" label="最后使用工号"></el-table-column>
             <el-table-column prop="lastemployeename" label="最后使用姓名"></el-table-column>
-            <el-table-column fixed="right" label="操作" width="120">
+            <el-table-column fixed="right" label="操作" width="80">
               <template slot-scope="scope">
-                <el-button @click.native.prevent="deleteRow(scope.$index)" type="text" size="small">
+                <el-button @click.native.prevent="deleteRow(scope.$index)" type="danger" size="mini">
                   删除
                 </el-button>
               </template>

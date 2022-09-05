@@ -5,11 +5,14 @@
         <el-button type="text" @click="dialogFormVisible = true">查询</el-button>
         <el-dialog title="查询信息" :visible.sync="dialogFormVisible">
           <el-form :model="queryParams">
-            <el-form-item label="标题名称" :label-width="formLabelWidth">
+            <el-form-item label="标题" :label-width="formLabelWidth">
               <el-input v-model="queryParams.title" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="平台名称" :label-width="formLabelWidth">
+            <el-form-item label="平台" :label-width="formLabelWidth">
               <el-input v-model="queryParams.platform" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="页码" :label-width="formLabelWidth">
+              <el-input v-model="queryParams.page" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="分类ID" :label-width="formLabelWidth">
               <el-input v-model="queryParams.classId" autocomplete="off"></el-input>
@@ -135,7 +138,8 @@ export default {
         pageNum: 1,
         pageSize: 5,
         classId: null,
-        platform: null
+        platform: null,
+        page: null
       }
     }
   },
@@ -249,7 +253,7 @@ export default {
     handleSelectionChange (val) {
       this.multipleSelection = val
       if (this.multipleSelection.length !== 0) {
-        this.$message({showClose: true, message: this.multipleSelection, type: 'success'})
+        this.$message({showClose: true, message: this.multipleSelection, type: 'success', center: true})
       } else {
         this.$message({message: '取消选择', center: true})
       }
