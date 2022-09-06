@@ -11,6 +11,7 @@
             <el-menu-item index="/month">当月</el-menu-item>
             <el-menu-item index="/lastmonth">上月</el-menu-item>
             <el-menu-item index="/year">当年</el-menu-item>
+            <el-menu-item index="/pengingOrder">挂单</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
         <el-submenu index="2">

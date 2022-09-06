@@ -155,3 +155,23 @@ export function queryPlatform () {
     url: '/hsInfo/platform'
   })
 }
+
+// 查询挂单
+export function pendingOrder (query) {
+  return request({
+    method: 'get',
+    url: '/sales/pendingOrder',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    params: query
+  })
+}
+
+// 查询门店信息
+export function shopInfoAll () {
+  return request({
+    method: 'get',
+    url: '/sales/shopInfoAll'
+  })
+}

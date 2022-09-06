@@ -12,6 +12,7 @@ import hsInfo from '../views/hsInfo.vue'
 import mac from '../views/mac.vue'
 import usemac from '../views/usemac.vue'
 import sale from '../views/sale.vue'
+import pendingOrder from '../views/pendingOrder.vue'
 
 Vue.use(Router)
 
@@ -62,6 +63,10 @@ export default new Router({
       path: '/sale',
       name: 'sale',
       component: sale
+    }, {
+      path: '/pengingOrder',
+      name: 'pengdingOrder',
+      component: pendingOrder
     }
   ]
 })

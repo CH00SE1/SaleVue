@@ -8,6 +8,10 @@
       <el-input placeholder="请输入最后使用人姓名" @keyup.enter.native="handleQuery" v-model="queryParams.lastemployeename">
       </el-input>
     </div>
+    <div id="search-name2">
+      <el-input placeholder="请输入请求人姓名" @keyup.enter.native="handleQuery" v-model="queryParams.reqemployeename">
+      </el-input>
+    </div>
     <div id="search">
       <el-button type="primary" icon="el-icon-search" v-on:click="handleQuery">查询</el-button>
     </div>
@@ -17,10 +21,16 @@
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>网卡操作</template>
+          <template slot="title"><i class="el-icon-message"></i>网卡模块</template>
           <el-menu-item-group>
             <el-menu-item index="/mac">请求表操作</el-menu-item>
             <el-menu-item index="/usemac">使用表操作</el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
+        <el-submenu index="2">
+          <template slot="title"><i class="el-icon-message"></i>挂单模块</template>
+          <el-menu-item-group>
+            <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
@@ -95,22 +105,27 @@
 #search-mac{
   position: absolute;
   top: 1%;
-  left: 30%;
+  left: 24%;
 }
 #search-name{
   position: absolute;
   top: 1%;
-  left: 45%;
+  left: 36%;
+}
+#search-name2{
+  position: absolute;
+  top: 1%;
+  left: 49%;
 }
 #search{
   position: absolute;
   top: 1%;
-  left: 60%;
+  left: 62%;
 }
 #reset{
   position: absolute;
   top: 1%;
-  left: 65%;
+  left: 67%;
 }
 #mybreadcrunb{
   position: absolute;
@@ -187,7 +202,7 @@ export default {
         .catch(() => {
           this.$message({
             showClose: true,
-            message: '[ ' + usemac + '-' + uselastemployeename + '' + ' ]' + ' 取消 删除 操作',
+            message: '[ ' + usemac + '-' + uselastemployeename + '' + ' ]' + '取消删除操作',
             type: 'warning'
           })
         })
@@ -252,6 +267,7 @@ export default {
     resetQuery () {
       this.queryParams.mac = null
       this.queryParams.lastemployeename = null
+      this.queryParams.reqemployeename = null
       this.loading = true
       this.getList()
     }
