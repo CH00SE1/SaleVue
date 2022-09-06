@@ -1,6 +1,6 @@
 <template>
   <el-container style="height: 750px; border: 1px solid #eee">
-    <div id="search-shopId">
+    <div id="searchShopId">
       <el-input placeholder="请输入门店ID" @keyup.enter.native="handleQuery" v-model="queryParams.placepointid">
       </el-input>
     </div>
@@ -15,7 +15,7 @@
         </template>
       </el-form>
     </div>
-    <div id="search">
+    <div id="query">
       <el-button type="primary" icon="el-icon-search" v-on:click="handleQuery">查询</el-button>
     </div>
     <div id="reset">
@@ -36,7 +36,7 @@
         <span>零售挂单信息</span>
       </el-header>
       <el-main>
-        <el-table :data="pengdingOrders" stripe style="width: 100%"
+        <el-table v-loading="loading" :data="pengdingOrders" stripe style="width: 100%"
           :default-sort="{ prop: 'date', order: 'descending' }">
           <el-table-column prop="rsaid" label="总单ID" sortable width="120">
           </el-table-column>
@@ -71,7 +71,7 @@
               </el-popover>
             </template>
           </el-table-column>
-          <el-table-column prop="realmoney" sortable label="实收金额">
+          <el-table-column prop="realmoney" sortable label="实收金额" width="120">
           </el-table-column>
           <el-table-column prop="goodsid" label="货品ID">
           </el-table-column>
@@ -79,7 +79,7 @@
           </el-table-column>
           <el-table-column prop="goodsunit" label="货品单位">
           </el-table-column>
-          <el-table-column prop="goodsqty" sortable label="货品数量">
+          <el-table-column prop="goodsqty" sortable label="货品数量" width="120">
           </el-table-column>
           <el-table-column prop="useprice" label="货品单价">
           </el-table-column>
@@ -111,12 +111,11 @@
   color: #333;
   line-height: 60px;
 }
-
 .el-aside {
   color: #333;
 }
 
-#search-shopId {
+#searchShopId {
   position: absolute;
   top: 1.5%;
   left: 24%;
@@ -128,7 +127,7 @@
   left: 36%;
 }
 
-#search {
+#query {
   position: absolute;
   top: 1.5%;
   left: 49%;
@@ -153,6 +152,7 @@ export default {
       total: null,
       options: [],
       dialogTableVisible: false,
+      loading: true,
       queryParams: {
         pageNum: 1,
         pageSize: 5,
@@ -188,6 +188,7 @@ export default {
           } else {
             this.pengdingOrders = _result.data.data.records
             this.total = _result.data.data.total
+            this.loading = false
           }
         } else {
           this.$message({
@@ -217,19 +218,23 @@ export default {
     },
     handleSizeChange (val) {
       // 更新每页条数
+      this.loading = true
       this.queryParams.pageSize = val
       this.getList()
     },
     handleCurrentChange (val) {
       // 更新当前页码
+      this.loading = true
       this.queryParams.pageNum = val
       this.getList()
     },
     handleQuery () {
+      this.loading = true
       this.queryParams.pageNum = 1
       this.getList()
     },
     resetQuery () {
+      this.loading = true
       this.queryParams.placepointid = null
       this.getList()
     }
