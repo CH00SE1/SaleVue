@@ -24,7 +24,7 @@
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>信息查询</template>
+          <template slot="title"><i class="el-icon-message"></i>功能</template>
           <el-menu-item-group>
             <el-menu-item index="/mac">网卡模块</el-menu-item>
           </el-menu-item-group>

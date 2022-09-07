@@ -3,17 +3,12 @@
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>网卡操作</template>
+          <template slot="title"><i class="el-icon-message"></i>英克操作</template>
           <el-menu-item-group>
             <el-menu-item index="/mac">请求表操作</el-menu-item>
             <el-menu-item index="/usemac">使用表操作</el-menu-item>
+            <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
           </el-menu-item-group>
-          <el-submenu index="2">
-            <template slot="title"><i class="el-icon-message"></i>挂单模块</template>
-            <el-menu-item-group>
-              <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
-            </el-menu-item-group>
-          </el-submenu>
         </el-submenu>
       </el-menu>
     </el-aside>
