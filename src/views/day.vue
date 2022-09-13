@@ -78,15 +78,17 @@
             <el-table-column prop="fl.C" label="C类"> </el-table-column>
             <el-table-column prop="fl.D" label="D类"> </el-table-column>
             <el-table-column prop="fl.E" label="E类"> </el-table-column>
-            <el-table-column fixed="right" label="操作" width="180">
+            <el-table-column fixed="right" label="操作" width="140">
               <template slot-scope="scope">
-                <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
+                <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true" type="text"
                   size="mini">
                   明细
                 </el-button>
                 <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '销售数据')"
-                  @click="dialogTableVisible = false" type="danger" size="mini">
+                  @click="dialogTableVisible = false" type="text" size="mini">
                   导出
+                </el-button>
+                <el-button size="mini" type="text" icon="el-icon-query" @click="handlePrint(scope.row, true)">打印
                 </el-button>
                 <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细"
                   :visible.sync="dialogTableVisible" :modal-append-to-body="false">
@@ -163,12 +165,12 @@
           </el-table>
         </template>
       </el-main>
+      <print-sale-detail ref="printSaleDetail" :orderBean="orderBean"></print-sale-detail>
     </el-container>
   </el-container>
 </template>
 
 <style>
-
 .el-header {
   background-color: rgb(253, 252, 252);
   color: #333;
@@ -222,8 +224,12 @@ import { listDaySale, listNameDaySale } from '../api/index'
 import FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import * as echarts from 'echarts'
+import printSaleDetail from './printSaleDetail.vue'
 
 export default {
+  components: {
+    printSaleDetail
+  },
   data () {
     return {
       // 图表实列化
@@ -249,7 +255,9 @@ export default {
         pageNum: 1,
         pageSize: 50,
         eName: null
-      }
+      },
+      orderBean: {},
+      rows: {}
     }
   },
   mounted () {
@@ -408,7 +416,7 @@ export default {
       })
       this.myChart.setOption(option)
     },
-    tableRowClassName ({row, rowIndex}) {
+    tableRowClassName ({ row, rowIndex }) {
       if (rowIndex % 2 === 1) {
         return 'warning-row'
       } else {
@@ -451,6 +459,11 @@ export default {
           colspan: _col
         }
       }
+    },
+    handlePrint (row) {
+      this.orderBean = row
+      this.orderBean.detailList = this.saleList.data
+      this.$refs.printSaleDetail.showDialog()
     }
   }
 }
