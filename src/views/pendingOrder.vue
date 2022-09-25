@@ -1,5 +1,5 @@
 <template>
-  <el-container style="height: 750px; border: 1px solid #eee">
+  <el-container style="height: 850px; border: 1px solid #eee">
     <div id="searchShopId">
       <el-input placeholder="请输入门店ID" @keyup.enter.native="handleQuery" v-model="queryParams.placepointid">
       </el-input>

@@ -1,5 +1,5 @@
 <template>
-  <el-container style="height: 800px; border: 1px solid #eee">
+  <el-container style="height: 900px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-button type="text" @click="dialogFormVisible = true">查询</el-button>
@@ -45,20 +45,41 @@
             <el-table-column prop="id" label="序号ID" width="100">
               <template slot-scope="scope">{{ scope.row.id }}</template>
             </el-table-column>
-            <el-table-column prop="createdAt" label="创建时间" width="160"></el-table-column>
-            <el-table-column prop="classId" label="分类ID"> </el-table-column>
-            <el-table-column prop="title" label="标题" width="400"> </el-table-column>
-            <!-- <el-table-column prop="url" label="在线播放地址"> </el-table-column>
-            <el-table-column prop="m3u8Url" label="视频下载地址"> </el-table-column> -->
+            <el-table-column prop="createdAt" label="创建时间" width="200">
+              <template slot-scope="scope">
+                <i class="el-icon-time"></i>
+                <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+              </template>
+            </el-table-column>
+            <el-table-column prop="classId" label="分类ID"></el-table-column>
+            <el-table-column prop="title" label="标题" width="400">
+              <template slot-scope="scope">
+                <a :href="scope.row.url" target="_blank">
+                  {{scope.row.title}}
+                </a>
+              </template>
+            </el-table-column>
+            <!-- <el-table-column prop="url" label="在线播放"></el-table-column> -->
+            <!-- <el-table-column prop="m3u8Url" label="视频下载"> </el-table-column> -->
             <el-table-column min-width="55" prop="photoUrl" label="预览图" width="210">
               <template slot-scope="scope">
                 <el-popover placement="top-start" title="" trigger="hover">
                   <img :src="scope.row.photoUrl" />
-                  <img slot="reference" :src="scope.row.photoUrl" style="width:110px;height:110px" />
+                  <img slot="reference" :src="scope.row.photoUrl" style="width:140px;height:140px" />
                 </el-popover>
               </template>
             </el-table-column>
-            <el-table-column prop="platform" label="平台" width="180"> </el-table-column>
+            <el-table-column prop="platform" label="平台" width="180">
+              <template slot-scope="scope">
+                <el-popover trigger="hover" placement="top">
+                  <p>url: {{ scope.row.url }}</p>
+                  <p>m3u8: {{ scope.row.m3u8Url }}</p>
+                  <div slot="reference" class="name-wrapper">
+                    <el-tag size="medium">{{ scope.row.platform }}</el-tag>
+                  </div>
+                </el-popover>
+              </template>
+            </el-table-column>
             <el-table-column prop="page" label="页码"> </el-table-column>
             <el-table-column prop="location" label="位置"> </el-table-column>
             <el-table-column fixed="right" label="操作" width="200">

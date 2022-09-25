@@ -4,10 +4,6 @@ import Router from 'vue-router'
 import Login from '../views/login.vue'
 import Index from '../views/index.vue'
 import day from '../views/day.vue'
-import yesterday from '../views/yesterday.vue'
-import month from '../views/month.vue'
-import lastmonth from '../views/lastmonth.vue'
-import year from '../views/year.vue'
 import hsInfo from '../views/hsInfo.vue'
 import mac from '../views/mac.vue'
 import usemac from '../views/usemac.vue'
@@ -31,22 +27,6 @@ export default new Router({
       path: '/day',
       name: 'day',
       component: day
-    }, {
-      path: '/yesterday',
-      name: 'yesterday',
-      component: yesterday
-    }, {
-      path: '/month',
-      name: 'month',
-      component: month
-    }, {
-      path: '/lastmonth',
-      name: 'lastmonth',
-      component: lastmonth
-    }, {
-      path: '/year',
-      name: 'year',
-      component: year
     }, {
       path: '/hsInfo',
       name: 'hsInfo',

@@ -4,7 +4,9 @@
       <div>
         <el-card class="box-card" style="padding: 15px 20px">
           <div slot="header" class="clearfix">
-            <span><b> #### 个 人 销 售 #### </b></span>
+            <el-card class="box-card" style="padding: 15px 20px">
+              <span><b> #### 个 人 销 售 #### </b></span>
+            </el-card>
           </div>
           <div>
             <el-row :gutter="24">
@@ -39,6 +41,8 @@
 
 <script>
 import printJS from 'print-js'
+import 'print-js/dist/print.css'
+
 export default {
   name: 'printSaleDetail',
   props: {
@@ -50,7 +54,8 @@ export default {
         printable: 'printStickerView',
         documentTitle: '销售',
         type: 'html',
-        targetStyles: '*'
+        headerStyle: 'text-align:center;color:#f00;width:100%;border:1px #000 solid;',
+        targetStyles: ['*']
       })
     },
     showDialog () {

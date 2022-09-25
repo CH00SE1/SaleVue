@@ -1,23 +1,28 @@
 <template>
-  <el-container style="height: 800px; border: 1px solid #eee">
+  <el-container style="height: 900px; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
+        <el-button type="text" @click="dialogFormVisible = true">销售查询</el-button>
+        <el-dialog title="选择日期" :visible.sync="dialogFormVisible">
+          <el-form :model="queryParams">
+            <template>
+              <el-select v-model="queryParams.DateStr" placeholder="选择时间段">
+                <el-option v-for="item in options" :key="item" :label="item" :value="item">
+                </el-option>
+              </el-select>
+            </template>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取 消</el-button>
+            <el-button type="primary" @click="openSale">确 定</el-button>
+          </div>
+        </el-dialog>
         <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>销售查询</template>
+          <template slot="title"><i class="el-icon-message"></i>英克操作</template>
           <el-menu-item-group>
-            <template slot="title">时间类型</template>
-            <el-menu-item index="/day">当天</el-menu-item>
-            <el-menu-item index="/yesterday">昨天</el-menu-item>
-            <el-menu-item index="/month">当月</el-menu-item>
-            <el-menu-item index="/lastmonth">上月</el-menu-item>
-            <el-menu-item index="/year">当年</el-menu-item>
-            <el-menu-item index="/pengingOrder">挂单</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
-        <el-submenu index="2">
-          <template slot="title"><i class="el-icon-message"></i>英克</template>
-          <el-menu-item-group>
-            <el-menu-item index="/mac">入网请求审批</el-menu-item>
+            <el-menu-item index="/mac">请求表操作</el-menu-item>
+            <el-menu-item index="/usemac">使用表操作</el-menu-item>
+            <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
@@ -28,7 +33,7 @@
       </el-header>
       <template>
         <div id="photo">
-          <div id="main" style="width: 600px; height: 400px"></div>
+          <div id="main" style="width: 1700px; height: 400px"></div>
         </div>
       </template>
       <el-main>
@@ -69,7 +74,7 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="140"></el-table-column>
+            <el-table-column prop="name" label="姓名" width="80"></el-table-column>
             <el-table-column prop="sum_money" label="总销售" width="120"></el-table-column>
             <el-table-column prop="sum_fl_money" label="提成"> </el-table-column>
             <el-table-column prop="fl.黄金单品" label="黄金单品"> </el-table-column>
@@ -78,11 +83,11 @@
             <el-table-column prop="fl.C" label="C类"> </el-table-column>
             <el-table-column prop="fl.D" label="D类"> </el-table-column>
             <el-table-column prop="fl.E" label="E类"> </el-table-column>
-            <el-table-column fixed="right" label="操作" width="140">
+            <el-table-column fixed="right" label="操作" width="200">
               <template slot-scope="scope">
-                <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true" type="text"
-                  size="mini">
-                  明细
+                <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
+                  type="text" size="mini">
+                  当日明细
                 </el-button>
                 <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '销售数据')"
                   @click="dialogTableVisible = false" type="text" size="mini">
@@ -217,6 +222,12 @@ body {
 .el-table .success-row {
   background: #f0f9eb;
 }
+
+.el-main {
+  width: 1700px;
+  height: 500px;
+}
+
 </style>
 
 <script>
@@ -232,6 +243,8 @@ export default {
   },
   data () {
     return {
+      // 日期选择数组
+      options: ['day', 'yesterday', 'lastmonth', 'month', 'year'],
       // 图表实列化
       myChart: '',
       // y轴销售金额
@@ -251,10 +264,12 @@ export default {
       shopId: '32',
       search: '',
       dialogTableVisible: false,
+      dialogFormVisible: false,
       queryParams: {
         pageNum: 1,
         pageSize: 50,
-        eName: null
+        eName: null,
+        DateStr: null
       },
       orderBean: {},
       rows: {}
@@ -268,7 +283,7 @@ export default {
     })
   },
   created () {
-    this.getList()
+    this.getList(this.queryParams.DateStr)
   },
   methods: {
     // 导出excel表格
@@ -285,8 +300,8 @@ export default {
       } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
       return wbout
     },
-    getList () {
-      listDaySale().then((_result) => {
+    getList (date) {
+      listDaySale(date).then((_result) => {
         this.saleList = _result.data.data.sales_info_details
         for (var i = 0; i < this.saleList.length; i++) {
           this.saleYmlList[i] = this.saleList[i].sum_money
@@ -464,6 +479,14 @@ export default {
       this.orderBean = row
       this.orderBean.detailList = this.saleList.data
       this.$refs.printSaleDetail.showDialog()
+    },
+    openSale () {
+      this.loading = true
+      this.saleYmlList = []
+      this.saleYmlmoneyList = []
+      this.saleXnameList = []
+      this.getList(this.queryParams.DateStr)
+      this.dialogFormVisible = false
     }
   }
 }
