@@ -2,12 +2,6 @@ import request, { postRequest } from '../utils/request'
 
 // 查询当天销售列表
 export function listDaySale (query) {
-  if (query === null) {
-    return request({
-      methed: 'get',
-      url: '/sales/shop/' + 'day' + '/32'
-    })
-  }
   return request({
     methed: 'get',
     url: '/sales/shop/' + query + '/32'

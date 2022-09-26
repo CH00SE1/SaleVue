@@ -7,7 +7,9 @@
           <el-form :model="queryParams">
             <template>
               <el-select v-model="queryParams.DateStr" placeholder="选择时间段">
-                <el-option v-for="item in options" :key="item" :label="item" :value="item">
+                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+                  <span style="float: left">{{ item.label }}</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                 </el-option>
               </el-select>
             </template>
@@ -83,11 +85,11 @@
             <el-table-column prop="fl.C" label="C类"> </el-table-column>
             <el-table-column prop="fl.D" label="D类"> </el-table-column>
             <el-table-column prop="fl.E" label="E类"> </el-table-column>
-            <el-table-column fixed="right" label="操作" width="200">
+            <el-table-column fixed="right" label="操作" width="160">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
                   type="text" size="mini">
-                  当日明细
+                  明细
                 </el-button>
                 <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '销售数据')"
                   @click="dialogTableVisible = false" type="text" size="mini">
@@ -160,7 +162,7 @@
                   </el-table>
                   <div class="pagination">
                     <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-                      :page-sizes="[3, 5, 10, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
+                      :page-sizes="[3, 5, 10, 20, 30, 50, 100, 1000]" :page-size="queryParams.pageSize"
                       layout="total, sizes, prev, pager, next, jumper" :total="total">
                     </el-pagination>
                   </div>
@@ -244,7 +246,7 @@ export default {
   data () {
     return {
       // 日期选择数组
-      options: ['day', 'yesterday', 'lastmonth', 'month', 'year'],
+      options: [{value: 'day', label: '当天'}, {value: 'yesterday', label: '昨天'}, {value: 'lastmonth', label: '上月'}, {value: 'month', label: '本月'}, {value: 'year', label: '今年'}],
       // 图表实列化
       myChart: '',
       // y轴销售金额
@@ -260,8 +262,6 @@ export default {
       // 记录index页码
       index: null,
       loading: true,
-      dateTime: 'day',
-      shopId: '32',
       search: '',
       dialogTableVisible: false,
       dialogFormVisible: false,
@@ -269,7 +269,7 @@ export default {
         pageNum: 1,
         pageSize: 50,
         eName: null,
-        DateStr: null
+        DateStr: 'day'
       },
       orderBean: {},
       rows: {}
@@ -339,7 +339,7 @@ export default {
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: '后端接口连接异常',
+          message: _err,
           type: 'error'
         })
       })
