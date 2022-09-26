@@ -408,7 +408,7 @@ export default {
         ],
         series: [
           {
-            name: '提成图',
+            name: '提成',
             type: 'line',
             yAxisIndex: 0,
             areaStyle: {
@@ -418,7 +418,7 @@ export default {
             data: this.saleYmlmoneyList
           },
           {
-            name: '销售图',
+            name: '销售',
             type: 'line',
             yAxisIndex: 1,
             areaStyle: {
