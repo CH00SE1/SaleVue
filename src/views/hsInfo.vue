@@ -135,6 +135,13 @@
   background: #f0f9eb;
 }
 
+#copyright{
+  color: rgb(0, 0, 0);
+  position: absolute;
+  top: 97%;
+  left: 43%;
+}
+
 </style>
 
 <script>

@@ -9,6 +9,7 @@ import mac from '../views/mac.vue'
 import usemac from '../views/usemac.vue'
 import sale from '../views/sale.vue'
 import pendingOrder from '../views/pendingOrder.vue'
+import addInckInfo from '../views/addInckInfo.vue'
 
 Vue.use(Router)
 
@@ -47,6 +48,10 @@ export default new Router({
       path: '/pengingOrder',
       name: 'pengdingOrder',
       component: pendingOrder
+    }, {
+      path: '/addInckInfo',
+      name: 'addInckInfo',
+      component: addInckInfo
     }
   ]
 })

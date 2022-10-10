@@ -26,6 +26,7 @@
             <el-menu-item index="/mac">请求表操作</el-menu-item>
             <el-menu-item index="/usemac">使用表操作</el-menu-item>
             <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
+            <el-menu-item index="/addInckInfo">门店-人员创建</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>

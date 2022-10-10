@@ -143,3 +143,27 @@ export function shopInfoAll () {
     url: '/sales/shopInfoAll'
   })
 }
+
+// 门店新增接口
+export function addInckShop (query) {
+  return request({
+    method: 'get',
+    url: '/sales/addInckShop',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    params: query
+  })
+}
+
+// 人员新增接口
+export function addPensonnel (query) {
+  return request({
+    method: 'get',
+    url: '/sales/addPensonnel',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    params: query
+  })
+}
