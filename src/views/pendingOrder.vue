@@ -26,7 +26,11 @@
         <el-submenu index="1">
           <template slot="title"><i class="el-icon-message"></i>功能</template>
           <el-menu-item-group>
-            <el-menu-item index="/mac">网卡模块</el-menu-item>
+            <el-menu-item index="/mac">请求表操作</el-menu-item>
+            <el-menu-item index="/usemac">使用表操作</el-menu-item>
+            <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
+            <el-menu-item index="/addInckShopInfo">门店创建</el-menu-item>
+            <el-menu-item index="/addInckPensonnelInfo">人员创建</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>
