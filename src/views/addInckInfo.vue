@@ -14,64 +14,68 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-card class="box-card">
-        <el-header style="text-align: center; font-size: 30px">
-          <span>{{ titieAddShop }}</span>
-        </el-header>
-        <el-main>
-          <div class="demo-input-size">
-            <el-input size="medium" placeholder="请输入英克人员id(eg:15700)" suffix-icon="el-icon-user"
-              v-model="queryShopParams.operaterId">
-              <template slot="prepend">英克人员ID</template>
-            </el-input>
-            <el-input size="medium" placeholder="请输入门店名称(eg:湖南达嘉维康医药产业股份有限公司XXX店)" suffix-icon="el-icon-circle-plus"
-              v-model="queryShopParams.shopName">
-              <template slot="prepend">门店名称</template>
-            </el-input>
-          </div>
-          <el-row>
-            <el-button type="primary" round @click="dialogVisible = true">提交</el-button>
-            <el-button type="danger" round>取消</el-button>
-            <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-              <span> 人员ID:{{queryShopParams.operaterId}} </span>
-              <span> 门店名称:{{queryShopParams.shopName}} </span>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addInckShopStart">确 定</el-button>
-              </span>
-            </el-dialog>
-          </el-row>
-        </el-main>
-      </el-card>
-      <el-card class="box-card">
-        <el-header style="text-align: center; font-size: 30px">
-          <span>{{ titleAddPensonnel }}</span>
-        </el-header>
-        <el-main>
-          <div class="demo-input-size">
-            <el-input size="medium" placeholder="请输入新门店ID(eg:16410)" suffix-icon="el-icon-user"
-              v-model="queryPensonnelParams.newShopId">
-              <template slot="prepend">新门店ID</template>
-            </el-input>
-            <el-input size="medium" placeholder="请输入旧门店ID(eg:32)" suffix-icon="el-icon-user"
-              v-model="queryPensonnelParams.oldShopId">
-              <template slot="prepend">旧门店ID</template>
-            </el-input>
-          </div>
-          <el-row>
-            <el-button type="primary" round @click="dialogVisible = true">提交</el-button>
-            <el-button type="danger" round>取消</el-button>
-            <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-              <span> 新门店ID:{{queryPensonnelParams.newShopId}} </span>
-              <span> 旧门店ID:{{queryPensonnelParams.oldShopId}} </span>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addInckPensonnelStart">确 定</el-button>
-              </span>
-            </el-dialog>
-          </el-row>
-        </el-main>
-      </el-card>
+      <div id="shop">
+        <el-card class="box-card">
+          <el-header style="text-align: center; font-size: 30px">
+            <span>{{ titieAddShop }}</span>
+          </el-header>
+          <el-main>
+            <div class="demo-input-size">
+              <el-input size="medium" placeholder="请输入英克人员id(eg:15700)" suffix-icon="el-icon-user"
+                v-model="queryShopParams.operaterId">
+                <template slot="prepend">英克人员ID</template>
+              </el-input>
+              <el-input size="medium" placeholder="请输入门店名称(eg:湖南达嘉维康医药产业股份有限公司XXX店)" suffix-icon="el-icon-circle-plus"
+                v-model="queryShopParams.shopName">
+                <template slot="prepend">门店名称</template>
+              </el-input>
+            </div>
+            <el-row>
+              <el-button type="primary" round @click="dialogVisible = true">提交</el-button>
+              <el-button type="danger" round>取消</el-button>
+              <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                <span> 人员ID:{{queryShopParams.operaterId}} </span>
+                <span> 门店名称:{{queryShopParams.shopName}} </span>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="addInckShopStart">确 定</el-button>
+                </span>
+              </el-dialog>
+            </el-row>
+          </el-main>
+        </el-card>
+      </div>
+      <div id="pensonnel">
+        <el-card class="box-card">
+          <el-header style="text-align: center; font-size: 30px">
+            <span>{{ titleAddPensonnel }}</span>
+          </el-header>
+          <el-main>
+            <div class="demo-input-size">
+              <el-input size="medium" placeholder="请输入新门店ID(eg:16410)" suffix-icon="el-icon-user"
+                v-model="queryPensonnelParams.newShopId">
+                <template slot="prepend">新门店ID</template>
+              </el-input>
+              <el-input size="medium" placeholder="请输入旧门店ID(eg:32)" suffix-icon="el-icon-circle-plus"
+                v-model="queryPensonnelParams.oldShopId">
+                <template slot="prepend">旧门店ID</template>
+              </el-input>
+            </div>
+            <el-row>
+              <el-button type="primary" round @click="dialogVisible = true">提交</el-button>
+              <el-button type="danger" round>取消</el-button>
+              <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+                <span> 新门店ID:{{queryPensonnelParams.newShopId}} </span>
+                <span> 旧门店ID:{{queryPensonnelParams.oldShopId}} </span>
+                <span slot="footer" class="dialog-footer">
+                  <el-button @click="dialogVisible = false">取 消</el-button>
+                  <el-button type="primary" @click="addInckPensonnelStart">确 定</el-button>
+                </span>
+              </el-dialog>
+            </el-row>
+          </el-main>
+        </el-card>
+      </div>
     </el-container>
   </el-container>
 </template>
