@@ -15,19 +15,19 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-card class="box-card">
+      <el-card class="box-card" shadow="hover" :body-style="{ padding: '15px 200px' }">
         <el-header style="text-align: center; font-size: 30px">
           <span>{{ titleAddPensonnel }}</span>
         </el-header>
         <el-main>
           <div class="demo-input-size">
-            <el-card shadow="hover">
+            <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
               <el-input size="medium" placeholder="请输入新门店ID(eg:16410)" suffix-icon="el-icon-user"
                 v-model="queryPensonnelParams.newShopId">
                 <template slot="prepend">新门店ID</template>
               </el-input>
             </el-card>
-            <el-card shadow="hover">
+            <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
               <el-input size="medium" placeholder="请输入旧门店ID(eg:32)" suffix-icon="el-icon-circle-plus"
                 v-model="queryPensonnelParams.oldShopId">
                 <template slot="prepend">旧门店ID</template>
@@ -35,7 +35,7 @@
             </el-card>
           </div>
           <el-row>
-            <el-card shadow="hover">
+            <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
               <el-button type="primary" round @click="dialogVisible = true">提交</el-button>
               <el-button type="danger" round>取消</el-button>
             </el-card>
@@ -88,6 +88,7 @@ export default {
     },
     addInckPensonnelStart () {
       addPensonnel(this.queryPensonnelParams).then((_result) => {
+        this.dialogFormVisible = false
         if (_result.data.code === 200) {
           this.$message({
             showClose: true,
@@ -108,7 +109,6 @@ export default {
           type: 'error'
         })
       })
-      this.dialogFormVisible = false
     }
   }
 }

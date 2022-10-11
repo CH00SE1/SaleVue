@@ -15,19 +15,19 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-card class="box-card">
+      <el-card class="box-card" shadow="hover" :body-style="{ padding: '15px 200px' }">
         <el-header style="text-align: center; font-size: 30px">
           <span>{{ titieAddShop }}</span>
         </el-header>
         <el-main>
           <div class="demo-input-size">
-            <el-card shadow="hover">
+            <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
               <el-input size="medium" placeholder="请输入英克人员id(eg:15700)" suffix-icon="el-icon-user"
                 v-model="queryShopParams.operaterId">
                 <template slot="prepend">英克人员ID</template>
               </el-input>
             </el-card>
-            <el-card shadow="hover">
+            <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
               <el-input size="medium" placeholder="请输入门店名称(eg:湖南达嘉维康医药产业股份有限公司XXX店)" suffix-icon="el-icon-circle-plus"
                 v-model="queryShopParams.shopName">
                 <template slot="prepend">门店名称</template>
@@ -35,7 +35,7 @@
             </el-card>
           </div>
           <el-row>
-            <el-card shadow="hover">
+            <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
               <el-button type="primary" round @click="dialogVisible = true">提交</el-button>
               <el-button type="danger" round>取消</el-button>
             </el-card>
@@ -88,6 +88,7 @@ export default {
     },
     addInckShopStart () {
       addInckShop(this.queryShopParams).then((_result) => {
+        this.dialogFormVisible = false
         if (_result.data.code === 200) {
           this.$message({
             showClose: true,
@@ -108,7 +109,6 @@ export default {
           type: 'error'
         })
       })
-      this.dialogFormVisible = false
     }
   }
 }
