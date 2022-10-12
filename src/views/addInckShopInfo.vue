@@ -33,6 +33,17 @@
                 <template slot="prepend">门店名称</template>
               </el-input>
             </el-card>
+            <el-card>
+              <template>
+                <el-select v-model="queryShopParams.areaId" placeholder="选择门店区域类型">
+                  <el-option v-for="item in options" :key="item.areadocid" :label="item.areaname"
+                    :value="item.areadocid">
+                    <span style="float: left ; color: #5686bf; font-size: 15px">{{ item.areaname }}</span>
+                    <span style="float: right; color: #FF0000; font-size: 15px">{{ item.areadocid }}</span>
+                  </el-option>
+                </el-select>
+              </template>
+            </el-card>
           </div>
           <el-row>
             <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
@@ -65,18 +76,23 @@
 </style>
 
 <script>
-import { addInckShop } from '../api/index'
+import { addInckShop, shopAreaList } from '../api/index'
 
 export default {
   data () {
     return {
+      options: [],
       dialogVisible: false,
       titieAddShop: '英克门店新增模块',
       queryShopParams: {
         operaterId: '',
-        shopName: ''
+        shopName: '',
+        areaId: ''
       }
     }
+  },
+  created () {
+    this.getshopAreaList()
   },
   methods: {
     handleClose (done) {
@@ -85,6 +101,17 @@ export default {
           done()
         })
         .catch(_ => {})
+    },
+    getshopAreaList () {
+      shopAreaList().then((_result) => {
+        this.options = _result.data
+      }).catch((_err) => {
+        this.$message({
+          showClose: true,
+          message: '分组获取门店区域分类后端接口连接异常',
+          type: 'error'
+        })
+      })
     },
     addInckShopStart () {
       addInckShop(this.queryShopParams).then((_result) => {

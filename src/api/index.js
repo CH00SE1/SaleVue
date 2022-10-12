@@ -167,3 +167,11 @@ export function addPensonnel (query) {
     params: query
   })
 }
+
+// 查询门店分类list
+export function shopAreaList () {
+  return request({
+    method: 'get',
+    url: '/sales/shopAreaList'
+  })
+}
