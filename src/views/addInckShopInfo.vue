@@ -15,57 +15,59 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-card class="box-card" shadow="hover" :body-style="{ padding: '15px 200px' }">
-        <el-header style="text-align: center; font-size: 30px">
-          <span>{{ titieAddShop }}</span>
-        </el-header>
-        <el-main>
-          <div class="demo-input-size">
-            <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
-              <el-input size="medium" placeholder="请输入英克人员id(eg:15700)" suffix-icon="el-icon-user"
-                v-model="queryShopParams.operaterId">
-                <template slot="prepend">英克人员ID</template>
-              </el-input>
-            </el-card>
-            <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
-              <el-input size="medium" placeholder="请输入门店名称(eg:湖南达嘉维康医药产业股份有限公司XXX店)" suffix-icon="el-icon-circle-plus"
-                v-model="queryShopParams.shopName">
-                <template slot="prepend">门店名称</template>
-              </el-input>
-            </el-card>
-            <el-card>
-              <template>
-                <el-select v-model="queryShopParams.areaId" placeholder="选择门店区域类型">
-                  <el-option v-for="item in options" :key="item.areadocid" :label="item.areaname"
-                    :value="item.areadocid">
-                    <span style="float: left ; color: #5686bf; font-size: 15px">{{ item.areaname }}</span>
-                    <span style="float: right; color: #FF0000; font-size: 15px">{{ item.areadocid }}</span>
-                  </el-option>
-                </el-select>
-              </template>
-            </el-card>
-          </div>
-          <el-row>
-            <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
-              <el-button type="primary" round @click="dialogVisible = true">提交</el-button>
-              <el-button type="danger" round>取消</el-button>
-            </el-card>
-            <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-              <span> 人员ID:{{queryShopParams.operaterId}} </span>
-              <span> 门店名称:{{queryShopParams.shopName}} </span>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addInckShopStart">确 定</el-button>
-              </span>
-            </el-dialog>
-          </el-row>
-        </el-main>
-      </el-card>
+      <el-header style="text-align: center; font-size: 30px">
+        <span>{{ titieAddShop }}</span>
+      </el-header>
+      <el-main>
+        <div class="demo-input-size">
+          <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
+            <el-input size="medium" placeholder="请输入英克人员id(eg:15700)" suffix-icon="el-icon-user"
+              v-model="queryShopParams.operaterId">
+              <template slot="prepend">英克人员ID</template>
+            </el-input>
+          </el-card>
+          <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
+            <el-input size="medium" placeholder="请输入门店名称(eg:湖南达嘉维康医药产业股份有限公司XXX店)" suffix-icon="el-icon-circle-plus"
+              v-model="queryShopParams.shopName">
+              <template slot="prepend">门店名称</template>
+            </el-input>
+          </el-card>
+          <el-card>
+            <template>
+              <el-select v-model="queryShopParams.areaId" placeholder="选择门店区域类型">
+                <el-option v-for="item in options" :key="item.areadocid" :label="item.areaname" :value="item.areadocid">
+                  <span style="float: left; color: #5686bf; font-size: 15px">{{ item.areaname }}</span>
+                  <span style="float: right; color: #FF0000; font-size: 15px">{{ item.areadocid }}</span>
+                </el-option>
+              </el-select>
+            </template>
+          </el-card>
+        </div>
+        <el-row>
+          <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
+            <el-button type="primary" round @click="dialogVisible = true">执行</el-button>
+            <el-button type="danger" round>取消</el-button>
+          </el-card>
+          <el-dialog title="仔细确认三个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <span style="float: left; color: #5686bf; font-size: 15px; font-weight: bold;">人员ID:{{
+            queryShopParams.operaterId }}</span>
+            <span style="float: center; color: #5686bf; font-size: 15px; font-weight: bold;">门店名称:{{
+            queryShopParams.shopName }}</span>
+            <span style="float: right; color: #5686bf; font-size: 15px; font-weight: bold;">区域ID:{{
+            queryShopParams.areaId }}</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="addInckShopStart">确 定</el-button>
+            </span>
+          </el-dialog>
+        </el-row>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <style>
+
 .el-select .el-input {
   width: 130px;
 }
@@ -73,6 +75,7 @@
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
 }
+
 </style>
 
 <script>
@@ -114,6 +117,7 @@ export default {
       })
     },
     addInckShopStart () {
+      this.dialogVisible = false
       addInckShop(this.queryShopParams).then((_result) => {
         this.dialogFormVisible = false
         if (_result.data.code === 200) {

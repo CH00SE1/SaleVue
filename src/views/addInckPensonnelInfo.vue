@@ -15,46 +15,47 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-card class="box-card" shadow="hover" :body-style="{ padding: '15px 200px' }">
-        <el-header style="text-align: center; font-size: 30px">
-          <span>{{ titleAddPensonnel }}</span>
-        </el-header>
-        <el-main>
-          <div class="demo-input-size">
-            <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
-              <el-input size="medium" placeholder="请输入新门店ID(eg:16410)" suffix-icon="el-icon-user"
-                v-model="queryPensonnelParams.newShopId">
-                <template slot="prepend">新门店ID</template>
-              </el-input>
-            </el-card>
-            <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
-              <el-input size="medium" placeholder="请输入旧门店ID(eg:32)" suffix-icon="el-icon-circle-plus"
-                v-model="queryPensonnelParams.oldShopId">
-                <template slot="prepend">旧门店ID</template>
-              </el-input>
-            </el-card>
-          </div>
-          <el-row>
-            <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
-              <el-button type="primary" round @click="dialogVisible = true">提交</el-button>
-              <el-button type="danger" round>取消</el-button>
-            </el-card>
-            <el-dialog title="提示" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-              <span> 新门店ID:{{queryPensonnelParams.newShopId}} </span>
-              <span> 旧门店ID:{{queryPensonnelParams.oldShopId}} </span>
-              <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
-                <el-button type="primary" @click="addInckPensonnelStart">确 定</el-button>
-              </span>
-            </el-dialog>
-          </el-row>
-        </el-main>
-      </el-card>
+      <el-header style="text-align: center; font-size: 30px">
+        <span>{{ titleAddPensonnel }}</span>
+      </el-header>
+      <el-main>
+        <div class="demo-input-size">
+          <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
+            <el-input size="medium" placeholder="请输入新门店ID(eg:16410)" suffix-icon="el-icon-user"
+              v-model="queryPensonnelParams.newShopId">
+              <template slot="prepend">新门店ID</template>
+            </el-input>
+          </el-card>
+          <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
+            <el-input size="medium" placeholder="请输入旧门店ID(eg:32)" suffix-icon="el-icon-circle-plus"
+              v-model="queryPensonnelParams.oldShopId">
+              <template slot="prepend">旧门店ID</template>
+            </el-input>
+          </el-card>
+        </div>
+        <el-row>
+          <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
+            <el-button type="primary" round @click="dialogVisible = true">执行</el-button>
+            <el-button type="danger" round>取消</el-button>
+          </el-card>
+          <el-dialog title="仔细确认两个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <span style="float: left; color: #5686bf; font-size: 15px; font-weight: bold;">新门店ID:{{
+            queryPensonnelParams.newShopId }}</span>
+            <span style="float: center; color: #5686bf; font-size: 15px; font-weight: bold;">旧门店ID:{{
+            queryPensonnelParams.oldShopId }}</span>
+            <span slot="footer" class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="addInckPensonnelStart">确 定</el-button>
+            </span>
+          </el-dialog>
+        </el-row>
+      </el-main>
     </el-container>
   </el-container>
 </template>
 
 <style>
+
 .el-select .el-input {
   width: 130px;
 }
@@ -62,6 +63,7 @@
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
 }
+
 </style>
 
 <script>
@@ -87,6 +89,7 @@ export default {
         .catch(_ => {})
     },
     addInckPensonnelStart () {
+      this.dialogVisible = false
       addPensonnel(this.queryPensonnelParams).then((_result) => {
         this.dialogFormVisible = false
         if (_result.data.code === 200) {
