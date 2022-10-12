@@ -63,6 +63,7 @@
         </el-row>
       </el-main>
     </el-container>
+    <div id="copyright">copyright © 刘少雄</div>
   </el-container>
 </template>
 
@@ -74,6 +75,13 @@
 
 .input-with-select .el-input-group__prepend {
   background-color: #fff;
+}
+
+#copyright{
+  color: rgb(0, 0, 0);
+  position: absolute;
+  top: 97%;
+  left: 45%;
 }
 
 </style>
