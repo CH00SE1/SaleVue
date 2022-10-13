@@ -1,10 +1,10 @@
 import request, { postRequest } from '../utils/request'
 
 // 查询当天销售列表
-export function listDaySale (query) {
+export function listDaySale (dateStr, shopId) {
   return request({
     methed: 'get',
-    url: '/sales/shop/' + query + '/32'
+    url: '/sales/shop/' + dateStr + '/' + shopId
   })
 }
 

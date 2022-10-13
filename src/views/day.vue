@@ -3,16 +3,19 @@
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-button type="text" @click="dialogFormVisible = true">销售查询</el-button>
-        <el-dialog title="选择日期" :visible.sync="dialogFormVisible">
-          <el-form :model="queryParams">
-            <template>
-              <el-select v-model="queryParams.DateStr" placeholder="选择时间段">
+        <el-dialog title="查询条件选择" :visible.sync="dialogFormVisible" width="30%">
+          <el-form :model="queryParams" label-width="80px">
+            <el-form-item label="门店ID">
+              <el-input v-model="queryParams.shopId"></el-input>
+            </el-form-item>
+            <el-form-item label="时间段">
+              <el-select v-model="queryParams.dateStr" placeholder="选择时间段">
                 <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                  <span style="float: left">{{ item.label }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                  <span style="float: left; color: #008792; font-size: 13px">{{ item.label }}</span>
+                  <span style="float: right; color: #ed1941; font-size: 13px">{{ item.value }}</span>
                 </el-option>
               </el-select>
-            </template>
+            </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
             <el-button @click="dialogFormVisible = false">取 消</el-button>
@@ -271,7 +274,8 @@ export default {
         pageNum: 1,
         pageSize: 50,
         eName: null,
-        DateStr: 'day'
+        dateStr: 'day',
+        shopId: '32'
       },
       orderBean: {},
       rows: {}
@@ -285,7 +289,7 @@ export default {
     })
   },
   created () {
-    this.getList(this.queryParams.DateStr)
+    this.getList(this.queryParams)
   },
   methods: {
     // 导出excel表格
@@ -302,17 +306,25 @@ export default {
       } catch (e) { if (typeof console !== 'undefined') console.log(e, wbout) }
       return wbout
     },
-    getList (date) {
-      listDaySale(date).then((_result) => {
-        this.saleList = _result.data.data.sales_info_details
-        for (var i = 0; i < this.saleList.length; i++) {
-          this.saleYmlList[i] = this.saleList[i].sum_money
-          this.saleYmlmoneyList[i] = this.saleList[i].sum_fl_money
-          this.saleXnameList[i] = this.saleList[i].name
+    getList (query) {
+      listDaySale(query.dateStr, query.shopId).then((_result) => {
+        if (_result.data.code === 200) {
+          this.saleList = _result.data.data.sales_info_details
+          for (var i = 0; i < this.saleList.length; i++) {
+            this.saleYmlList[i] = this.saleList[i].sum_money
+            this.saleYmlmoneyList[i] = this.saleList[i].sum_fl_money
+            this.saleXnameList[i] = this.saleList[i].name
+          }
+          this.drawLine('main')
+          this.title = _result.data.data.title
+          this.loading = false
+        } else {
+          this.$message({
+            showClose: true,
+            message: _result.data.msg,
+            type: 'error'
+          })
         }
-        this.drawLine('main')
-        this.title = _result.data.data.title
-        this.loading = false
       }).catch((_err) => {
         this.$message({
           showClose: true,
@@ -487,7 +499,7 @@ export default {
       this.saleYmlList = []
       this.saleYmlmoneyList = []
       this.saleXnameList = []
-      this.getList(this.queryParams.DateStr)
+      this.getList(this.queryParams)
       this.dialogFormVisible = false
     }
   }

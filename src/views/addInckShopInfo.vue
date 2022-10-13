@@ -49,11 +49,11 @@
             <el-button type="danger" round>取消</el-button>
           </el-card>
           <el-dialog title="仔细确认三个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <span style="float: left; color: #5686bf; font-size: 15px; font-weight: bold;">人员ID:{{
+            <span style="float: left; color: #007d65; font-size: 15px; font-weight: bold;">人员ID:{{
             queryShopParams.operaterId }}</span>
-            <span style="float: center; color: #5686bf; font-size: 15px; font-weight: bold;">门店名称:{{
+            <span style="float: center; color: #d71345; font-size: 15px; font-weight: bold;">门店名称:{{
             queryShopParams.shopName }}</span>
-            <span style="float: right; color: #5686bf; font-size: 15px; font-weight: bold;">区域ID:{{
+            <span style="float: right; color: #426ab3; font-size: 15px; font-weight: bold;">区域ID:{{
             queryShopParams.areaId }}</span>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible = false">取 消</el-button>
