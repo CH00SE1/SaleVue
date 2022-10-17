@@ -3,7 +3,7 @@
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
       <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
         <el-button type="text" @click="dialogFormVisible = true">销售查询</el-button>
-        <el-dialog title="查询条件选择" :visible.sync="dialogFormVisible" width="30%">
+        <el-dialog title="查询条件选择" :visible.sync="dialogFormVisible" width="60%">
           <el-form :model="queryParams" label-width="80px">
             <el-form-item label="门店ID">
               <el-input v-model="queryParams.shopId"></el-input>
@@ -319,11 +319,19 @@ export default {
           this.title = _result.data.data.title
           this.loading = false
         } else {
-          this.$message({
-            showClose: true,
-            message: _result.data.msg,
-            type: 'error'
-          })
+          if (_result.data.msg === null) {
+            this.$message({
+              showClose: true,
+              message: '数据库异常未获取到数据',
+              type: 'error'
+            })
+          } else {
+            this.$message({
+              showClose: true,
+              message: _result.data.msg,
+              type: 'error'
+            })
+          }
         }
       }).catch((_err) => {
         this.$message({

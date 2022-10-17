@@ -160,7 +160,7 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 5,
-        placepointid: null
+        placepointid: 32
       }
     }
   },
@@ -204,7 +204,7 @@ export default {
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: '后端接口连接异常111',
+          message: '后端接口连接异常',
           type: 'error'
         })
       })
@@ -239,7 +239,7 @@ export default {
     },
     resetQuery () {
       this.loading = true
-      this.queryParams.placepointid = null
+      this.queryParams.placepointid = 32
       this.getList()
     }
   }

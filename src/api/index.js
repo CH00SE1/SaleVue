@@ -55,6 +55,9 @@ export function useMacList (query) {
   return request({
     method: 'get',
     url: '/npMacReq/user_list',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
     params: query
   })
 }

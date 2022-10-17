@@ -164,15 +164,15 @@ export default {
   methods: {
     getList () {
       useMacList(this.queryParams).then((_result) => {
-        this.macs = _result.data.data.rows
-        this.total = _result.data.data.total
-        this.loading = false
         if (_result.data.code === 200) {
+          this.macs = _result.data.data.rows
+          this.total = _result.data.data.total
+          this.loading = false
           this.title = '网卡使用表'
         } else {
           this.$message({
             showClose: true,
-            message: '获取数据失败',
+            message: _result.data.msg,
             type: 'error'
           })
         }
