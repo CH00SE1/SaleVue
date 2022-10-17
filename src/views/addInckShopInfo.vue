@@ -49,12 +49,19 @@
             <el-button type="danger" round>取消</el-button>
           </el-card>
           <el-dialog title="仔细确认三个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <span style="float: left; color: #007d65; font-size: 15px; font-weight: bold;">人员ID:{{
-            queryShopParams.operaterId }}</span>
-            <span style="float: center; color: #d71345; font-size: 15px; font-weight: bold;">门店名称:{{
-            queryShopParams.shopName }}</span>
-            <span style="float: right; color: #426ab3; font-size: 15px; font-weight: bold;">区域ID:{{
-            queryShopParams.areaId }}</span>
+            <el-card class="box-card" style="padding: 15px 20px">
+              <el-row :gutter="24">
+                <el-col :span="24">
+                  <div class="grid-content">人员ID：<b>{{ queryShopParams.operaterId }}</b></div>
+                </el-col>
+                <el-col :span="24">
+                  <div class="grid-content">门店名称：<b>{{ queryShopParams.shopName }}</b></div>
+                </el-col>
+                <el-col :span="24">
+                  <div class="grid-content">区域ID：<b>{{ queryShopParams.areaId }}</b></div>
+                </el-col>
+              </el-row>
+            </el-card>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible = false">取 消</el-button>
               <el-button type="primary" @click="addInckShopStart">确 定</el-button>

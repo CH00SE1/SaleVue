@@ -39,10 +39,16 @@
             <el-button type="danger" round>取消</el-button>
           </el-card>
           <el-dialog title="仔细确认两个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <span style="float: left; color: #ef5b9c; font-size: 15px; font-weight: bold;">新门店ID:{{
-            queryPensonnelParams.newShopId }}</span>
-            <span style="float: center; color: #f47920; font-size: 15px; font-weight: bold;">旧门店ID:{{
-            queryPensonnelParams.oldShopId }}</span>
+            <el-card class="box-card" style="padding: 15px 20px">
+              <el-row :gutter="24">
+                <el-col :span="24">
+                  <div class="grid-content">新门店ID：<b>{{ queryPensonnelParams.newShopId }}</b></div>
+                </el-col>
+                <el-col :span="24">
+                  <div class="grid-content">旧门店ID：<b>{{ queryPensonnelParams.oldShopId }}</b></div>
+                </el-col>
+              </el-row>
+            </el-card>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible = false">取 消</el-button>
               <el-button type="primary" @click="addInckPensonnelStart">确 定</el-button>
