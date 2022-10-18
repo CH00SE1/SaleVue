@@ -36,9 +36,7 @@
       </template>
       <el-main>
         <template>
-          <el-table :row-class-name="tableRowClassName" :data="saleList" v-loading="loading" show-summary
-            style="width: 100%" :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
-            :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
+          <el-table v-loading="loading" :data="saleList" height="400">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">
@@ -72,15 +70,18 @@
                 </el-form>
               </template>
             </el-table-column>
-            <el-table-column prop="name" label="姓名" width="80"></el-table-column>
-            <el-table-column prop="sum_money" label="总销售" width="120"></el-table-column>
-            <el-table-column prop="sum_fl_money" label="提成"> </el-table-column>
-            <el-table-column prop="fl.黄金单品" label="黄金单品"> </el-table-column>
-            <el-table-column prop="fl.A" label="A类"> </el-table-column>
-            <el-table-column prop="fl.B" label="B类"> </el-table-column>
-            <el-table-column prop="fl.C" label="C类"> </el-table-column>
-            <el-table-column prop="fl.D" label="D类"> </el-table-column>
-            <el-table-column prop="fl.E" label="E类"> </el-table-column>
+            <el-table-column prop="name" label="姓名" align="center" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="sum_money" label="总销售" align="center" :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column prop="sum_fl_money" label="提成" align="center" :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column prop="fl.黄金单品" label="黄金单品" align="center" :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column prop="fl.A" label="A类" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column prop="fl.B" label="B类" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column prop="fl.C" label="C类" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column prop="fl.D" label="D类" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column prop="fl.E" label="E类" align="center" :show-overflow-tooltip="true"> </el-table-column>
             <el-table-column fixed="right" label="操作" width="160">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
@@ -95,11 +96,9 @@
                 </el-button>
                 <el-dialog :append-to-body="true" custom-class="customWidth" :title="saleDetailName"
                   :visible.sync="dialogTableVisible" :modal-append-to-body="false">
-                  <el-table :span-method="objectSpanMethod" height="700px" border v-loading="loading"
-                    :data="saledtlList.filter(data => !search || data.goodsname.toLowerCase().includes(search.toLowerCase()))"
-                    highlight-current-row style="width: 150%" :row-style="{ height: '0' }"
-                    :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-                    <el-table-column fixed="left" property="rsaid" label="流水总单ID" width="100">
+                  <el-table v-loading="loading" :data="saledtlList">
+                    <el-table-column fixed="left" property="rsaid" label="流水总单ID" align="center"
+                      :show-overflow-tooltip="true">
                       <template slot-scope="scope">
                         <el-popover trigger="click" placement="top">
                           <p>流水总单ID:{{ scope.row.rsaid }}</p>
@@ -109,33 +108,41 @@
                         </el-popover>
                       </template>
                     </el-table-column>
-                    <!-- <el-table-column property="rsadtlid" label="流水细单ID" width="100"></el-table-column> -->
-                    <el-table-column property="credate" label="创建时间" width="200">
+                    <el-table-column property="credate" label="创建时间" align="center" :show-overflow-tooltip="true">
                       <template slot-scope="scope">
                         <i class="el-icon-time"></i>
                         <span style="margin-left: 10px">{{ scope.row.credate }}</span>
                       </template>
                     </el-table-column>
-                    <!-- <el-table-column type="index" width="50"></el-table-column> -->
-                    <el-table-column property="insidername" label="会员姓名" width="160"></el-table-column>
-                    <el-table-column property="goodsid" label="药品ID" width="100"></el-table-column>
-                    <el-table-column property="goodsname" label="药品名称" width="200">
+                    <el-table-column property="insidername" label="会员姓名" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="goodsid" label="药品ID" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="goodsname" label="药品名称" align="center" :show-overflow-tooltip="true">
                       <template slot="header">
                         <el-input v-model="search" size="mini" placeholder="输入药品名称搜索" />
                       </template>
                     </el-table-column>
-                    <el-table-column property="goodstype" label="药品规格" width="180"></el-table-column>
-                    <el-table-column property="factoryname" label="厂家" width="230"></el-table-column>
-                    <el-table-column property="goodsqty" label="销售数量" width="100"></el-table-column>
-                    <el-table-column property="realmoney" label="实收金额" width="100"></el-table-column>
-                    <el-table-column property="fl" label="毛利分类" width="100"></el-table-column>
-                    <!-- <el-table-column property="placepointid" label="门店ID" width="100"></el-table-column> -->
-                    <el-table-column property="batchid" label="批次ID" width="120"></el-table-column>
-                    <el-table-column property="lotno" label="批号" width="120"></el-table-column>
-                    <el-table-column property="hospitalname" label="流向医院" width="200"></el-table-column>
-                    <el-table-column property="recipehospital" label="处方医院" width="200"></el-table-column>
-                    <!-- <el-table-column property="posno" label="柜组分类" width="100"></el-table-column> -->
-                    <el-table-column fixed="right" property="employeename" label="营业员" width="90">
+                    <el-table-column property="goodstype" label="药品规格" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="factoryname" label="厂家" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="goodsqty" label="销售数量" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="realmoney" label="实收金额" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="fl" label="毛利分类" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="batchid" label="批次ID" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="lotno" label="批号" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="hospitalname" label="流向医院" align="center" :show-overflow-tooltip="true">
+                    </el-table-column>
+                    <el-table-column property="recipehospital" label="处方医院" align="center"
+                      :show-overflow-tooltip="true"></el-table-column>
+                    <el-table-column fixed="right" property="employeename" label="营业员" align="center"
+                      :show-overflow-tooltip="true">
                       <template slot-scope="scope">
                         <el-popover trigger="hover" placement="top">
                           <p>毛利分类: {{ scope.row.fl }}</p>
@@ -148,7 +155,7 @@
                         </el-popover>
                       </template>
                     </el-table-column>
-                    <el-table-column fixed="right" label="操作" width="90">
+                    <el-table-column fixed="right" label="操作">
                       <el-button
                         @click.native.prevent="exportExcel('.el-dialog__body .el-table__fixed-right', '个人销售明细')"
                         @click="dialogTableVisible = true" type="danger" size="mini">
@@ -313,19 +320,11 @@ export default {
           this.title = _result.data.data.title
           this.loading = false
         } else {
-          if (_result.data.msg === null) {
-            this.$message({
-              showClose: true,
-              message: '数据库异常未获取到数据',
-              type: 'error'
-            })
-          } else {
-            this.$message({
-              showClose: true,
-              message: _result.data.msg,
-              type: 'error'
-            })
-          }
+          this.$message({
+            showClose: true,
+            message: _result.data.msg,
+            type: 'error'
+          })
         }
       }).catch((_err) => {
         this.$message({

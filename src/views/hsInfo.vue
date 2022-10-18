@@ -32,36 +32,31 @@
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header style="text-align: center; font-size: 30px">
+      <el-header style="text-align: center; font-size: 20px">
         <span>{{ queryParams.title }}{{ queryParams.platform }}</span>
       </el-header>
       <el-main>
         <template>
-          <el-table :row-class-name="tableRowClassName" v-loading="loading" :data="hsInfoList" style="width: 150%"
-            :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }" ref="multipleTable" tooltip-effect="dark"
-            :header-cell-style="{ background: '#eef1f6', color: '#606266' }" @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="55">
-            </el-table-column>
-            <el-table-column prop="id" label="序号ID" width="100">
+          <el-table v-loading="loading" :data="hsInfoList" height="770"  @selection-change="handleSelectionChange">
+            <el-table-column type="selection" width="55" align="center" />
+            <el-table-column prop="id" label="ID" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">{{ scope.row.id }}</template>
             </el-table-column>
-            <el-table-column prop="createdAt" label="创建时间" width="200">
+            <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <i class="el-icon-time"></i>
                 <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
               </template>
             </el-table-column>
-            <el-table-column prop="classId" label="分类ID"></el-table-column>
-            <el-table-column prop="title" label="标题" width="400">
+            <el-table-column prop="classId" label="分类ID" align="center" :show-overflow-tooltip="true"></el-table-column>
+            <el-table-column prop="title" label="标题" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <a :href="scope.row.url" target="_blank">
                   {{scope.row.title}}
                 </a>
               </template>
             </el-table-column>
-            <!-- <el-table-column prop="url" label="在线播放"></el-table-column> -->
-            <!-- <el-table-column prop="m3u8Url" label="视频下载"> </el-table-column> -->
-            <el-table-column min-width="55" prop="photoUrl" label="预览图" width="210">
+            <el-table-column min-width="55" prop="photoUrl" label="预览图" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <el-popover placement="top-start" title="" trigger="hover">
                   <img :src="scope.row.photoUrl" />
@@ -69,7 +64,7 @@
                 </el-popover>
               </template>
             </el-table-column>
-            <el-table-column prop="platform" label="平台" width="180">
+            <el-table-column prop="platform" label="平台" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <el-popover trigger="hover" placement="top">
                   <p>url: {{ scope.row.url }}</p>
@@ -80,9 +75,9 @@
                 </el-popover>
               </template>
             </el-table-column>
-            <el-table-column prop="page" label="页码"> </el-table-column>
-            <el-table-column prop="location" label="位置"> </el-table-column>
-            <el-table-column fixed="right" label="操作" width="200">
+            <el-table-column prop="page" label="页码" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column prop="location" label="位置" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column fixed="right" label="操作" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="downloadRow(scope.$index)" type="danger" size="mini">
                   下载
@@ -94,10 +89,6 @@
               </template>
             </el-table-column>
           </el-table>
-          <!-- <div style="margin-top: 20px">
-            <el-button @click="toggleSelection([hsInfoList[0], hsInfoList[1]])">选第一第二行</el-button>
-            <el-button @click="toggleSelection()">取消全选</el-button>
-          </div> -->
           <div class="pagination">
             <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
               :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
@@ -164,7 +155,7 @@ export default {
       queryParams: {
         title: null,
         pageNum: 1,
-        pageSize: 5,
+        pageSize: 10,
         classId: null,
         platform: null,
         page: null
@@ -262,13 +253,6 @@ export default {
         })
       }
     },
-    tableRowClassName ({row, rowIndex}) {
-      if (rowIndex % 2 === 1) {
-        return 'warning-row'
-      } else {
-        return 'success-row'
-      }
-    },
     toggleSelection (rows) {
       if (rows) {
         rows.forEach(row => {
@@ -281,9 +265,12 @@ export default {
     handleSelectionChange (val) {
       this.multipleSelection = val
       if (this.multipleSelection.length !== 0) {
-        this.$message({showClose: true, message: this.multipleSelection, type: 'success', center: true})
-      } else {
-        this.$message({message: '取消选择', center: true})
+        this.$message({
+          showClose: true,
+          message: this.multipleSelection,
+          type: 'success',
+          center: true
+        })
       }
     }
   }

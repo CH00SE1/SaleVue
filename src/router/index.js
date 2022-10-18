@@ -59,7 +59,8 @@ export default new Router({
       component: addInckPensonnelInfo
     }
   ],
-  mode: 'history', // 去掉url中的#
-  base: '/lsx/',
+  // 去掉url中的#
+  mode: 'history',
+  base: '/sale/',
   scrollBehavior: () => ({ y: 0 })
 })

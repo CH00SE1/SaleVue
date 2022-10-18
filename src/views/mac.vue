@@ -1,5 +1,5 @@
 <template>
-  <el-container style="height: 800px; border: 1px solid #eee">
+  <el-container style="height: 900px; border: 1px solid #eee">
     <navigation ref="navigation"></navigation>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
@@ -84,7 +84,7 @@ export default {
       loading: true,
       queryParams: {
         pageNum: 1,
-        pageSize: 15
+        pageSize: 10
       }
     }
   },
