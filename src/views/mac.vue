@@ -1,38 +1,28 @@
 <template>
   <el-container style="height: 800px; border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
-        <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>英克操作</template>
-          <el-menu-item-group>
-            <el-menu-item index="/mac">请求表操作</el-menu-item>
-            <el-menu-item index="/usemac">使用表操作</el-menu-item>
-            <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
-            <el-menu-item index="/addInckShopInfo">门店创建</el-menu-item>
-            <el-menu-item index="/addInckPensonnelInfo">人员创建</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
-      </el-menu>
-    </el-aside>
+    <navigation ref="navigation"></navigation>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
         <span>{{ title }}</span>
       </el-header>
       <el-main>
         <template>
-          <el-table v-loading="loading" border :data="macs" style="width: 150%" :row-style="{ height: '0' }"
-            :cell-style="{ padding: '3px' }" :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-            <el-table-column prop="seqid" label="序列" width="70">
+          <el-table v-loading="loading" :data="macs">
+            <el-table-column prop="seqid" label="序列" align="center">
             </el-table-column>
-            <el-table-column prop="credate" label="申请时间" width="170">
+            <el-table-column prop="credate" label="申请时间" align="center" :show-overflow-tooltip="true">
             </el-table-column>
-            <el-table-column prop="mac" label="MAC地址" width="170"> </el-table-column>
-            <el-table-column prop="fromip" label="请求IP地址" width="160"> </el-table-column>
-            <el-table-column prop="memo" label="请求信息"> </el-table-column>
-            <el-table-column prop="reqdate" label="请求时间" width="170"> </el-table-column>
-            <el-table-column prop="reqip" label="请求人IP" width="160"> </el-table-column>
-            <el-table-column prop="reqemployeeid" label="请求人工号"> </el-table-column>
-            <el-table-column prop="reqemployeename" label="请求人姓名"> </el-table-column>
+            <el-table-column prop="mac" label="MAC地址" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column prop="fromip" label="请求IP地址" align="center" :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column prop="memo" label="请求信息" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column prop="reqdate" label="请求时间" align="center" :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column prop="reqip" label="请求人IP" align="center" :show-overflow-tooltip="true"> </el-table-column>
+            <el-table-column prop="reqemployeeid" label="请求人工号" align="center" :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column prop="reqemployeename" label="请求人姓名" align="center" :show-overflow-tooltip="true">
+            </el-table-column>
             <el-table-column fixed="right" label="操作" width="160">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="auditRow(scope.$index)" type="success" effect="dark" size="mini">
@@ -53,7 +43,6 @@
         </template>
       </el-main>
     </el-container>
-    <div id="copyright">copyright © 刘少雄 {{ time }}</div>
   </el-container>
 </template>
 
@@ -80,8 +69,12 @@
 
 <script>
 import { macList, auditMac, deleteReqMac } from '../api/index'
+import navigation from './navigation.vue'
 
 export default {
+  components: {
+    navigation
+  },
   data () {
     return {
       macs: [],
@@ -91,7 +84,7 @@ export default {
       loading: true,
       queryParams: {
         pageNum: 1,
-        pageSize: 10
+        pageSize: 15
       }
     }
   },
@@ -99,9 +92,6 @@ export default {
     this.getList()
   },
   mounted () {
-    this.$nextTick(() => {
-      setInterval(this.update_clock, 500)
-    })
   },
   methods: {
     getList () {
@@ -193,22 +183,6 @@ export default {
           type: 'error'
         })
       })
-    },
-    update_clock: function () {
-      var d = new Date()
-      var year = d.getFullYear()
-      var mon = this.gTime(d.getMonth() + 1)
-      var day = this.gTime(d.getDate())
-      var hour = this.gTime(d.getHours())
-      var minute = this.gTime(d.getMinutes())
-      var seconds = this.gTime(d.getSeconds())
-      this.time = year + '-' + mon + '-' + day + ' ' + hour + ':' + minute + ':' + seconds
-    },
-    gTime: function (num) {
-      if (num < 10) {
-        num = '0' + num
-      }
-      return num
     },
     handleSizeChange (val) {
       // 更新每页条数

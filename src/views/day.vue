@@ -22,16 +22,7 @@
             <el-button type="primary" @click="openSale">确 定</el-button>
           </div>
         </el-dialog>
-        <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>英克操作</template>
-          <el-menu-item-group>
-            <el-menu-item index="/mac">请求表操作</el-menu-item>
-            <el-menu-item index="/usemac">使用表操作</el-menu-item>
-            <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
-            <el-menu-item index="/addInckShopInfo">门店创建</el-menu-item>
-            <el-menu-item index="/addInckPensonnelInfo">人员创建</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
+        <navigation ref="navigation" :orderBean="orderBean"></navigation>
       </el-menu>
     </el-aside>
     <el-container>
@@ -102,7 +93,7 @@
                 </el-button>
                 <el-button size="mini" type="text" icon="el-icon-query" @click="handlePrint(scope.row, true)">打印
                 </el-button>
-                <el-dialog :append-to-body="true" custom-class="customWidth" title="销售明细"
+                <el-dialog :append-to-body="true" custom-class="customWidth" :title="saleDetailName"
                   :visible.sync="dialogTableVisible" :modal-append-to-body="false">
                   <el-table :span-method="objectSpanMethod" height="700px" border v-loading="loading"
                     :data="saledtlList.filter(data => !search || data.goodsname.toLowerCase().includes(search.toLowerCase()))"
@@ -242,11 +233,13 @@ import { listDaySale, listNameDaySale } from '../api/index'
 import FileSaver from 'file-saver'
 import * as XLSX from 'xlsx'
 import * as echarts from 'echarts'
+import navigation from './navigation.vue'
 import printSaleDetail from './printSaleDetail.vue'
 
 export default {
   components: {
-    printSaleDetail
+    printSaleDetail,
+    navigation
   },
   data () {
     return {
@@ -264,6 +257,7 @@ export default {
       saledtlList: [],
       title: null,
       total: null,
+      saleDetailName: null,
       // 记录index页码
       index: null,
       loading: true,
@@ -345,6 +339,7 @@ export default {
       this.loading = true
       this.index = index
       this.queryParams.eName = this.saleList[index].name
+      this.saleDetailName = this.saleList[index].name + '销售明细'
       listNameDaySale(this.queryParams).then((_result) => {
         if (_result.data.code === 200) {
           this.saledtlList = _result.data.data.rows

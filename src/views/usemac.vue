@@ -1,82 +1,69 @@
 <template>
   <el-container style="height: 800px; border: 1px solid #eee">
-    <div id="search-mac">
-      <el-input placeholder="请输入网卡mac" @keyup.enter.native="handleQuery" v-model="queryParams.mac">
-      </el-input>
-    </div>
-    <div id="search-name">
-      <el-input placeholder="请输入最后使用人姓名" @keyup.enter.native="handleQuery" v-model="queryParams.lastemployeename">
-      </el-input>
-    </div>
-    <div id="search-name2">
-      <el-input placeholder="请输入请求人姓名" @keyup.enter.native="handleQuery" v-model="queryParams.reqemployeename">
-      </el-input>
-    </div>
-    <div id="search">
-      <el-button type="primary" icon="el-icon-search" v-on:click="handleQuery">查询</el-button>
-    </div>
-    <div id="reset">
-      <el-button icon="el-icon-refresh" v-on:click="resetQuery">重置</el-button>
-    </div>
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
-        <el-submenu index="1">
-          <template slot="title"><i class="el-icon-message"></i>英克操作</template>
-          <el-menu-item-group>
-            <el-menu-item index="/mac">请求表操作</el-menu-item>
-            <el-menu-item index="/usemac">使用表操作</el-menu-item>
-            <el-menu-item index="/pengingOrder">挂单管理</el-menu-item>
-            <el-menu-item index="/addInckShopInfo">门店创建</el-menu-item>
-            <el-menu-item index="/addInckPensonnelInfo">人员创建</el-menu-item>
-          </el-menu-item-group>
-        </el-submenu>
-      </el-menu>
-    </el-aside>
+    <navigation ref="navigation"></navigation>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
-        <div id="mybreadcrunb">
-          <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/mac' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>使用管理</el-breadcrumb-item>
-          </el-breadcrumb>
-        </div>
         <span>{{ title }}</span>
       </el-header>
       <el-main>
         <template>
-          <el-table highlight-current-row="true" lazy="true" v-loading="loading" border :data="macs" style="width: 150%"
-            :row-style="{ height: '0' }" :cell-style="{ padding: '3px' }"
-            :header-cell-style="{ background: '#eef1f6', color: '#606266' }">
-            <el-table-column prop="seqid" label="序列" width="70"></el-table-column>
-            <el-table-column prop="credate" label="创建时间" width="170"></el-table-column>
-            <el-table-column prop="mac" label="MAC地址" width="170"></el-table-column>
-            <el-table-column prop="memo" label="请求信息" width="200"> </el-table-column>
-            <el-table-column prop="reqdate" label="请求时间" width="170"></el-table-column>
-            <el-table-column prop="reqip" label="请求人IP" width="140"></el-table-column>
-            <el-table-column prop="reqemployeeid" label="请求人工号"></el-table-column>
-            <el-table-column prop="reqemployeename" label="请求人姓名"> </el-table-column>
-            <el-table-column prop="lastip" label="最后登录IP" width="140"></el-table-column>
-            <el-table-column prop="lastdate" label="最后时间" width="170"></el-table-column>
-            <el-table-column prop="lastemployeeid" label="最后使用工号"></el-table-column>
-            <el-table-column prop="lastemployeename" label="最后使用姓名"></el-table-column>
-            <el-table-column fixed="right" label="操作" width="80">
-              <template slot-scope="scope">
-                <el-button @click.native.prevent="deleteRow(scope.$index)" type="danger" size="mini">
-                  删除
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="pagination">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :page-sizes="[5, 10, 15, 20, 50]" :page-size="queryParams.pageSize"
-              layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
+          <div class="app-container">
+            <el-form :model="queryParams" :inline="true" label-width="150px">
+              <el-form-item label="网卡mac" prop="mac">
+                <el-input v-model="queryParams.mac" placeholder="请输入网卡mac" clearable size="small" style="width: 240px"
+                  @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <el-form-item label="最后使用人姓名" prop="lastemployeename">
+                <el-input v-model="queryParams.lastemployeename" placeholder="请输入请求人姓名" clearable size="small"
+                  style="width: 240px" @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <el-form-item label="请求人姓名" prop="reqemployeename">
+                <el-input v-model="queryParams.reqemployeename" placeholder="请输入网卡mac" clearable size="small"
+                  style="width: 240px" @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <el-form-item>
+                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table v-loading="loading" :data="macs">
+              <el-table-column prop="seqid" label="序列" align="center"></el-table-column>
+              <el-table-column prop="credate" label="创建时间" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column prop="mac" label="MAC地址" align="center" :show-overflow-tooltip="true"></el-table-column>
+              <el-table-column prop="memo" label="请求信息" align="center" :show-overflow-tooltip="true"> </el-table-column>
+              <el-table-column prop="reqdate" label="请求时间" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column prop="reqip" label="请求人IP" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column prop="reqemployeeid" label="请求人工号" align="center"></el-table-column>
+              <el-table-column prop="reqemployeename" label="请求人姓名" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column prop="lastip" label="最后登录IP" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column prop="lastdate" label="最后时间" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column prop="lastemployeeid" label="最后使用工号" align="center"></el-table-column>
+              <el-table-column prop="lastemployeename" label="最后使用姓名" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column fixed="right" label="操作">
+                <template slot-scope="scope">
+                  <el-button @click.native.prevent="deleteRow(scope.$index)" type="danger" size="mini">
+                    删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="pagination">
+              <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :page-sizes="[5, 10, 15, 20, 50]" :page-size="queryParams.pageSize"
+                layout="total, sizes, prev, pager, next, jumper" :total="total">
+              </el-pagination>
+            </div>
           </div>
         </template>
       </el-main>
     </el-container>
-    <div id="copyright">copyright © 刘少雄 {{ time }}</div>
   </el-container>
 </template>
 
@@ -93,41 +80,8 @@
     padding-left: 0px;
     text-align: center;
 }
-#copyright{
-  color: rgb(0, 0, 0);
-  position: absolute;
-  top: 97%;
-  left: 43%;
-}
-#search-mac{
-  position: absolute;
-  top: 1%;
-  left: 24%;
-}
-#search-name{
-  position: absolute;
-  top: 1%;
-  left: 36%;
-}
-#search-name2{
-  position: absolute;
-  top: 1%;
-  left: 49%;
-}
-#search{
-  position: absolute;
-  top: 1%;
-  left: 62%;
-}
-#reset{
-  position: absolute;
-  top: 1%;
-  left: 67%;
-}
-#mybreadcrunb{
-  position: absolute;
-  top: 10%;
-  left: 12%;
+.app-container {
+  padding: 20px;
 }
 body {
     margin: 0;
@@ -136,8 +90,12 @@ body {
 
 <script>
 import { useMacList, deleteMac } from '../api/index'
+import navigation from './navigation.vue'
 
 export default {
+  components: {
+    navigation
+  },
   data () {
     return {
       macs: [],
@@ -149,7 +107,8 @@ export default {
         pageNum: 1,
         pageSize: 10,
         lastemployeename: null,
-        mac: null
+        mac: null,
+        reqemployeename: null
       }
     }
   },
@@ -157,9 +116,6 @@ export default {
     this.getList()
   },
   mounted () {
-    this.$nextTick(() => {
-      setInterval(this.update_clock, 500)
-    })
   },
   methods: {
     getList () {
@@ -227,22 +183,6 @@ export default {
           type: 'error'
         })
       })
-    },
-    update_clock: function () {
-      var d = new Date()
-      var year = d.getFullYear()
-      var mon = this.gTime(d.getMonth() + 1)
-      var day = this.gTime(d.getDate())
-      var hour = this.gTime(d.getHours())
-      var minute = this.gTime(d.getMinutes())
-      var seconds = this.gTime(d.getSeconds())
-      this.time = year + '-' + mon + '-' + day + ' ' + hour + ':' + minute + ':' + seconds
-    },
-    gTime: function (num) {
-      if (num < 10) {
-        num = '0' + num
-      }
-      return num
     },
     handleSizeChange (val) {
       // 更新每页条数

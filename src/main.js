@@ -8,12 +8,12 @@ import router from './router'
 
 import ElementUI from 'element-ui'
 
+// 引入element-ui
+import 'element-ui/lib/theme-chalk/index.css'
+
 import axios from 'axios'
 
 import VueAxios from 'vue-axios'
-
-// 引入element-ui
-import 'element-ui/lib/theme-chalk/index.css'
 
 // 在vue中使用elementui
 Vue.use(ElementUI)
