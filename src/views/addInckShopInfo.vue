@@ -30,8 +30,8 @@
         </div>
         <el-row>
           <el-card shadow="hover" :body-style="{ padding: '2px' }">
-            <el-button type="primary" round @click="dialogVisible = true">执行</el-button>
-            <el-button type="danger" round>取消</el-button>
+            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true"></el-button>
+            <el-button size="small" type="danger" icon="el-icon-close"></el-button>
           </el-card>
           <el-dialog title="仔细确认三个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <el-card class="box-card" style="padding: 15px 20px">
@@ -48,13 +48,13 @@
               </el-row>
             </el-card>
             <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addInckShopStart">确 定</el-button>
+              <el-button size="small" type="danger" icon="el-icon-close" @click="dialogVisible = false" circle></el-button>
+              <el-button size="small" type="primary" icon="el-icon-check" @click="addInckShopStart" circle></el-button>
             </span>
           </el-dialog>
         </el-row>
         <el-header style="text-align: left; font-size: 25px">
-          <span>门店创建日志记录</span>
+          <span><el-badge :value="posSize" class="item">门店创建日志记录</el-badge></span>
         </el-header>
         <el-table v-loading="loading" :data="poslist" height="450">
           <el-table-column prop="id" label="序列" align="center" :show-overflow-tooltip="true" />
@@ -65,7 +65,7 @@
           <el-table-column prop="counterId" label="柜组ID" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="storageId" label="保管账ID" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="status" label="状态[0:未执行,1:已执行]" align="center" :show-overflow-tooltip="true" />
-          <el-table-column prop="operaterId" label="操作人员ID" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="employeename" label="操作人员" align="center" :show-overflow-tooltip="true" />
         </el-table>
       </el-main>
     </el-container>
@@ -105,6 +105,7 @@ export default {
       options: [],
       // 操作记录数据
       poslist: [],
+      posSize: null,
       dialogVisible: false,
       loading: true,
       titieAddShop: '英克门店新增模块',
@@ -133,20 +134,20 @@ export default {
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: '分组获取门店区域分类后端接口连接异常',
+          message: '获取门店区域分类后端接口连接异常',
           type: 'error'
         })
       })
     },
     getPosList () {
       posList().then((_result) => {
-        console.log(_result.data.data)
         this.poslist = _result.data.data
+        this.posSize = this.poslist.length
         this.loading = false
       }).catch((_err) => {
         this.$message({
           showClose: true,
-          message: '操作记录获取失败',
+          message: '获取门店创建操作记录后端接口连接异常',
           type: 'error'
         })
       })
@@ -161,6 +162,7 @@ export default {
             message: _result.data.msg,
             type: 'success'
           })
+          this.getPosList()
         } else {
           this.$message({
             showClose: true,

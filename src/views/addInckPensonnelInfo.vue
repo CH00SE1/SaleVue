@@ -7,13 +7,13 @@
       </el-header>
       <el-main>
         <div class="demo-input-size">
-          <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
+          <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
             <el-input size="medium" placeholder="请输入新门店ID(eg:16410)" suffix-icon="el-icon-user"
               v-model="queryPensonnelParams.newShopId">
               <template slot="prepend">新门店ID</template>
             </el-input>
           </el-card>
-          <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
+          <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
             <el-input size="medium" placeholder="请输入旧门店ID(eg:32)" suffix-icon="el-icon-circle-plus"
               v-model="queryPensonnelParams.oldShopId">
               <template slot="prepend">旧门店ID</template>
@@ -21,9 +21,9 @@
           </el-card>
         </div>
         <el-row>
-          <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
-            <el-button type="primary" round @click="dialogVisible = true">执行</el-button>
-            <el-button type="danger" round>取消</el-button>
+          <el-card shadow="hover" :body-style="{ padding: '2px' }">
+            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true"></el-button>
+            <el-button size="small" type="danger" icon="el-icon-close"></el-button>
           </el-card>
           <el-dialog title="仔细确认两个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <el-card class="box-card" style="padding: 15px 20px">
@@ -37,8 +37,8 @@
               </el-row>
             </el-card>
             <span slot="footer" class="dialog-footer">
-              <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="addInckPensonnelStart">确 定</el-button>
+              <el-button size="small" type="danger" icon="el-icon-close" @click="dialogVisible = false" circle>取 消</el-button>
+              <el-button size="small" type="primary" icon="el-icon-check" @click="addInckPensonnelStart" circle>确 定</el-button>
             </span>
           </el-dialog>
         </el-row>
