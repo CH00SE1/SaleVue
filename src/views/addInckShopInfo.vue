@@ -1,5 +1,5 @@
 <template>
-  <el-container style="height: 800px; border: 1px solid #eee">
+  <el-container style="height: 900px; border: 1px solid #eee">
     <navigation ref="navigation"></navigation>
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
@@ -7,31 +7,29 @@
       </el-header>
       <el-main>
         <div class="demo-input-size">
-          <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
+          <el-card shadow="hover" :body-style="{ padding: '2px 2px 2px 2px' }">
             <el-input size="medium" placeholder="请输入英克人员id(eg:15700)" suffix-icon="el-icon-user"
               v-model="queryShopParams.operaterId">
               <template slot="prepend">英克人员ID</template>
             </el-input>
           </el-card>
-          <el-card shadow="hover" :body-style="{ padding: '5px 5px 5px 5px' }">
+          <el-card shadow="hover" :body-style="{ padding: '2px 2px 2px 2px' }">
             <el-input size="medium" placeholder="请输入门店名称(eg:湖南达嘉维康医药产业股份有限公司XXX店)" suffix-icon="el-icon-circle-plus"
               v-model="queryShopParams.shopName">
               <template slot="prepend">门店名称</template>
             </el-input>
           </el-card>
-          <el-card>
-            <template>
-              <el-select v-model="queryShopParams.areaId" placeholder="选择门店区域类型">
-                <el-option v-for="item in options" :key="item.areadocid" :label="item.areaname" :value="item.areadocid">
-                  <span style="float: left; color: #5686bf; font-size: 15px">{{ item.areaname }}</span>
-                  <span style="float: right; color: #FF0000; font-size: 15px">{{ item.areadocid }}</span>
-                </el-option>
-              </el-select>
-            </template>
+          <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
+            <el-select v-model="queryShopParams.areaId" placeholder="选择门店区域类型">
+              <el-option v-for="item in options" :key="item.areadocid" :label="item.areaname" :value="item.areadocid">
+                <span style="float: left; color: #5686bf; font-size: 15px">{{ item.areaname }}</span>
+                <span style="float: right; color: #FF0000; font-size: 15px">{{ item.areadocid }}</span>
+              </el-option>
+            </el-select>
           </el-card>
         </div>
         <el-row>
-          <el-card shadow="hover" :body-style="{ padding: '17px 160px' }">
+          <el-card shadow="hover" :body-style="{ padding: '2px' }">
             <el-button type="primary" round @click="dialogVisible = true">执行</el-button>
             <el-button type="danger" round>取消</el-button>
           </el-card>
@@ -55,6 +53,20 @@
             </span>
           </el-dialog>
         </el-row>
+        <el-header style="text-align: left; font-size: 25px">
+          <span>门店创建日志记录</span>
+        </el-header>
+        <el-table v-loading="loading" :data="poslist" height="450">
+          <el-table-column prop="id" label="序列" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="posId" label="货架ID" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="shopId" label="门店ID" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="shopName" label="门店名称" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="counterId" label="柜组ID" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="storageId" label="保管账ID" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="status" label="状态[0:未执行,1:已执行]" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="operaterId" label="操作人员ID" align="center" :show-overflow-tooltip="true" />
+        </el-table>
       </el-main>
     </el-container>
     <div id="copyright">copyright © 刘少雄</div>
@@ -81,7 +93,7 @@
 </style>
 
 <script>
-import { addInckShop, shopAreaList } from '../api/index'
+import { addInckShop, shopAreaList, posList } from '../api/index'
 import navigation from './navigation.vue'
 
 export default {
@@ -91,7 +103,10 @@ export default {
   data () {
     return {
       options: [],
+      // 操作记录数据
+      poslist: [],
       dialogVisible: false,
+      loading: true,
       titieAddShop: '英克门店新增模块',
       queryShopParams: {
         operaterId: '',
@@ -102,6 +117,7 @@ export default {
   },
   created () {
     this.getshopAreaList()
+    this.getPosList()
   },
   methods: {
     handleClose (done) {
@@ -118,6 +134,19 @@ export default {
         this.$message({
           showClose: true,
           message: '分组获取门店区域分类后端接口连接异常',
+          type: 'error'
+        })
+      })
+    },
+    getPosList () {
+      posList().then((_result) => {
+        console.log(_result.data.data)
+        this.poslist = _result.data.data
+        this.loading = false
+      }).catch((_err) => {
+        this.$message({
+          showClose: true,
+          message: '操作记录获取失败',
           type: 'error'
         })
       })

@@ -178,3 +178,11 @@ export function shopAreaList () {
     url: '/sales/shopAreaList'
   })
 }
+
+// 查询门店生成记录
+export function posList () {
+  return postRequest({
+    method: 'post',
+    url: '/sales/posList'
+  })
+}

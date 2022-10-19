@@ -31,12 +31,12 @@
       </el-header>
       <template>
         <div id="photo">
-          <div id="main" style="width: 1700px; height: 400px"></div>
+          <div id="main" style="width: 1700px; height: 360px"></div>
         </div>
       </template>
       <el-main>
         <template>
-          <el-table v-loading="loading" :data="saleList" height="400">
+          <el-table v-loading="loading" :data="saleList" height="450">
             <el-table-column type="expand">
               <template slot-scope="props">
                 <el-form label-position="left" inline class="demo-table-expand">

@@ -67,8 +67,9 @@
             <el-table-column prop="platform" label="平台" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <el-popover trigger="hover" placement="top">
-                  <p>url: {{ scope.row.url }}</p>
-                  <p>m3u8: {{ scope.row.m3u8Url }}</p>
+                  <p>FileName: `{{ scope.row.title }}`,</p>
+                  <p>Url:      `{{ scope.row.m3u8Url }}`,</p>
+                  <p>playUrl: `{{ scope.row.url }}`</p>
                   <div slot="reference" class="name-wrapper">
                     <el-tag size="medium">{{ scope.row.platform }}</el-tag>
                   </div>
