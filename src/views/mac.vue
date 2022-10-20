@@ -23,7 +23,7 @@
             </el-table-column>
             <el-table-column prop="reqemployeename" label="请求人姓名" align="center" :show-overflow-tooltip="true">
             </el-table-column>
-            <el-table-column fixed="right" label="操作" width="160">
+            <el-table-column label="操作" align="center" :show-overflow-tooltip="true">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="auditRow(scope.$index)" type="success" effect="dark" size="mini">
                   审核

@@ -46,7 +46,7 @@
               <el-table-column prop="lastemployeeid" label="最后使用工号" align="center"></el-table-column>
               <el-table-column prop="lastemployeename" label="最后使用姓名" align="center" :show-overflow-tooltip="true">
               </el-table-column>
-              <el-table-column fixed="right" label="操作">
+              <el-table-column fixed="right" label="操作" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                   <el-button @click.native.prevent="deleteRow(scope.$index)" type="danger" size="mini">
                     删除

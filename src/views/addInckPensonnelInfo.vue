@@ -22,8 +22,8 @@
         </div>
         <el-row>
           <el-card shadow="hover" :body-style="{ padding: '2px' }">
-            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true"></el-button>
-            <el-button size="small" type="danger" icon="el-icon-close"></el-button>
+            <el-button size="small" type="danger" icon="el-icon-close"/>
+            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true"/>
           </el-card>
           <el-dialog title="仔细确认两个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <el-card class="box-card" style="padding: 15px 20px">
@@ -37,8 +37,8 @@
               </el-row>
             </el-card>
             <span slot="footer" class="dialog-footer">
-              <el-button size="small" type="danger" icon="el-icon-close" @click="dialogVisible = false" circle>取 消</el-button>
-              <el-button size="small" type="primary" icon="el-icon-check" @click="addInckPensonnelStart" circle>确 定</el-button>
+              <el-button size="small" type="danger" icon="el-icon-close" @click="dialogVisible = false" circle/>
+              <el-button size="small" type="primary" icon="el-icon-check" @click="addInckPensonnelStart" circle/>
             </span>
           </el-dialog>
         </el-row>

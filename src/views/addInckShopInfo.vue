@@ -30,8 +30,8 @@
         </div>
         <el-row>
           <el-card shadow="hover" :body-style="{ padding: '2px' }">
-            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true"></el-button>
-            <el-button size="small" type="danger" icon="el-icon-close"></el-button>
+            <el-button size="small" type="danger" icon="el-icon-close"/>
+            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true"/>
           </el-card>
           <el-dialog title="仔细确认三个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <el-card class="box-card" style="padding: 15px 20px">
@@ -48,23 +48,27 @@
               </el-row>
             </el-card>
             <span slot="footer" class="dialog-footer">
-              <el-button size="small" type="danger" icon="el-icon-close" @click="dialogVisible = false" circle></el-button>
+              <el-button size="small" type="danger" icon="el-icon-close" @click="dialogVisible = false" circle>
+              </el-button>
               <el-button size="small" type="primary" icon="el-icon-check" @click="addInckShopStart" circle></el-button>
             </span>
           </el-dialog>
         </el-row>
         <el-header style="text-align: left; font-size: 25px">
-          <span><el-badge :value="posSize" class="item">门店创建日志记录</el-badge></span>
+          <span>
+            <el-badge :value="posSize" class="item">门店创建日志记录</el-badge>
+          </span>
         </el-header>
         <el-table v-loading="loading" :data="poslist" height="450">
           <el-table-column prop="id" label="序列" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="updatedAt" label="更新时间" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="posId" label="货架ID" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="shopId" label="门店ID" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="shopName" label="门店名称" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="counterId" label="柜组ID" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="storageId" label="保管账ID" align="center" :show-overflow-tooltip="true" />
-          <el-table-column prop="status" label="状态[0:未执行,1:已执行]" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="status" label="货架插入状态" :formatter="isStatus" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="employeename" label="操作人员" align="center" :show-overflow-tooltip="true" />
         </el-table>
       </el-main>
@@ -121,6 +125,14 @@ export default {
     this.getPosList()
   },
   methods: {
+    isStatus (row, index) {
+      if (row.status === 1) {
+        return '已执行'
+      } else if (row.status === 0) {
+        return '未执行'
+      }
+      return '其他'
+    },
     handleClose (done) {
       this.$confirm('确认关闭？')
         .then(_ => {

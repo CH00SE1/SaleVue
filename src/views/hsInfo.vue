@@ -1,100 +1,100 @@
 <template>
   <el-container style="height: 900px; border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu :default-openeds="['1', '3']" :router="true" :disabled="true">
-        <el-button type="text" @click="dialogFormVisible = true">查询</el-button>
-        <el-dialog title="查询信息" :visible.sync="dialogFormVisible">
-          <el-form :model="queryParams">
-            <el-form-item label="标题" :label-width="formLabelWidth">
-              <el-input v-model="queryParams.title" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="平台" :label-width="formLabelWidth">
-              <el-input v-model="queryParams.platform" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="页码" :label-width="formLabelWidth">
-              <el-input v-model="queryParams.page" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="分类ID" :label-width="formLabelWidth">
-              <el-input v-model="queryParams.classId" autocomplete="off"></el-input>
-            </el-form-item>
-            <template>
-              <el-select v-model="queryParams.platform" placeholder="选择平台">
-                <el-option v-for="item in options" :key="item" :label="item" :value="item">
-                </el-option>
-              </el-select>
-            </template>
-          </el-form>
-          <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="openTitle">确 定</el-button>
-          </div>
-        </el-dialog>
-      </el-menu>
-    </el-aside>
     <el-container>
-      <el-header style="text-align: center; font-size: 20px">
-        <span>{{ queryParams.title }}{{ queryParams.platform }}</span>
-      </el-header>
       <el-main>
         <template>
-          <el-table v-loading="loading" :data="hsInfoList" height="770"  @selection-change="handleSelectionChange">
-            <el-table-column type="selection" width="55" align="center" />
-            <el-table-column prop="id" label="ID" align="center" :show-overflow-tooltip="true">
-              <template slot-scope="scope">{{ scope.row.id }}</template>
-            </el-table-column>
-            <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true">
-              <template slot-scope="scope">
-                <i class="el-icon-time"></i>
-                <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+          <div class="app-container">
+            <el-form :model="queryParams" :inline="true" label-width="40px">
+              <el-form-item label="标题" prop="title">
+                <el-input v-model="queryParams.title" placeholder="请输入网卡mac" clearable size="small" style="width: 240px"
+                  @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <el-form-item label="平台" prop="platform">
+                <el-input v-model="queryParams.platform" placeholder="请输入平台" clearable size="small" style="width: 240px"
+                  @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <el-form-item label="页码" prop="page">
+                <el-input v-model="queryParams.page" placeholder="请输入页码" clearable size="small" style="width: 240px"
+                  @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <el-form-item label="分类" prop="classId">
+                <el-input v-model="queryParams.classId" placeholder="请输入分类" clearable size="small" style="width: 240px"
+                  @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <template>
+                <el-form-item label="平台" prop="platform">
+                  <el-select v-model="queryParams.platform" placeholder="选择平台">
+                    <el-option v-for="item in options" :key="item" :label="item" :value="item">
+                    </el-option>
+                  </el-select>
+                </el-form-item>
               </template>
-            </el-table-column>
-            <el-table-column prop="classId" label="分类ID" align="center" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="title" label="标题" align="center" :show-overflow-tooltip="true">
-              <template slot-scope="scope">
-                <a :href="scope.row.url" target="_blank">
-                  {{scope.row.title}}
-                </a>
-              </template>
-            </el-table-column>
-            <el-table-column min-width="55" prop="photoUrl" label="预览图" align="center" :show-overflow-tooltip="true">
-              <template slot-scope="scope">
-                <el-popover placement="top-start" title="" trigger="hover">
-                  <img :src="scope.row.photoUrl" />
-                  <img slot="reference" :src="scope.row.photoUrl" style="width:140px;height:140px" />
-                </el-popover>
-              </template>
-            </el-table-column>
-            <el-table-column prop="platform" label="平台" align="center" :show-overflow-tooltip="true">
-              <template slot-scope="scope">
-                <el-popover trigger="hover" placement="top">
-                  <p>FileName: `{{ scope.row.title }}`,</p>
-                  <p>Url:      `{{ scope.row.m3u8Url }}`,</p>
-                  <p>playUrl: `{{ scope.row.url }}`</p>
-                  <div slot="reference" class="name-wrapper">
-                    <el-tag size="medium">{{ scope.row.platform }}</el-tag>
-                  </div>
-                </el-popover>
-              </template>
-            </el-table-column>
-            <el-table-column prop="page" label="页码" align="center" :show-overflow-tooltip="true"> </el-table-column>
-            <el-table-column prop="location" label="位置" align="center" :show-overflow-tooltip="true"> </el-table-column>
-            <el-table-column fixed="right" label="操作" align="center" :show-overflow-tooltip="true">
-              <template slot-scope="scope">
-                <el-button @click.native.prevent="downloadRow(scope.$index)" type="danger" size="mini">
-                  下载
-                </el-button>
-                <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '视频数据')"
-                  @click="dialogTableVisible = false" size="mini">
-                  导出
-                </el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-          <div class="pagination">
-            <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
-              :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
-              layout="total, sizes, prev, pager, next, jumper" :total="total">
-            </el-pagination>
+              <el-form-item>
+                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+              </el-form-item>
+            </el-form>
+            <el-table v-loading="loading" :data="hsInfoList" height="770" @selection-change="handleSelectionChange">
+              <el-table-column type="selection" width="55" align="center" />
+              <el-table-column prop="id" label="ID" align="center" :show-overflow-tooltip="true">
+                <template slot-scope="scope">{{ scope.row.id }}</template>
+              </el-table-column>
+              <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <i class="el-icon-time"></i>
+                  <span style="margin-left: 10px">{{ scope.row.createdAt }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column prop="classId" label="分类ID" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column prop="title" label="标题" align="center" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <a :href="scope.row.url" target="_blank">
+                    {{scope.row.title}}
+                  </a>
+                </template>
+              </el-table-column>
+              <el-table-column min-width="60" prop="photoUrl" label="预览图" align="center" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <el-popover placement="top-start" title="" trigger="hover">
+                    <img :src="scope.row.photoUrl" />
+                    <img slot="reference" :src="scope.row.photoUrl" style="width:150px;height:150px" />
+                  </el-popover>
+                </template>
+              </el-table-column>
+              <el-table-column prop="platform" label="平台" align="center" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <el-popover trigger="hover" placement="top">
+                    <p>FileName: `{{ scope.row.title }}`,</p>
+                    <p>Url: `{{ scope.row.m3u8Url }}`,</p>
+                    <p>playUrl: `{{ scope.row.url }}`</p>
+                    <div slot="reference" class="name-wrapper">
+                      <el-tag size="medium">{{ scope.row.platform }}</el-tag>
+                    </div>
+                  </el-popover>
+                </template>
+              </el-table-column>
+              <el-table-column prop="page" label="页码" align="center" :show-overflow-tooltip="true"> </el-table-column>
+              <el-table-column prop="location" label="位置" align="center" :show-overflow-tooltip="true">
+              </el-table-column>
+              <el-table-column fixed="right" label="操作" align="center" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <el-button @click.native.prevent="downloadRow(scope.$index)" type="danger" size="mini">
+                    下载
+                  </el-button>
+                  <el-button @click.native.prevent="exportExcel('.el-main .el-table__fixed-right', '视频数据')"
+                    @click="dialogTableVisible = false" size="mini">
+                    导出
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="pagination">
+              <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                :page-sizes="[3, 5, 10, 12, 15, 20, 30, 50, 100]" :page-size="queryParams.pageSize"
+                layout="total, sizes, prev, pager, next, jumper" :total="total">
+              </el-pagination>
+            </div>
           </div>
         </template>
       </el-main>
@@ -148,7 +148,6 @@ export default {
       hsInfoList: [],
       total: null,
       dialogTableVisible: false,
-      dialogFormVisible: false,
       formLabelWidth: '120px',
       loading: true,
       multipleSelection: [],
@@ -156,7 +155,7 @@ export default {
       queryParams: {
         title: null,
         pageNum: 1,
-        pageSize: 10,
+        pageSize: 5,
         classId: null,
         platform: null,
         page: null
@@ -202,11 +201,18 @@ export default {
         })
       })
     },
-    openTitle () {
+    handleQuery () {
       // 搜素条件
       this.loading = true
       this.handleCurrentChange(1)
-      this.dialogFormVisible = false
+    },
+    resetQuery () {
+      this.queryParams.title = null
+      this.queryParams.classId = null
+      this.queryParams.page = null
+      this.queryParams.pageSize = 5
+      this.queryParams.platform = null
+      this.handleCurrentChange(1)
     },
     handleSizeChange (val) {
       // 更新每页条数
