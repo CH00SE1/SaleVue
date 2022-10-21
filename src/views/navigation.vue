@@ -13,6 +13,15 @@
         </el-menu-item-group>
       </el-submenu>
     </el-menu>
+    <template>
+      <p
+        style="display: flex; align-items: center; justify-content: center; font-size: 12px; opacity: 0.6; margin: 20px 0;">
+        © 2022
+        <el-link type="primary" href="https://github.com/CH00SE1/" target="_blank" style="margin: 0 5px;">CHOOSE 1
+        </el-link>
+        版权
+      </p>
+    </template>
   </el-aside>
 </template>
 

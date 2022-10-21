@@ -73,7 +73,6 @@
         </el-table>
       </el-main>
     </el-container>
-    <div id="copyright">copyright © 刘少雄</div>
   </el-container>
 </template>
 
