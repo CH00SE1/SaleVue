@@ -36,52 +36,16 @@
       </template>
       <el-main>
         <template>
-          <el-table v-loading="loading" :data="saleList" height="450">
-            <el-table-column type="expand">
-              <template slot-scope="props">
-                <el-form label-position="left" inline class="demo-table-expand">
-                  <el-form-item label="姓名">
-                    <span>{{ props.row.name }}</span>
-                  </el-form-item>
-                  <el-form-item label="总销售">
-                    <span>{{ props.row.sum_money }}</span>
-                  </el-form-item>
-                  <el-form-item label="提成">
-                    <span>{{ props.row.sum_fl_money }}</span>
-                  </el-form-item>
-                  <el-form-item label="黄金单品">
-                    <span>{{ props.row.fl.黄金单品 }}</span>
-                  </el-form-item>
-                  <el-form-item label="A类">
-                    <span>{{ props.row.fl.A }}</span>
-                  </el-form-item>
-                  <el-form-item label="B类">
-                    <span>{{ props.row.fl.B }}</span>
-                  </el-form-item>
-                  <el-form-item label="C类">
-                    <span>{{ props.row.fl.C }}</span>
-                  </el-form-item>
-                  <el-form-item label="D类">
-                    <span>{{ props.row.fl.D }}</span>
-                  </el-form-item>
-                  <el-form-item label="E类">
-                    <span>{{ props.row.fl.E }}</span>
-                  </el-form-item>
-                </el-form>
-              </template>
-            </el-table-column>
-            <el-table-column prop="name" label="姓名" align="center" :show-overflow-tooltip="true"></el-table-column>
-            <el-table-column prop="sum_money" label="总销售" align="center" :show-overflow-tooltip="true">
-            </el-table-column>
-            <el-table-column prop="sum_fl_money" label="提成" align="center" :show-overflow-tooltip="true">
-            </el-table-column>
-            <el-table-column prop="fl.黄金单品" label="黄金单品" align="center" :show-overflow-tooltip="true">
-            </el-table-column>
-            <el-table-column prop="fl.A" label="A类" align="center" :show-overflow-tooltip="true"> </el-table-column>
-            <el-table-column prop="fl.B" label="B类" align="center" :show-overflow-tooltip="true"> </el-table-column>
-            <el-table-column prop="fl.C" label="C类" align="center" :show-overflow-tooltip="true"> </el-table-column>
-            <el-table-column prop="fl.D" label="D类" align="center" :show-overflow-tooltip="true"> </el-table-column>
-            <el-table-column prop="fl.E" label="E类" align="center" :show-overflow-tooltip="true"> </el-table-column>
+          <el-table v-loading="loading" :data="saleList" show-summary>
+            <el-table-column prop="name" label="营业员" align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="sumMoney" label="总销售" sortable align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="sumFlMoney" label="总毛利" sortable align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="fl.A+" label="A+" align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="fl.A" label="A" align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="fl.B" label="B" align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="fl.C" label="C" align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="fl.D" label="D" align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="fl.E" label="E" align="center" :show-overflow-tooltip="true" />
             <el-table-column fixed="right" label="操作" width="160">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
@@ -297,10 +261,10 @@ export default {
     getList (query) {
       listDaySale(query.dateStr, query.shopId).then((_result) => {
         if (_result.data.code === 200) {
-          this.saleList = _result.data.data.sales_info_details
+          this.saleList = _result.data.data.salesInfoDetails
           for (var i = 0; i < this.saleList.length; i++) {
-            this.saleYmlList[i] = this.saleList[i].sum_money
-            this.saleYmlmoneyList[i] = this.saleList[i].sum_fl_money
+            this.saleYmlList[i] = this.saleList[i].sumMoney
+            this.saleYmlmoneyList[i] = this.saleList[i].sumFlMoney
             this.saleXnameList[i] = this.saleList[i].name
           }
           this.drawLine('main')
