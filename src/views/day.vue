@@ -34,6 +34,7 @@
           <div id="main" style="width: 1700px; height: 360px"></div>
         </div>
       </template>
+      <el-divider content-position="center">晓晴你今天是第一名吗？</el-divider>
       <el-main>
         <template>
           <el-table v-loading="loading" :data="saleList" show-summary>
@@ -46,7 +47,7 @@
             <el-table-column prop="fl.C" label="C" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="fl.D" label="D" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="fl.E" label="E" align="center" :show-overflow-tooltip="true" />
-            <el-table-column fixed="right" label="操作" width="160">
+            <el-table-column fixed="right" label="操作" align="center" width="150">
               <template slot-scope="scope">
                 <el-button @click.native.prevent="querydtlList(scope.$index)" @click="dialogTableVisible = true"
                   type="text" size="mini">

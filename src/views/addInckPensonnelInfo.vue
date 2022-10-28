@@ -77,7 +77,7 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      titleAddPensonnel: '新旧门店人员工号角色同步',
+      titleAddPensonnel: '新旧门店人员角色同步',
       queryPensonnelParams: {
         newShopId: '',
         oldShopId: ''
