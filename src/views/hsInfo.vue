@@ -6,15 +6,11 @@
           <div class="app-container">
             <el-form :model="queryParams" :inline="true" label-width="40px">
               <el-form-item label="标题" prop="title">
-                <el-input v-model="queryParams.title" placeholder="请输入网卡mac" clearable size="small" style="width: 240px"
+                <el-input v-model="queryParams.title" placeholder="请输入标题" clearable size="small" style="width: 240px"
                   @keyup.enter.native="handleQuery" />
               </el-form-item>
               <el-form-item label="平台" prop="platform">
                 <el-input v-model="queryParams.platform" placeholder="请输入平台" clearable size="small" style="width: 240px"
-                  @keyup.enter.native="handleQuery" />
-              </el-form-item>
-              <el-form-item label="页码" prop="page">
-                <el-input v-model="queryParams.page" placeholder="请输入页码" clearable size="small" style="width: 240px"
                   @keyup.enter.native="handleQuery" />
               </el-form-item>
               <el-form-item label="分类" prop="classId">
@@ -39,6 +35,14 @@
               <el-table-column prop="id" label="ID" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">{{ scope.row.id }}</template>
               </el-table-column>
+              <el-table-column min-width="60" prop="photoUrl" label="预览图" align="center" :show-overflow-tooltip="true">
+                <template slot-scope="scope">
+                  <el-popover placement="top-start" title="" trigger="hover">
+                    <img :src="scope.row.photoUrl" />
+                    <img slot="reference" :src="scope.row.photoUrl" style="width:110px;height:110px" />
+                  </el-popover>
+                </template>
+              </el-table-column>
               <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                   <i class="el-icon-time"></i>
@@ -50,16 +54,8 @@
               <el-table-column prop="title" label="标题" align="center" :show-overflow-tooltip="true">
                 <template slot-scope="scope">
                   <a :href="scope.row.url" target="_blank">
-                    {{scope.row.title}}
+                    {{ scope.row.title }}
                   </a>
-                </template>
-              </el-table-column>
-              <el-table-column min-width="60" prop="photoUrl" label="预览图" align="center" :show-overflow-tooltip="true">
-                <template slot-scope="scope">
-                  <el-popover placement="top-start" title="" trigger="hover">
-                    <img :src="scope.row.photoUrl" />
-                    <img slot="reference" :src="scope.row.photoUrl" style="width:150px;height:150px" />
-                  </el-popover>
                 </template>
               </el-table-column>
               <el-table-column prop="platform" label="平台" align="center" :show-overflow-tooltip="true">
@@ -190,8 +186,16 @@ export default {
     },
     getList () {
       listHsInfo(this.queryParams).then((_result) => {
-        this.hsInfoList = _result.data.data.rows
-        this.total = _result.data.data.total
+        if (_result.data.code === 200) {
+          this.hsInfoList = _result.data.data.rows
+          this.total = _result.data.data.total
+        } else {
+          this.$message({
+            showClose: true,
+            message: _result.data.msg,
+            type: 'error'
+          })
+        }
         this.loading = false
       }).catch((_err) => {
         this.$message({

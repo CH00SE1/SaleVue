@@ -34,7 +34,6 @@
           <div id="main" style="width: 1700px; height: 360px"></div>
         </div>
       </template>
-      <el-divider content-position="center">晓晴你今天是第一名吗？</el-divider>
       <el-main>
         <template>
           <el-table v-loading="loading" :data="saleList" show-summary>
