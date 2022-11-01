@@ -186,3 +186,15 @@ export function posList () {
     url: '/sales/posList'
   })
 }
+
+// 调取excel解析数据接口
+export function excel2Table (param) {
+  const File = param.file
+  let formDataInfo = new FormData()
+  formDataInfo.append('file', File)
+  return postRequest({
+    method: 'post',
+    url: '/pubEmployee/excel/parse',
+    data: formDataInfo
+  })
+}
