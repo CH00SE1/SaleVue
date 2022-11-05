@@ -1,4 +1,5 @@
-# sale
+# saleVue
+一个简单前端脚手架项目
 
 > A Vue.js project
 

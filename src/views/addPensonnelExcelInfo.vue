@@ -4,16 +4,17 @@
     <el-container>
       <el-header style="text-align: center; font-size: 30px">
         <span>{{ titleAddPensonnelExcel }}</span>
+        <el-link type="primary" :underline="false">
+          <a target="_blank" href="http://192.168.10.87:8520/sentinel_client_sale/pubEmployee/excel/template"
+            download="数据上传模板">下载模板</a>
+        </el-link>
       </el-header>
       <el-main>
         <template>
           <div>
-            <el-link type="primary" :underline="false">
-              <a target="_blank" href="http://localhost:8520/sentinel_client_sale/pubEmployee/excel/template" download="数据上传模板">下载模板</a>
-            </el-link>
             <el-upload style="display: inline-block" action="string" :limit="1" :file-list="fileList"
               :on-error="loadFileError" :on-success="loadFileSuccess" :before-upload="beforeUpload" accept=".xlsx,.xls"
-              :show-file-list="false" :http-request="uploadFile">
+              :show-file-list="true" :http-request="uploadFile">
               <el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
             </el-upload>
           </div>
