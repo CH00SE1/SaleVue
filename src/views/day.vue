@@ -18,8 +18,8 @@
             </el-form-item>
           </el-form>
           <div slot="footer" class="dialog-footer">
-            <el-button @click="dialogFormVisible = false">取 消</el-button>
-            <el-button type="primary" @click="openSale">确 定</el-button>
+            <el-button size="small" type="danger" icon="el-icon-close" @click="dialogFormVisible = false" circle />
+            <el-button size="small" type="primary" icon="el-icon-check" @click="openSale" circle />
           </div>
         </el-dialog>
         <navigation ref="navigation" :orderBean="orderBean"></navigation>
