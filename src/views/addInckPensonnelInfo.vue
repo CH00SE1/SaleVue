@@ -9,14 +9,14 @@
         <div class="demo-input-size">
           <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
             <el-input size="medium" placeholder="请输入新门店ID(eg:16410)" suffix-icon="el-icon-user"
-              v-model="queryPensonnelParams.newShopId">
-              <template slot="prepend">新门店ID</template>
+              v-model="queryPensonnelParams.synchronousShopId">
+              <template slot="prepend">同步门店ID</template>
             </el-input>
           </el-card>
           <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
             <el-input size="medium" placeholder="请输入旧门店ID(eg:32)" suffix-icon="el-icon-circle-plus"
-              v-model="queryPensonnelParams.oldShopId">
-              <template slot="prepend">旧门店ID</template>
+              v-model="queryPensonnelParams.referenceShopId">
+              <template slot="prepend">参照门店ID</template>
             </el-input>
           </el-card>
         </div>
@@ -29,10 +29,10 @@
             <el-card class="box-card" style="padding: 15px 20px">
               <el-row :gutter="24">
                 <el-col :span="24">
-                  <div class="grid-content">新门店ID：<b>{{ queryPensonnelParams.newShopId }}</b></div>
+                  <div class="grid-content">同步门店ID：<b>{{ queryPensonnelParams.synchronousShopId }}</b></div>
                 </el-col>
                 <el-col :span="24">
-                  <div class="grid-content">旧门店ID：<b>{{ queryPensonnelParams.oldShopId }}</b></div>
+                  <div class="grid-content">参照门店ID：<b>{{ queryPensonnelParams.referenceShopId }}</b></div>
                 </el-col>
               </el-row>
             </el-card>
@@ -77,10 +77,10 @@ export default {
   data () {
     return {
       dialogVisible: false,
-      titleAddPensonnel: '新旧门店人员角色同步',
+      titleAddPensonnel: '人员创建角色同步',
       queryPensonnelParams: {
-        newShopId: '',
-        oldShopId: ''
+        synchronousShopId: '',
+        referenceShopId: ''
       }
     }
   },

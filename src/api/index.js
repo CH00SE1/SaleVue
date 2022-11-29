@@ -148,26 +148,26 @@ export function shopInfoAll () {
 }
 
 // 门店新增接口
-export function addInckShop (query) {
-  return request({
-    method: 'get',
+export function addInckShop (data) {
+  return postRequest({
+    method: 'post',
     url: '/sales/addInckShop',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/json'
     },
-    params: query
+    data: data
   })
 }
 
 // 人员新增接口
-export function addPensonnel (query) {
-  return request({
-    method: 'get',
+export function addPensonnel (data) {
+  return postRequest({
+    method: 'post',
     url: '/sales/addPensonnel',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
+      'Content-Type': 'application/json'
     },
-    params: query
+    data: data
   })
 }
 

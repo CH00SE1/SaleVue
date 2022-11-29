@@ -56,7 +56,7 @@
         </el-row>
         <el-header style="text-align: left; font-size: 25px">
           <span>
-            <el-badge :value="posSize" class="item">门店创建日志记录</el-badge>
+            <el-badge :value="posSize" class="item">新建日志</el-badge>
           </span>
         </el-header>
         <el-table v-loading="loading" :data="poslist" height="450">
@@ -111,7 +111,7 @@ export default {
       posSize: null,
       dialogVisible: false,
       loading: true,
-      titieAddShop: '英克门店新增模块',
+      titieAddShop: '新增英克门店',
       queryShopParams: {
         operaterId: '',
         shopName: '',
