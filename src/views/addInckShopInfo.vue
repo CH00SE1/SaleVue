@@ -8,19 +8,19 @@
       <el-main>
         <div class="demo-input-size">
           <el-card shadow="hover" :body-style="{ padding: '2px 2px 2px 2px' }">
-            <el-input size="medium" placeholder="请输入英克人员id(eg:15700)" suffix-icon="el-icon-user"
+            <el-input size="medium" placeholder="请输入人员工号（示例：15700）" suffix-icon="el-icon-user"
               v-model="queryShopParams.operaterId">
-              <template slot="prepend">英克人员ID</template>
+              <template slot="prepend">英克人员工号</template>
             </el-input>
           </el-card>
           <el-card shadow="hover" :body-style="{ padding: '2px 2px 2px 2px' }">
-            <el-input size="medium" placeholder="请输入门店名称(eg:湖南达嘉维康医药产业股份有限公司XXX店)" suffix-icon="el-icon-circle-plus"
+            <el-input size="medium" placeholder="请输入门店名称（示例：湖南达嘉维康医药产业股份有限公司XXX店）" suffix-icon="el-icon-circle-plus"
               v-model="queryShopParams.shopName">
-              <template slot="prepend">门店名称</template>
+              <template slot="prepend">英克门店名称</template>
             </el-input>
           </el-card>
           <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
-            <el-select v-model="queryShopParams.areaId" placeholder="选择门店区域类型">
+            <el-select v-model="queryShopParams.areaId" placeholder="门店区域ID">
               <el-option v-for="item in options" :key="item.areadocid" :label="item.areaname" :value="item.areadocid">
                 <span style="float: left; color: #5686bf; font-size: 15px">{{ item.areaname }}</span>
                 <span style="float: right; color: #FF0000; font-size: 15px">{{ item.areadocid }}</span>
@@ -30,8 +30,8 @@
         </div>
         <el-row>
           <el-card shadow="hover" :body-style="{ padding: '2px' }">
-            <el-button size="small" type="danger" icon="el-icon-close"/>
-            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true"/>
+            <el-button size="small" type="danger" icon="el-icon-close" />
+            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true" />
           </el-card>
           <el-dialog title="仔细确认三个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
             <el-card class="box-card" style="padding: 15px 20px">
@@ -56,10 +56,10 @@
         </el-row>
         <el-header style="text-align: left; font-size: 25px">
           <span>
-            <el-badge :value="posSize" class="item">新建日志</el-badge>
+            <el-badge :value="posSize" class="item">新增门店日志</el-badge>
           </span>
         </el-header>
-        <el-table v-loading="loading" :data="poslist" height="450">
+        <el-table v-loading="loading" :data="poslist" height="520">
           <el-table-column prop="id" label="序列" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="updatedAt" label="更新时间" align="center" :show-overflow-tooltip="true" />
@@ -68,8 +68,9 @@
           <el-table-column prop="shopName" label="门店名称" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="counterId" label="柜组ID" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="storageId" label="保管账ID" align="center" :show-overflow-tooltip="true" />
-          <el-table-column prop="status" label="货架插入状态" :formatter="isStatus" align="center" :show-overflow-tooltip="true" />
-          <el-table-column prop="employeename" label="操作人员" align="center" :show-overflow-tooltip="true" />
+          <el-table-column prop="status" label="货架插入状态" :formatter="isStatus" align="center"
+            :show-overflow-tooltip="true" />
+          <el-table-column prop="employeename" label="创建人员" align="center" :show-overflow-tooltip="true" />
         </el-table>
       </el-main>
     </el-container>
