@@ -8,9 +8,9 @@
       <el-main>
         <div class="demo-input-size">
           <el-card shadow="hover" :body-style="{ padding: '2px 2px 2px 2px' }">
-            <el-input size="medium" placeholder="请输入人员工号（示例：15700）" suffix-icon="el-icon-user"
+            <el-input size="medium" placeholder="请输入英克人员工号（示例：刘少雄 —— 15700）" suffix-icon="el-icon-user"
               v-model="queryShopParams.operaterId">
-              <template slot="prepend">英克人员工号</template>
+              <template slot="prepend">操作人员工号</template>
             </el-input>
           </el-card>
           <el-card shadow="hover" :body-style="{ padding: '2px 2px 2px 2px' }">

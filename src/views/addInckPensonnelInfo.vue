@@ -8,13 +8,13 @@
       <el-main>
         <div class="demo-input-size">
           <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
-            <el-input size="medium" placeholder="请输入新门店ID(eg:16410)" suffix-icon="el-icon-user"
+            <el-input size="medium" placeholder="请输入新门店ID（示例:16410）" suffix-icon="el-icon-user"
               v-model="queryPensonnelParams.synchronousShopId">
               <template slot="prepend">同步门店ID</template>
             </el-input>
           </el-card>
           <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
-            <el-input size="medium" placeholder="请输入旧门店ID(eg:32)" suffix-icon="el-icon-circle-plus"
+            <el-input size="medium" placeholder="请输入旧门店ID（示例:32）" suffix-icon="el-icon-circle-plus"
               v-model="queryPensonnelParams.referenceShopId">
               <template slot="prepend">参照门店ID</template>
             </el-input>
