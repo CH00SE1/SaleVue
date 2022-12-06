@@ -19,7 +19,7 @@
             </el-upload>
           </div>
         </template>
-        <el-divider content-position="center">EXCEL表反馈</el-divider>
+        <el-divider content-position="center">当前上传表解析数据</el-divider>
         <el-table :data="employeeList" height="650px">
           <el-table-column prop="feedbackMsg" label="反馈结果" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="employeename" label="姓名" align="center" :show-overflow-tooltip="true" />
