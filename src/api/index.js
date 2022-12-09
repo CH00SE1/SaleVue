@@ -198,3 +198,39 @@ export function excel2Table (param) {
     data: formDataInfo
   })
 }
+
+// ------------------------------- 特殊功能授权接口组 -------------------------------
+
+// 获取门店id人员列表
+export function pubEmployeeList (query) {
+  return request({
+    method: 'get',
+    url: '/pubEmployee/getPubEmployeeOfDeptId',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    params: query
+  })
+}
+
+// 查询特殊权限map
+export function authList () {
+  return request({
+    method: 'get',
+    url: '/pubEmployee/getAuthList'
+  })
+}
+
+// 批量更新权限
+export function addAuthPersonnelInfo (data) {
+  return postRequest({
+    method: 'post',
+    url: '/pubEmployee/addAuthPersonnelInfo',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
+  })
+}
+
+// ------------------------------- 特殊功能授权接口组 -------------------------------

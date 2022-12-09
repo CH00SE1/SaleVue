@@ -8,6 +8,7 @@
           <el-menu-item index="/addInckShopInfo">门店创建</el-menu-item>
           <el-menu-item index="/addPensonnelExcelInfo">表格创建</el-menu-item>
           <el-menu-item index="/addInckPensonnelInfo">人员创建</el-menu-item>
+          <el-menu-item index="/addInckAuthInfo">特殊功能授权</el-menu-item>
           <el-menu-item index="/mac">网卡请求</el-menu-item>
           <el-menu-item index="/usemac">网卡使用</el-menu-item>
           <el-menu-item index="/pengingOrder">挂单查询</el-menu-item>

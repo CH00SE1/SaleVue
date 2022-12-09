@@ -5,7 +5,7 @@
       <el-header style="text-align: center; font-size: 30px">
         <span>{{ titleAddPensonnelExcel }}</span>
         <el-link type="primary" :underline="false">
-          <a target="_blank" href="http://192.168.10.87:8520/sentinel_client_sale/pubEmployee/excel/template"
+          <a target="_blank" href="http://192.168.10.87:8520/saleWeb/pubEmployee/excel/template"
             download="数据上传模板">下载模板</a>
         </el-link>
       </el-header>

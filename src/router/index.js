@@ -12,6 +12,7 @@ import pendingOrder from '../views/pendingOrder.vue'
 import addInckShopInfo from '../views/addInckShopInfo.vue'
 import addInckPensonnelInfo from '../views/addInckPensonnelInfo.vue'
 import addPensonnelExcelInfo from '../views/addPensonnelExcelInfo.vue'
+import addInckAuthInfo from '../views/addInckAuthInfo.vue'
 
 Vue.use(Router)
 
@@ -62,6 +63,10 @@ export default new Router({
       path: '/addPensonnelExcelInfo',
       name: 'addPensonnelExcelInfo',
       component: addPensonnelExcelInfo
+    }, {
+      path: '/addInckAuthInfo',
+      name: 'addInckAuthInfo',
+      component: addInckAuthInfo
     }
   ],
   // 去掉url中的#
