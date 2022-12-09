@@ -10,7 +10,15 @@
           <div class="app-container">
             <el-form :model="queryParams" :inline="true" label-width="150px">
               <el-form-item label="门店ID" prop="shopId">
-                <el-input v-model="queryParams.deptId" placeholder="请输入门店ID" clearable size="small" style="width: 340px"
+                <el-input v-model="queryParams.deptid" placeholder="请输入门店ID" clearable size="small" style="width: 160px"
+                  @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <el-form-item label="人员ID" prop="employeeid">
+                <el-input v-model="queryParams.employeeid" placeholder="请输入门店ID" clearable size="small" style="width: 160px"
+                  @keyup.enter.native="handleQuery" />
+              </el-form-item>
+              <el-form-item label="人员名称" prop="employeename">
+                <el-input v-model="queryParams.employeename" placeholder="请输入门店ID" clearable size="small" style="width: 160px"
                   @keyup.enter.native="handleQuery" />
               </el-form-item>
               <el-form-item>
@@ -85,7 +93,9 @@ export default {
       dialogVisible: false,
       title: '特殊功能授权',
       queryParams: {
-        deptId: null
+        deptid: null,
+        employeeid: null,
+        employeename: null
       },
       addAuthVo: {
         authids: [],
@@ -131,7 +141,7 @@ export default {
       this.getList()
     },
     resetQuery () {
-      this.queryParams.deptId = null
+      this.queryParams.deptid = null
     },
     selectSet () {
       this.$message({
