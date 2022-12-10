@@ -8,18 +8,18 @@
       <el-main>
         <template>
           <div class="app-container">
-            <el-form :model="queryParams" :inline="true" label-width="150px">
+            <el-form :model="queryParams" :inline="true" label-width="80px">
               <el-form-item label="门店ID" prop="shopId">
                 <el-input v-model="queryParams.deptid" placeholder="请输入门店ID" clearable size="small" style="width: 160px"
                   @keyup.enter.native="handleQuery" />
               </el-form-item>
               <el-form-item label="人员ID" prop="employeeid">
-                <el-input v-model="queryParams.employeeid" placeholder="请输入门店ID" clearable size="small" style="width: 160px"
-                  @keyup.enter.native="handleQuery" />
+                <el-input v-model="queryParams.employeeid" placeholder="请输入门店ID" clearable size="small"
+                  style="width: 160px" @keyup.enter.native="handleQuery" />
               </el-form-item>
               <el-form-item label="人员名称" prop="employeename">
-                <el-input v-model="queryParams.employeename" placeholder="请输入门店ID" clearable size="small" style="width: 160px"
-                  @keyup.enter.native="handleQuery" />
+                <el-input v-model="queryParams.employeename" placeholder="请输入门店ID" clearable size="small"
+                  style="width: 160px" @keyup.enter.native="handleQuery" />
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -28,31 +28,42 @@
                 <el-button type="info" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
               </el-form-item>
             </el-form>
-            <el-table :data="employeeList" @selection-change="handleSelectionChange">
-              <el-table-column type="selection" width="55">
-              </el-table-column>
-              <el-table-column prop="employeeid" label="人员ID" align="center" :show-overflow-tooltip="true">
-              </el-table-column>
-              <el-table-column prop="employeename" label="人员名称" align="center"
-                :show-overflow-tooltip="true"></el-table-column>
-              <el-table-column prop="sex" label="性别" align="center" :show-overflow-tooltip="true"></el-table-column>
-              <el-table-column prop="deptid" label="门店ID" align="center"
-                :show-overflow-tooltip="true"></el-table-column>
-              <el-table-column prop="usestatus" label="使用状态" align="center" :formatter="isUseStatus"
-                :show-overflow-tooltip="true"></el-table-column>
-              <el-table-column prop="phone" label="电话号码" align="center" :show-overflow-tooltip="true"></el-table-column>
-              <el-table-column prop="roleid" label="权限ID" align="center"
-                :show-overflow-tooltip="true"></el-table-column>
-              <el-table-column prop="rolename" label="权限名称" align="center"
-                :show-overflow-tooltip="true"></el-table-column>
-              <el-table-column prop="medical" label="健康状态" align="center"
-                :show-overflow-tooltip="true"></el-table-column>
-            </el-table>
-            <el-dialog title="批量授权" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <el-divider content-position="center">人员信息数据展示</el-divider>
+            <template>
+              <el-table height="650" :data="employeeList" @selection-change="handleSelectionChange">
+                <el-table-column type="selection" width="55">
+                </el-table-column>
+                <el-table-column prop="employeeid" label="人员ID" align="center" :show-overflow-tooltip="true">
+                </el-table-column>
+                <el-table-column prop="employeename" label="人员名称" align="center"
+                  :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="sex" label="性别" align="center" :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="deptid" label="门店ID" align="center"
+                  :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="usestatus" label="使用状态" align="center" :formatter="isUseStatus"
+                  :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="phone" label="电话号码" align="center"
+                  :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="roleid" label="权限ID" align="center"
+                  :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="rolename" label="权限名称" align="center"
+                  :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="medical" label="健康状态" align="center"
+                  :show-overflow-tooltip="true"></el-table-column>
+              </el-table>
+              <div class="pagination">
+                <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
+                  :page-sizes="[10, 15, 20, 50, 100, 200, 500, 1000]" :page-size="queryParams.pageSize"
+                  layout="total, sizes, prev, pager, next, jumper" :total="total">
+                </el-pagination>
+              </div>
+            </template>
+            <el-dialog title="批量特殊功能授权" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
               <template>
-                <el-select multiple collapse-tags v-model='selectedArray' @change='changeSelect' placeholder='请选择角色'>
+                <el-select multiple collapse-tags v-model='selectedArray' @change='changeSelect' style="width:60%" placeholder='请选择角色'>
                   <el-checkbox v-model="checked" @change='selectAll'>全选</el-checkbox>
-                  <el-option v-for='(item, index) in authList' :key='index' :label="item.specialauthname" :value="item.specialauthid"></el-option>
+                  <el-option v-for='(item, index) in authList' :key='index' :label="item.specialauthname"
+                    :value="item.specialauthid"></el-option>
                 </el-select>
               </template>
               <span slot="footer" class="dialog-footer">
@@ -92,7 +103,10 @@ export default {
       selectedArray: [],
       dialogVisible: false,
       title: '特殊功能授权',
+      total: null,
       queryParams: {
+        pageNum: 1,
+        pageSize: 10,
         deptid: null,
         employeeid: null,
         employeename: null
@@ -104,6 +118,7 @@ export default {
     }
   },
   created () {
+    this.getList()
     this.getAuthInfoList()
   },
   methods: {
@@ -121,7 +136,8 @@ export default {
     getList () {
       pubEmployeeList(this.queryParams).then((_result) => {
         if (_result.data.code === 200) {
-          this.employeeList = _result.data.data
+          this.employeeList = _result.data.data.rows
+          this.total = _result.data.data.total
         } else {
           this.$message({
             showClose: true,
@@ -138,10 +154,14 @@ export default {
       })
     },
     handleQuery () {
+      this.queryParams.pageNum = 1
       this.getList()
     },
     resetQuery () {
       this.queryParams.deptid = null
+      this.queryParams.employeeid = null
+      this.queryParams.employeename = null
+      this.getList()
     },
     selectSet () {
       this.$message({
@@ -212,6 +232,16 @@ export default {
       }
       this.dialogVisible = false
       this.selectedArray = []
+    },
+    handleSizeChange (val) {
+      // 更新每页条数
+      this.queryParams.pageSize = val
+      this.getList()
+    },
+    handleCurrentChange (val) {
+      // 更新当前页码
+      this.queryParams.pageNum = val
+      this.getList()
     }
   }
 }
