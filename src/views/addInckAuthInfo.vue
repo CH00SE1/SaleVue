@@ -23,8 +23,10 @@
               </el-form-item>
               <el-form-item>
                 <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
+                <el-button type="success" icon="el-icon-circle-plus" size="mini"
+                  @click="dialogRoleVisible = true">批量人员角色添加</el-button>
                 <el-button type="success" icon="el-icon-folder-add" size="mini"
-                  @click="dialogVisible = true">批量特殊功能授权</el-button>
+                  @click="dialogAuthVisible = true">批量特殊功能授权</el-button>
                 <el-button type="info" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
               </el-form-item>
             </el-form>
@@ -58,17 +60,30 @@
                 </el-pagination>
               </div>
             </template>
-            <el-dialog title="批量特殊功能授权" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
+            <el-dialog title="批量特殊功能授权" :visible.sync="dialogAuthVisible" width="30%" :before-close="handleClose">
               <template>
-                <el-select multiple collapse-tags v-model='selectedArray' @change='changeSelect' style="width:60%" placeholder='请选择角色'>
-                  <el-checkbox v-model="checked" @change='selectAll'>全选</el-checkbox>
+                <el-select multiple collapse-tags v-model='selectedArray' @change='changeAuthSelect' style="width:60%" placeholder='请选择功能'>
+                  <el-checkbox v-model="checked" @change='selectAuthAll'>全选</el-checkbox>
                   <el-option v-for='(item, index) in authList' :key='index' :label="item.specialauthname"
                     :value="item.specialauthid"></el-option>
                 </el-select>
               </template>
               <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button @click="dialogAuthVisible = false">取 消</el-button>
                 <el-button type="primary" @click="addAuth">确 定</el-button>
+              </span>
+            </el-dialog>
+            <el-dialog title="批量人员角色添加" :visible.sync="dialogRoleVisible" width="30%" :before-close="handleClose">
+              <template>
+                <el-select multiple collapse-tags v-model='selectedArray' @change='changeRoleSelect' style="width:60%" placeholder='请选择角色'>
+                  <el-checkbox v-model="checked" @change='selectRoleAll'>全选</el-checkbox>
+                  <el-option v-for='(item, index) in roleList' :key='index' :label="item.label"
+                    :value="item.value"></el-option>
+                </el-select>
+              </template>
+              <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogAuthVisible = false">取 消</el-button>
+                <el-button type="primary" @click="addRole">确 定</el-button>
               </span>
             </el-dialog>
           </div>
@@ -99,9 +114,11 @@ export default {
       multipleSelection: [],
       employeeList: [],
       authList: [],
+      roleList: [{value: '10', label: '门店店长'}, {value: '184', label: '门店营业员'}, {value: '174', label: '门店店长助理'}, {value: '175', label: '门店西药采购(请货)员'}, {value: '177', label: '门店西药验收员'}, {value: '181', label: '门店西药审方员'}, {value: '179', label: '门店西药陈列检查员'}, {value: '176', label: '门店中药采购(请货)员'}, {value: '182', label: '门店中药审方员'}, {value: '186', label: '门店中药调剂员'}, {value: '183', label: '门店质量负责人（中药）'}, {value: '186', label: '门店质量负责人（中药）'}, {value: '180', label: '门店中药陈列检查员'}, {value: '178', label: '门店中药验收员'}],
       checked: false,
       selectedArray: [],
-      dialogVisible: false,
+      dialogAuthVisible: false,
+      dialogRoleVisible: false,
       title: '特殊功能授权',
       total: null,
       queryParams: {
@@ -112,8 +129,9 @@ export default {
         employeename: null
       },
       addAuthVo: {
-        authids: [],
-        personnels: []
+        personnels: [],
+        roles: [],
+        authids: []
       }
     }
   },
@@ -187,7 +205,7 @@ export default {
         })
         .catch(_ => {})
     },
-    selectAll () {
+    selectAuthAll () {
       this.selectedArray = []
       if (this.checked) {
         this.authList.map((item) => {
@@ -197,7 +215,7 @@ export default {
         this.selectedArray = []
       }
     },
-    changeSelect (val) {
+    changeAuthSelect (val) {
       if (val.length === this.authList.length) {
         this.checked = true
       } else {
@@ -207,10 +225,10 @@ export default {
     addAuth () {
       this.addAuthVo.authids = this.selectedArray
       this.addAuthVo.personnels = this.multipleSelection
-      if (this.addAuthVo.authids.length === 0) {
+      if (this.addAuthVo.authids.length === 0 | this.addAuthVo.personnels.length === 0) {
         this.$message({
           showClose: true,
-          message: '没有勾选任何特殊功能',
+          message: '没有勾选任何特殊功能 | 没有勾选任何人员',
           type: 'error'
         })
       } else {
@@ -230,7 +248,53 @@ export default {
           })
         })
       }
-      this.dialogVisible = false
+      this.dialogAuthVisible = false
+      this.selectedArray = []
+    },
+    selectRoleAll () {
+      this.selectedArray = []
+      if (this.checked) {
+        this.roleList.map((item) => {
+          this.selectedArray.push(item.value)
+        })
+      } else {
+        this.selectedArray = []
+      }
+    },
+    changeRoleSelect (val) {
+      if (val.length === this.roleList.length) {
+        this.checked = true
+      } else {
+        this.checked = false
+      }
+    },
+    addRole () {
+      this.addAuthVo.roles = this.selectedArray
+      this.addAuthVo.personnels = this.multipleSelection
+      if (this.addAuthVo.roles.length === 0 | this.addAuthVo.personnels.length === 0) {
+        this.$message({
+          showClose: true,
+          message: '没有勾选任何人员角色 | 没有勾选任何人员',
+          type: 'error'
+        })
+      } else {
+        addAuthPersonnelInfo(this.addAuthVo).then((_result) => {
+          if (_result.data.code === 200) {
+            this.$message({
+              showClose: true,
+              message: _result.data.msg,
+              type: 'success'
+            })
+          }
+        }).catch((_err) => {
+          this.$message({
+            showClose: true,
+            message: '后端接口连接异常',
+            type: 'error'
+          })
+        })
+      }
+      this.dialogRoleVisible = false
       this.selectedArray = []
     },
     handleSizeChange (val) {
