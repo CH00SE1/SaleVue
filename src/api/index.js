@@ -233,4 +233,36 @@ export function addAuthPersonnelInfo (data) {
   })
 }
 
+// 查询门店
+export function getPlacePointInfo () {
+  return request({
+    method: 'get',
+    url: '/pubEmployee/getPlacePointInfo'
+  })
+}
+
+// 批量更新权限
+export function addPubEmployee (data) {
+  return postRequest({
+    method: 'post',
+    url: '/pubEmployee/addPubEmployee',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: data
+  })
+}
+
+// 人员状态更新
+export function updateStatus (employeeId, useStatus) {
+  return request({
+    method: 'get',
+    url: '/pubEmployee/updateStatus',
+    params: {
+      employeeId: employeeId,
+      useStatus: useStatus
+    }
+  })
+}
+
 // ------------------------------- 特殊功能授权接口组 -------------------------------

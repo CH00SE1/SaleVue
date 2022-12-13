@@ -25,14 +25,16 @@
                 <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
                 <el-button type="success" icon="el-icon-circle-plus" size="mini"
                   @click="dialogRoleVisible = true">批量人员角色添加</el-button>
-                <el-button type="success" icon="el-icon-folder-add" size="mini"
+                <el-button type="warning" icon="el-icon-folder-add" size="mini"
                   @click="dialogAuthVisible = true">批量特殊功能授权</el-button>
+                <el-button type="danger" icon="el-icon-folder-add" size="mini"
+                  @click="dialogPubEmployeeVisible = true">新增人员信息</el-button>
                 <el-button type="info" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
               </el-form-item>
             </el-form>
             <el-divider content-position="center">人员信息数据展示</el-divider>
             <template>
-              <el-table height="650" :data="employeeList" @selection-change="handleSelectionChange">
+              <el-table height="600" :data="employeeList" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55">
                 </el-table-column>
                 <el-table-column prop="employeeid" label="人员ID" align="center" :show-overflow-tooltip="true">
@@ -52,6 +54,13 @@
                   :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column prop="medical" label="健康状态" align="center"
                   :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column fixed="right" label="操作" align="center" :show-overflow-tooltip="true">
+                  <template slot-scope="scope">
+                    <el-button @click.native.prevent="updateStatus(scope.$index)" type="danger" size="mini">
+                      启用/停用
+                    </el-button>
+                  </template>
+                </el-table-column>
               </el-table>
               <div class="pagination">
                 <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange"
@@ -62,7 +71,8 @@
             </template>
             <el-dialog title="批量特殊功能授权" :visible.sync="dialogAuthVisible" width="30%" :before-close="handleClose">
               <template>
-                <el-select multiple collapse-tags v-model='selectedArray' @change='changeAuthSelect' style="width:60%" placeholder='请选择功能'>
+                <el-select multiple collapse-tags v-model='selectedArray' @change='changeAuthSelect' style="width:60%"
+                  placeholder='请选择功能'>
                   <el-checkbox v-model="checked" @change='selectAuthAll'>全选</el-checkbox>
                   <el-option v-for='(item, index) in authList' :key='index' :label="item.specialauthname"
                     :value="item.specialauthid"></el-option>
@@ -75,16 +85,20 @@
             </el-dialog>
             <el-dialog title="批量人员角色添加" :visible.sync="dialogRoleVisible" width="30%" :before-close="handleClose">
               <template>
-                <el-select multiple collapse-tags v-model='selectedArray' @change='changeRoleSelect' style="width:60%" placeholder='请选择角色'>
+                <el-select multiple collapse-tags v-model='selectedArray' @change='changeRoleSelect' style="width:60%"
+                  placeholder='请选择角色'>
                   <el-checkbox v-model="checked" @change='selectRoleAll'>全选</el-checkbox>
                   <el-option v-for='(item, index) in roleList' :key='index' :label="item.label"
                     :value="item.value"></el-option>
                 </el-select>
               </template>
               <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogAuthVisible = false">取 消</el-button>
+                <el-button @click="dialogRoleVisible = false">取 消</el-button>
                 <el-button type="primary" @click="addRole">确 定</el-button>
               </span>
+            </el-dialog>
+            <el-dialog title="人员工号新增" :visible.sync="dialogPubEmployeeVisible" width="30%" :before-close="handleClose">
+              <addPubEmployeeVue ref="addPubEmployeeVue"></addPubEmployeeVue>
             </el-dialog>
           </div>
         </template>
@@ -103,22 +117,25 @@
 
 <script>
 import navigation from './navigation.vue'
-import { pubEmployeeList, authList, addAuthPersonnelInfo } from '../api/index'
+import addPubEmployeeVue from './addPubEmployee.vue'
+import { pubEmployeeList, authList, addAuthPersonnelInfo, updateStatus } from '../api/index'
 
 export default {
   components: {
-    navigation
+    navigation,
+    addPubEmployeeVue
   },
   data () {
     return {
       multipleSelection: [],
       employeeList: [],
       authList: [],
-      roleList: [{value: '10', label: '门店店长'}, {value: '184', label: '门店营业员'}, {value: '174', label: '门店店长助理'}, {value: '175', label: '门店西药采购(请货)员'}, {value: '177', label: '门店西药验收员'}, {value: '181', label: '门店西药审方员'}, {value: '179', label: '门店西药陈列检查员'}, {value: '176', label: '门店中药采购(请货)员'}, {value: '182', label: '门店中药审方员'}, {value: '186', label: '门店中药调剂员'}, {value: '183', label: '门店质量负责人（中药）'}, {value: '186', label: '门店质量负责人（中药）'}, {value: '180', label: '门店中药陈列检查员'}, {value: '178', label: '门店中药验收员'}],
+      roleList: [{value: '10', label: '门店店长'}, {value: '184', label: '门店营业员'}, {value: '174', label: '门店店长助理'}, {value: '175', label: '门店西药采购(请货)员'}, {value: '177', label: '门店西药验收员'}, {value: '181', label: '门店西药审方员'}, {value: '179', label: '门店西药陈列检查员'}, {value: '176', label: '门店中药采购(请货)员'}, {value: '182', label: '门店中药审方员'}, {value: '186', label: '门店中药调剂员'}, {value: '183', label: '门店质量负责人（中药）'}, {value: '186', label: '门店质量负责人（中药）'}, {value: '180', label: '门店中药陈列检查员'}, {value: '178', label: '门店中药验收员'}, {value: '11', label: '连锁采购员'}, {value: '2146', label: 'DTP医保开票员'}, {value: '708', label: '特门医保开票员'}, {value: '826', label: '门店医保'}],
       checked: false,
       selectedArray: [],
       dialogAuthVisible: false,
       dialogRoleVisible: false,
+      dialogPubEmployeeVisible: false,
       title: '特殊功能授权',
       total: null,
       queryParams: {
@@ -140,6 +157,24 @@ export default {
     this.getAuthInfoList()
   },
   methods: {
+    updateStatus (index) {
+      var employeeId = this.employeeList[index].employeeid
+      var useStatus = this.employeeList[index].usestatus
+      updateStatus(employeeId, useStatus).then((_result) => {
+        this.$message({
+          showClose: true,
+          message: _result.data.msg,
+          type: 'success'
+        })
+      }).catch((_err) => {
+        this.$message({
+          showClose: true,
+          message: '更新状态异常',
+          type: 'error'
+        })
+      })
+      this.getList()
+    },
     getAuthInfoList () {
       authList().then((_result) => {
         this.authList = _result.data
