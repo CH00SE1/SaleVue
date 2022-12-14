@@ -22,17 +22,17 @@
                   style="width: 160px" @keyup.enter.native="handleQuery" />
               </el-form-item>
               <el-form-item>
-                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
-                <el-button type="success" icon="el-icon-circle-plus" size="mini"
-                  @click="dialogRoleVisible = true">批量人员角色添加</el-button>
-                <el-button type="warning" icon="el-icon-folder-add" size="mini"
-                  @click="dialogAuthVisible = true">批量特殊功能授权</el-button>
-                <el-button type="danger" icon="el-icon-folder-add" size="mini"
-                  @click="dialogPubEmployeeVisible = true">新增人员信息</el-button>
-                <el-button type="info" icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
+                <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery" plain>搜索</el-button>
+                <el-button type="danger" icon="el-icon-plus" size="mini" @click="dialogPubEmployeeVisible = true"
+                  plain>新增人员</el-button>
+                <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="dialogRoleVisible = true"
+                  plain>批量人员角色添加</el-button>
+                <el-button type="warning" icon="el-icon-folder-add" size="mini" @click="dialogAuthVisible = true"
+                  plain>批量特殊功能授权</el-button>
+                <el-button type="info" icon="el-icon-refresh" size="mini" @click="resetQuery" plain>重置</el-button>
               </el-form-item>
             </el-form>
-            <el-divider content-position="center">人员信息数据展示</el-divider>
+            <el-divider content-position="center">人员信息展示</el-divider>
             <template>
               <el-table height="600" :data="employeeList" @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55">
@@ -42,9 +42,7 @@
                 <el-table-column prop="employeename" label="人员名称" align="center"
                   :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column prop="sex" label="性别" align="center" :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="deptid" label="门店ID" align="center"
-                  :show-overflow-tooltip="true"></el-table-column>
-                <el-table-column prop="usestatus" label="使用状态" align="center" :formatter="isUseStatus"
+                <el-table-column prop="deptid" label="部门ID" align="center"
                   :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column prop="phone" label="电话号码" align="center"
                   :show-overflow-tooltip="true"></el-table-column>
@@ -54,10 +52,12 @@
                   :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column prop="medical" label="健康状态" align="center"
                   :show-overflow-tooltip="true"></el-table-column>
+                <el-table-column prop="usestatus" label="使用状态" align="center" :formatter="isUseStatus"
+                  :show-overflow-tooltip="true"></el-table-column>
                 <el-table-column fixed="right" label="操作" align="center" :show-overflow-tooltip="true">
                   <template slot-scope="scope">
-                    <el-button @click.native.prevent="updateStatus(scope.$index)" type="danger" size="mini">
-                      启用/停用
+                    <el-button @click.native.prevent="updateStatus(scope.$index)" type="text">
+                      启/停用
                     </el-button>
                   </template>
                 </el-table-column>
@@ -136,7 +136,7 @@ export default {
       dialogAuthVisible: false,
       dialogRoleVisible: false,
       dialogPubEmployeeVisible: false,
-      title: '特殊功能授权',
+      title: '英克人员管理',
       total: null,
       queryParams: {
         pageNum: 1,

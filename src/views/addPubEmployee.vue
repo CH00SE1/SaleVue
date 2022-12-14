@@ -4,19 +4,19 @@
       <el-input v-model="ruleForm.employeename"></el-input>
     </el-form-item>
     <el-form-item label="性别" prop="sex">
-      <el-select v-model="ruleForm.sex" placeholder="请选择性别">
+      <el-select v-model="ruleForm.sex" placeholder="请选择性别" style="width:100%">
         <el-option label="男" value="男"></el-option>
         <el-option label="女" value="女"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="门店" prop="deptid">
-      <el-select v-model="ruleForm.deptid" placeholder="请选择门店">
-        <el-option v-for="item in shopList" :key="item.placepointid" :label="item.placepointname"
+      <el-select v-model="ruleForm.deptid" filterable placeholder="请选择门店" style="width:100%">
+        <el-option v-for="(item, index) in shopList" :key="index" :label="item.placepointname"
           :value="item.placepointid"></el-option>
       </el-select>
     </el-form-item>
-    <el-form-item label="角色" prop="role">
-      <el-select v-model="ruleForm.roleid" placeholder="请选择角色">
+    <el-form-item label="角色" prop="roleid">
+      <el-select v-model="ruleForm.roleid" filterable placeholder="请选择角色" style="width:100%">
         <el-option v-for='(item, index) in roleList' :key='index' :label="item.label" :value="item.value"></el-option>
       </el-select>
     </el-form-item>
@@ -24,8 +24,8 @@
       <el-input type="textarea" v-model="ruleForm.medical"></el-input>
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
-      <el-button @click="resetForm('ruleForm')">重置</el-button>
+      <el-button @click="submitForm('ruleForm')" type="primary" icon="el-icon-check" circle></el-button>
+      <el-button @click="resetForm('ruleForm')" type="danger" icon="el-icon-close" circle></el-button>
     </el-form-item>
   </el-form>
 </template>
@@ -55,6 +55,9 @@ export default {
         ],
         deptid: [
           { required: true, message: '请选择门店', trigger: 'change' }
+        ],
+        roleid: [
+          { required: true, message: '请选择角色', trigger: 'change' }
         ],
         medical: [
           { required: true, message: '请填写备注', trigger: 'blur' }
@@ -116,7 +119,6 @@ export default {
       this.$refs[formName].resetFields()
     }
   }
-
 }
 </script>
 
