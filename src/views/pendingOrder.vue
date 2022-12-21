@@ -14,7 +14,7 @@
                   style="width: 240px" @keyup.enter.native="handleQuery" />
               </el-form-item>
               <el-form-item label="门店名称" prop="placepointname">
-                <el-select v-model="queryParams.placepointid" placeholder="选择门店">
+                <el-select filterable v-model="queryParams.placepointid" placeholder="选择门店">
                   <el-option v-for="item in options" :key="item.placepointid" :label="item.placepointname"
                     :value="item.placepointid">
                   </el-option>

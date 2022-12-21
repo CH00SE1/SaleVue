@@ -37,7 +37,7 @@ export default {
   data () {
     return {
       shopList: [],
-      roleList: [{value: '10', label: '门店店长'}, {value: '184', label: '门店营业员'}, {value: '174', label: '门店店长助理'}, {value: '175', label: '门店西药采购(请货)员'}, {value: '177', label: '门店西药验收员'}, {value: '181', label: '门店西药审方员'}, {value: '179', label: '门店西药陈列检查员'}, {value: '176', label: '门店中药采购(请货)员'}, {value: '182', label: '门店中药审方员'}, {value: '186', label: '门店中药调剂员'}, {value: '183', label: '门店质量负责人（中药）'}, {value: '186', label: '门店质量负责人（中药）'}, {value: '180', label: '门店中药陈列检查员'}, {value: '178', label: '门店中药验收员'}, {value: '11', label: '连锁采购员'}, {value: '2146', label: 'DTP医保开票员'}, {value: '708', label: '特门医保开票员'}, {value: '826', label: '门店医保'}],
+      roleList: [{value: '10', label: '门店店长'}, {value: '184', label: '门店营业员'}, {value: '174', label: '门店店长助理'}, {value: '175', label: '门店西药采购(请货)员'}, {value: '177', label: '门店西药验收员'}, {value: '181', label: '门店西药审方员'}, {value: '179', label: '门店西药陈列检查员'}, {value: '176', label: '门店中药采购(请货)员'}, {value: '182', label: '门店中药审方员'}, {value: '186', label: '门店中药调剂员'}, {value: '183', label: '门店质量负责人（中药）'}, {value: '180', label: '门店中药陈列检查员'}, {value: '178', label: '门店中药验收员'}, {value: '11', label: '连锁采购员'}, {value: '2146', label: 'DTP医保开票员'}, {value: '708', label: '特门医保开票员'}, {value: '826', label: '门店医保'}],
       ruleForm: {
         employeename: '',
         sex: '',
