@@ -219,17 +219,17 @@ export default {
       this.queryParams.deptid = null
       this.queryParams.employeeid = null
       this.queryParams.employeename = null
+      this.queryParams.roleid = null
+      this.queryParams.pageNum = 1
+      this.queryParams.pageSize = 10
       this.getList()
-    },
-    selectSet () {
-      this.$message({
-        showClose: true,
-        message: null,
-        type: 'error'
-      })
     },
     handleSelectionChange (val) {
       this.multipleSelection = val
+      this.$message({
+        showClose: true,
+        message: '勾选 ' + this.multipleSelection.length + ' 数据'
+      })
     },
     isUseStatus (row, index) {
       if (row.usestatus === 1) {

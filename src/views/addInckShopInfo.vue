@@ -6,60 +6,23 @@
         <span>{{ titieAddShop }}</span>
       </el-header>
       <el-main>
-        <div class="demo-input-size">
-          <el-card shadow="hover" :body-style="{ padding: '2px 2px 2px 2px' }">
-            <el-input size="medium" placeholder="请输入英克人员工号（示例：刘少雄 —— 15700）" suffix-icon="el-icon-user"
-              v-model="queryShopParams.operaterId">
-              <template slot="prepend">操作人员工号</template>
-            </el-input>
-          </el-card>
-          <el-card shadow="hover" :body-style="{ padding: '2px 2px 2px 2px' }">
-            <el-input size="medium" placeholder="请输入门店名称（示例：湖南达嘉维康医药产业股份有限公司XXX店）" suffix-icon="el-icon-circle-plus"
-              v-model="queryShopParams.shopName">
-              <template slot="prepend">英克门店名称</template>
-            </el-input>
-          </el-card>
-          <el-card shadow="hover" :body-style="{ padding: '3px 3px 3px 3px' }">
-            <el-select v-model="queryShopParams.areaId" placeholder="门店区域ID">
-              <el-option v-for="item in options" :key="item.areadocid" :label="item.areaname" :value="item.areadocid">
-                <span style="float: left; color: #5686bf; font-size: 15px">{{ item.areaname }}</span>
-                <span style="float: right; color: #FF0000; font-size: 15px">{{ item.areadocid }}</span>
-              </el-option>
-            </el-select>
-          </el-card>
-        </div>
-        <el-row>
-          <el-card shadow="hover" :body-style="{ padding: '2px' }">
-            <el-button size="small" type="danger" icon="el-icon-close" />
-            <el-button size="small" type="primary" icon="el-icon-check" @click="dialogVisible = true" />
-          </el-card>
-          <el-dialog title="仔细确认三个参数值是否正确?" :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-            <el-card class="box-card" style="padding: 15px 20px">
-              <el-row :gutter="24">
-                <el-col :span="24">
-                  <div class="grid-content">人员ID：<b>{{ queryShopParams.operaterId }}</b></div>
-                </el-col>
-                <el-col :span="24">
-                  <div class="grid-content">门店名称：<b>{{ queryShopParams.shopName }}</b></div>
-                </el-col>
-                <el-col :span="24">
-                  <div class="grid-content">区域ID：<b>{{ queryShopParams.areaId }}</b></div>
-                </el-col>
-              </el-row>
-            </el-card>
-            <span slot="footer" class="dialog-footer">
-              <el-button size="small" type="danger" icon="el-icon-close" @click="dialogVisible = false" circle>
-              </el-button>
-              <el-button size="small" type="primary" icon="el-icon-check" @click="addInckShopStart" circle></el-button>
-            </span>
-          </el-dialog>
-        </el-row>
+        <el-dialog title="人员工号新增" :visible.sync="dialogInckShopVisible" width="30%" :before-close="handleClose">
+          <addInckShopVue ref="addInckShopVue"></addInckShopVue>
+        </el-dialog>
+        <el-dialog title="人员工号新增" :visible.sync="dialogInckPensonnelVisible" width="30%" :before-close="handleClose">
+          <addInckPensonnelInfoVue ref="addInckPensonnelInfoVue"></addInckPensonnelInfoVue>
+        </el-dialog>
+        <el-button type="warning" icon="el-icon-folder-add" size="mini" @click="dialogInckShopVisible = true"
+          plain>新增英克门店</el-button>
+        <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="dialogInckPensonnelVisible = true"
+          plain>同步门店人员</el-button>
+        <el-divider content-position="center">门店创建历史信息展示</el-divider>
         <el-header style="text-align: left; font-size: 25px">
           <span>
             <el-badge :value="posSize" class="item">新增门店日志</el-badge>
           </span>
         </el-header>
-        <el-table v-loading="loading" :data="poslist" height="520">
+        <el-table v-loading="loading" :data="poslist" height="620">
           <el-table-column prop="id" label="序列" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="updatedAt" label="更新时间" align="center" :show-overflow-tooltip="true" />
@@ -97,12 +60,16 @@
 </style>
 
 <script>
-import { addInckShop, shopAreaList, posList } from '../api/index'
+import { posList } from '../api/index'
+import addInckPensonnelInfoVue from './addInckPensonnelInfo.vue'
+import addInckShopVue from './addInckShop.vue'
 import navigation from './navigation.vue'
 
 export default {
   components: {
-    navigation
+    navigation,
+    addInckPensonnelInfoVue,
+    addInckShopVue
   },
   data () {
     return {
@@ -110,18 +77,13 @@ export default {
       // 操作记录数据
       poslist: [],
       posSize: null,
-      dialogVisible: false,
-      loading: true,
-      titieAddShop: '新增英克门店',
-      queryShopParams: {
-        operaterId: '',
-        shopName: '',
-        areaId: ''
-      }
+      titieAddShop: '门店-人员-同步',
+      dialogInckShopVisible: false,
+      dialogInckPensonnelVisible: false,
+      loading: true
     }
   },
   created () {
-    this.getshopAreaList()
     this.getPosList()
   },
   methods: {
@@ -140,17 +102,6 @@ export default {
         })
         .catch(_ => {})
     },
-    getshopAreaList () {
-      shopAreaList().then((_result) => {
-        this.options = _result.data
-      }).catch((_err) => {
-        this.$message({
-          showClose: true,
-          message: '获取门店区域分类后端接口连接异常',
-          type: 'error'
-        })
-      })
-    },
     getPosList () {
       posList().then((_result) => {
         this.poslist = _result.data.data
@@ -160,32 +111,6 @@ export default {
         this.$message({
           showClose: true,
           message: '获取门店创建操作记录后端接口连接异常',
-          type: 'error'
-        })
-      })
-    },
-    addInckShopStart () {
-      this.dialogVisible = false
-      addInckShop(this.queryShopParams).then((_result) => {
-        this.dialogFormVisible = false
-        if (_result.data.code === 200) {
-          this.$message({
-            showClose: true,
-            message: _result.data.msg,
-            type: 'success'
-          })
-          this.getPosList()
-        } else {
-          this.$message({
-            showClose: true,
-            message: _result.data.msg,
-            type: 'error'
-          })
-        }
-      }).catch((_err) => {
-        this.$message({
-          showClose: true,
-          message: '后端接口连接异常',
           type: 'error'
         })
       })

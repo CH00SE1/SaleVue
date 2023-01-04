@@ -39,7 +39,7 @@
           <el-table v-loading="loading" :data="saleList" show-summary>
             <el-table-column prop="name" label="营业员" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="sumMoney" label="总销售" sortable align="center" :show-overflow-tooltip="true" />
-            <el-table-column prop="sumFlMoney" label="总毛利" sortable align="center" :show-overflow-tooltip="true" />
+            <el-table-column prop="sumFlMoney" label="总提成" sortable align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="fl.A+" label="A+" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="fl.A" label="A" align="center" :show-overflow-tooltip="true" />
             <el-table-column prop="fl.B" label="B" align="center" :show-overflow-tooltip="true" />
