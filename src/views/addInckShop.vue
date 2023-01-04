@@ -7,7 +7,7 @@
       <el-input v-model="queryShopParams.shopName"></el-input>
     </el-form-item>
     <el-form-item label="门店区域" prop="areaId">
-      <el-select v-model.number="queryShopParams.areaId" placeholder="请选择活动区域">
+      <el-select v-model.number="queryShopParams.areaId" filterable placeholder="请选择活动区域">
         <el-option v-for='(item, index) in options' :key='index' :label="item.areaname"
           :value="item.areadocid"></el-option>
       </el-select>

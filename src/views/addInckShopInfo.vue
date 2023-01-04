@@ -6,10 +6,10 @@
         <span>{{ titieAddShop }}</span>
       </el-header>
       <el-main>
-        <el-dialog title="人员工号新增" :visible.sync="dialogInckShopVisible" width="30%" :before-close="handleClose">
+        <el-dialog title="新增英克门店" :visible.sync="dialogInckShopVisible" width="30%" :before-close="handleClose">
           <addInckShopVue ref="addInckShopVue"></addInckShopVue>
         </el-dialog>
-        <el-dialog title="人员工号新增" :visible.sync="dialogInckPensonnelVisible" width="30%" :before-close="handleClose">
+        <el-dialog title="同步门店人员" :visible.sync="dialogInckPensonnelVisible" width="30%" :before-close="handleClose">
           <addInckPensonnelInfoVue ref="addInckPensonnelInfoVue"></addInckPensonnelInfoVue>
         </el-dialog>
         <el-button type="warning" icon="el-icon-folder-add" size="mini" @click="dialogInckShopVisible = true"
