@@ -1,9 +1,9 @@
 <template>
  <el-form ref="queryPensonnelParams" :rules="rules" :model="queryPensonnelParams" label-width="80px">
-    <el-form-item label="同步ID" prop="synchronousShopId">
+    <el-form-item label="新门店" prop="synchronousShopId">
       <el-input v-model.number="queryPensonnelParams.synchronousShopId"></el-input>
     </el-form-item>
-    <el-form-item label="参照ID" prop="referenceShopId">
+    <el-form-item label="旧门店" prop="referenceShopId">
       <el-input v-model.number="queryPensonnelParams.referenceShopId"></el-input>
     </el-form-item>
     <el-form-item>
@@ -38,7 +38,6 @@ export default {
   methods: {
     addInckPensonnelCreate () {
       addPensonnel(this.queryPensonnelParams).then((_result) => {
-        this.dialogFormVisible = false
         if (_result.data.code === 200) {
           this.reastParams()
           this.$message({

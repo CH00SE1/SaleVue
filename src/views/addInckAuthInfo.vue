@@ -75,7 +75,7 @@
             </template>
             <el-dialog title="批量特殊功能授权" :visible.sync="dialogAuthVisible" width="30%" :before-close="handleClose">
               <template>
-                <el-select multiple collapse-tags v-model='selectedArray' @change='changeAuthSelect' style="width:60%"
+                <el-select multiple collapse-tags v-model='selectedArray' @change='changeAuthSelect' filterable style="width:60%"
                   placeholder='请选择功能'>
                   <el-checkbox v-model="checked" @change='selectAuthAll'>全选</el-checkbox>
                   <el-option v-for='(item, index) in authList' :key='index' :label="item.specialauthname"
@@ -89,7 +89,7 @@
             </el-dialog>
             <el-dialog title="批量人员角色添加" :visible.sync="dialogRoleVisible" width="30%" :before-close="handleClose">
               <template>
-                <el-select multiple collapse-tags v-model='selectedArray' @change='changeRoleSelect' style="width:60%"
+                <el-select multiple collapse-tags v-model='selectedArray' @change='changeRoleSelect' filterable style="width:60%"
                   placeholder='请选择角色'>
                   <el-checkbox v-model="checked" @change='selectRoleAll'>全选</el-checkbox>
                   <el-option v-for='(item, index) in roleList' :key='index' :label="item.label"

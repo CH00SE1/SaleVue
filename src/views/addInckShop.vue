@@ -1,5 +1,5 @@
 <template>
-  <el-form ref="queryShopParams" :rules="rules" :model="queryShopParams" label-width="80px">
+  <el-form :model="queryShopParams" :rules="rules" ref="queryShopParams" label-width="80px">
     <el-form-item label="人员工号" prop="operaterId">
       <el-input v-model.number="queryShopParams.operaterId"></el-input>
     </el-form-item>
@@ -7,7 +7,7 @@
       <el-input v-model="queryShopParams.shopName"></el-input>
     </el-form-item>
     <el-form-item label="门店区域" prop="areaId">
-      <el-select v-model.number="queryShopParams.areaId" filterable placeholder="请选择活动区域">
+      <el-select v-model.number="queryShopParams.areaId" filterable placeholder="请选择门店区域">
         <el-option v-for='(item, index) in options' :key='index' :label="item.areaname"
           :value="item.areadocid"></el-option>
       </el-select>
@@ -39,10 +39,12 @@ export default {
           { type: 'number', message: '人员ID必须为数字值' }
         ],
         areaId: [
+          { required: true, message: '请选择门店区域ID' },
           { type: 'number', message: '门店区域ID必须为数字值' }
         ],
         shopName: [
           { required: true, message: '请输入英克门店名称', trigger: 'blur' },
+          { type: 'string', message: '门店名称必须为文字' }
         ]
       }
     }
@@ -64,7 +66,6 @@ export default {
     },
     addInckShopCreate () {
       addInckShop(this.queryShopParams).then((_result) => {
-        this.dialogFormVisible = false
         if (_result.data.code === 200) {
           this.reastParams()
           this.$message({
@@ -95,3 +96,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.el-form-item .el-select {
+  width: 100%;
+}
+</style>

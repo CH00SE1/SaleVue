@@ -12,17 +12,17 @@
         <el-dialog title="同步门店人员" :visible.sync="dialogInckPensonnelVisible" width="30%" :before-close="handleClose">
           <addInckPensonnelInfoVue ref="addInckPensonnelInfoVue"></addInckPensonnelInfoVue>
         </el-dialog>
-        <el-button type="warning" icon="el-icon-folder-add" size="mini" @click="dialogInckShopVisible = true"
+        <el-button type="danger" icon="el-icon-folder-add" size="small" @click="dialogInckShopVisible = true"
           plain>新增英克门店</el-button>
-        <el-button type="success" icon="el-icon-circle-plus" size="mini" @click="dialogInckPensonnelVisible = true"
+        <el-button type="success" icon="el-icon-circle-plus" size="small" @click="dialogInckPensonnelVisible = true"
           plain>同步门店人员</el-button>
-        <el-divider content-position="center">门店创建历史信息展示</el-divider>
-        <el-header style="text-align: left; font-size: 25px">
+        <el-divider content-position="center">创建英克门店，同步新建门店人员角色信息数据！</el-divider>
+        <el-header style="text-align: left; font-size: 20px">
           <span>
-            <el-badge :value="posSize" class="item">新增门店日志</el-badge>
+            <el-badge :value="posSize" class="item">门店信息</el-badge>
           </span>
         </el-header>
-        <el-table v-loading="loading" :data="poslist" height="620">
+        <el-table v-loading="loading" :data="poslist" height="640">
           <el-table-column prop="id" label="序列" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="createdAt" label="创建时间" align="center" :show-overflow-tooltip="true" />
           <el-table-column prop="updatedAt" label="更新时间" align="center" :show-overflow-tooltip="true" />

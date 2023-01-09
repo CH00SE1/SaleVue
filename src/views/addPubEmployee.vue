@@ -4,19 +4,19 @@
       <el-input v-model="ruleForm.employeename"></el-input>
     </el-form-item>
     <el-form-item label="性别" prop="sex">
-      <el-select v-model="ruleForm.sex" placeholder="请选择性别" style="width:100%">
+      <el-select v-model="ruleForm.sex" placeholder="请选择性别">
         <el-option label="男" value="男"></el-option>
         <el-option label="女" value="女"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="门店" prop="deptid">
-      <el-select v-model="ruleForm.deptid" filterable placeholder="请选择门店" style="width:100%">
+      <el-select v-model="ruleForm.deptid" filterable placeholder="请选择门店">
         <el-option v-for="(item, index) in shopList" :key="index" :label="item.placepointname"
           :value="item.placepointid"></el-option>
       </el-select>
     </el-form-item>
     <el-form-item label="角色" prop="roleid">
-      <el-select v-model="ruleForm.roleid" filterable placeholder="请选择角色" style="width:100%">
+      <el-select v-model="ruleForm.roleid" filterable placeholder="请选择角色">
         <el-option v-for='(item, index) in roleList' :key='index' :label="item.label" :value="item.value"></el-option>
       </el-select>
     </el-form-item>
@@ -123,5 +123,7 @@ export default {
 </script>
 
 <style>
-
+.el-form-item .el-select {
+  width: 100%;
+}
 </style>
