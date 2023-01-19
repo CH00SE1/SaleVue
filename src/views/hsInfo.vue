@@ -19,7 +19,7 @@
               </el-form-item>
               <template>
                 <el-form-item label="平台" prop="platform">
-                  <el-select v-model="queryParams.platform" placeholder="选择平台">
+                  <el-select v-model="queryParams.platform" filterable placeholder="选择平台">
                     <el-option v-for="item in options" :key="item" :label="item" :value="item">
                     </el-option>
                   </el-select>
